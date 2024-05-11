@@ -1,0 +1,68 @@
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    h2{
+        font-weight: bold;
+        text-decoration: underline;
+        font-family: "Orbitron", sans-serif;
+    }
+
+    h2,p{
+        color: white;
+        margin-left: 15px;
+    }
+
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    color: whitesmoke;
+    padding: 5px;
+}
+
+.form input{
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #333;
+    color: white;
+}
+
+.form label{
+    font-weight: bold;
+    margin: 10px;
+    color: whitesmoke;
+}
+
+#checkboxInput{
+    margin: 10px !important;
+}
+
+.form button{
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #0076fd;
+    color: white;
+    cursor: pointer;
+}
+
+.form a {
+    color: white;
+    text-decoration: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    span{
+        color: #0076fd;
+        font-weight: bold;
+    }
+}
