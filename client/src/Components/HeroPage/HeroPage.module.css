@@ -167,3 +167,7 @@
         font-size: 1.7rem;
     }
 }
+
+.blur{
+    filter: blur(10px);
+}

@@ -1,0 +1,53 @@
+.Container {
+  max-height: 100vh;
+  padding: 20px;
+}
+
+.SidebarContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  color: white;
+  background: #333;
+  height: 90%;
+  border-radius: 15px;
+  font-size: 1.4rem;
+  position: fixed;
+}
+
+.SidebarContainer img {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.SidebarContainer #menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.SidebarContainer span {
+    margin: 10px;
+    margin-bottom: 20px;
+}
+
+.SidebarContainer span i {
+    transition: all 0.3s ease;
+}
+
+.SidebarContainer span :hover{
+    color: #0076fd;
+    cursor: pointer;
+}
+
+.SidebarContainer #signOut :hover{
+    color: red;
+    cursor: pointer;
+}

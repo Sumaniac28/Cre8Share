@@ -1,0 +1,53 @@
+#stockListHeading{
+    display: flex;
+    justify-content: space-evenly;
+    width: 90%;
+    margin-top: 50px;
+    padding: 10px;
+    color: whitesmoke;
+    border-bottom: 1px solid whitesmoke;
+}
+
+#stockListHeading li{
+    list-style-type: none;
+    width: 100%;
+    text-align: center;
+}
+
+#stockList{
+    margin-top: 10px;
+    width: 90%;
+}
+
+#stockList ul{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 30px;
+    padding: 10px;
+    color: whitesmoke;
+    background: #25706b;
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+#stockList ul li{
+    list-style-type: none;
+    width: 100%;
+    text-align: center;
+}
+
+.stockHeading{
+    
+}
+
+.gain{
+    background: #cbfc19;
+    color: black;
+    border-radius: 20px;
+}
+
+.loss{
+    background: #ff0000;
+    color: whitesmoke;
+    border-radius: 20px;
+}

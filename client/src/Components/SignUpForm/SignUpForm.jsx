@@ -1,8 +1,11 @@
 import React from "react";
 import styles from "./SignUpForm.module.css";
-function SignUpForm() {
+function SignUpForm({ onClose }) {
   return (
     <div className={styles.formContainer}>
+      <button className={styles.closeBtn} onClick={onClose}>
+        X
+      </button>
       <div>
         <h2>Sign Up</h2>
         <p>
@@ -16,7 +19,12 @@ function SignUpForm() {
         <label for="Email">Email</label>
         <input type="text" placeholder="Email" name="Email" required />
         <label for="Password">Password</label>
-        <input type="password" placeholder="Password" name="Password" required />
+        <input
+          type="password"
+          placeholder="Password"
+          name="Password"
+          required
+        />
         <label for="Confirm Password">Confirm Password</label>
         <input
           type="password"
@@ -29,9 +37,10 @@ function SignUpForm() {
           <label for="terms">I agree to the terms and conditions</label>
         </div>
         <button>Create Account</button>
-        <a href="/login">Already have an account? <span>Login</span></a>
+        <a href="/login">
+          Already have an account? <span>Login</span>
+        </a>
       </form>
-     
     </div>
   );
 }
