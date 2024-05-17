@@ -4,6 +4,7 @@ import styles from "./CreatorStocks.module.css";
 function CreatorStocks() {
   return (
     <>
+    <div id={styles.CreatorStocksHeading}>-----Your Allocated Stocks-----</div>
       <div id={styles.stockListHeading}>
         <li>Name</li>
         <li>List Price</li>

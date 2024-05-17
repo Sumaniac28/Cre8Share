@@ -9,7 +9,8 @@
   justify-content: space-evenly;
   align-items: center;
   color: white;
-  background: #333;
+  background: #2f2f30;
+  /* border: 3px solid #2f2f30; */
   height: 90%;
   border-radius: 15px;
   font-size: 1.4rem;

@@ -1,3 +1,11 @@
+#CreatorStocksHeading{
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: whitesmoke;
+    margin-top: 50px;
+    font-family: "Orbitron", sans-serif;
+}
+
 #stockListHeading{
     display: flex;
     justify-content: space-evenly;
@@ -25,7 +33,7 @@
     margin-top: 30px;
     padding: 10px;
     color: whitesmoke;
-    background: #25706b;
+    background: #2f2f30;
     border-radius: 15px;
     font-weight: 500;
 }
@@ -36,18 +44,15 @@
     text-align: center;
 }
 
-.stockHeading{
-    
-}
 
 .gain{
-    background: #cbfc19;
+    background: #31ff80;
     color: black;
     border-radius: 20px;
 }
 
 .loss{
-    background: #ff0000;
+    background: #ff3131;
     color: whitesmoke;
     border-radius: 20px;
 }

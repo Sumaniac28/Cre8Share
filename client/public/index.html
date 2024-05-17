@@ -33,6 +33,27 @@
     />
 
     <style>
+      /* Width and height of the scrollbar */
+      ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: rgb(8, 7, 11);
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
       body {
         background: rgb(8, 7, 11);
         scroll-behavior: smooth;
@@ -53,5 +74,8 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
-  <script src="https://kit.fontawesome.com/89d18fe40b.js" crossorigin="anonymous"></script>
+  <script
+    src="https://kit.fontawesome.com/89d18fe40b.js"
+    crossorigin="anonymous"
+  ></script>
 </html>
