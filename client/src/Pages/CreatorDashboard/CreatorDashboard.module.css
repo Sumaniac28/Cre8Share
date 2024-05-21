@@ -4,3 +4,7 @@
     justify-content: space-evenly;
     position: relative;
 }
+
+.blur{
+    filter: blur(10px);
+}

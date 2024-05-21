@@ -1,14 +1,13 @@
 .Container{
     display: flex;
     width: 90%;
-    min-height: 10vh;
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
     padding: 0 2rem;
     color: white;
     background: rgb(8, 7, 11);
-    border-bottom: 3px solid;
+    border: 3px solid #31ff80;
     border-radius: 15px;
 }
 

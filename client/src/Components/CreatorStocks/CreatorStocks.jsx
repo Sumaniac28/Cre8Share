@@ -4,12 +4,15 @@ import styles from "./CreatorStocks.module.css";
 function CreatorStocks() {
   return (
     <>
-    <div id={styles.CreatorStocksHeading}>-----Your Allocated Stocks-----</div>
+      <div id={styles.CreatorStocksHeading}>
+        <i class="fa-solid fa-arrow-trend-up"></i>{"   "}Your Allocated Stocks
+      </div>
       <div id={styles.stockListHeading}>
         <li>Name</li>
         <li>List Price</li>
         <li>Current Price</li>
         <li>Quantity</li>
+        <li>Sold</li>
         <li>Gain/Loss</li>
       </div>
       <div id={styles.stockList}>
@@ -18,6 +21,7 @@ function CreatorStocks() {
           <li>100</li>
           <li>110</li>
           <li>10</li>
+          <li>50</li>
           <li className={styles.gain}>10</li>
         </ul>
         <ul>
@@ -25,6 +29,7 @@ function CreatorStocks() {
           <li>200</li>
           <li>210</li>
           <li>10</li>
+          <li>50</li>
           <li className={styles.gain}>10</li>
         </ul>
         <ul>
@@ -32,6 +37,7 @@ function CreatorStocks() {
           <li>300</li>
           <li>310</li>
           <li>10</li>
+          <li>50</li>
           <li className={styles.loss}>-10</li>
         </ul>
         <ul>
@@ -39,6 +45,7 @@ function CreatorStocks() {
           <li>400</li>
           <li>410</li>
           <li>10</li>
+          <li>50</li>
           <li className={styles.gain}>10</li>
         </ul>
         <ul>
@@ -46,6 +53,7 @@ function CreatorStocks() {
           <li>500</li>
           <li>510</li>
           <li>10</li>
+          <li>50</li>
           <li className={styles.loss}>-10</li>
         </ul>
       </div>

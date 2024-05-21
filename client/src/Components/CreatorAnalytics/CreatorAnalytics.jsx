@@ -7,32 +7,37 @@ import ValuationCard from "../ValuationCard/ValuationCard";
 import AnalyticsGraph from "../AnalyticsGraph/AnalyticsGraph";
 import EarningsCard from "../EarningsCard/EarningsCard";
 import CreatorStocks from "../CreatorStocks/CreatorStocks";
-function CreatorAnalytics() {
+function CreatorAnalytics({stockPage}) {
+  
   return (
     <>
       <div className={styles.container}>
         <CreatorTopBar />
         <div className={styles.CreatorAnalyticsContainer}>
-          <div className={styles.AnalyticsRow}>
-            <div className={styles.AnalyticsCard}>
-              <StatsCard />
-            </div>
-            <div className={styles.AnalyticsCard}>
-              <StocksStatsCard />
-            </div>
-            <div className={styles.AnalyticsCard}>
-              <ValuationCard />
-            </div>
-          </div>
-          <div className={styles.AnalyticsRow}>
-            <div className={styles.AnalyticsCard}>
-              <EarningsCard />
-            </div>
-            <div className={styles.AnalyticsCard}>
-              <AnalyticsGraph />
-            </div>
-          </div>
-          <CreatorStocks />
+          {!stockPage && (
+            <>
+              <div className={styles.AnalyticsRow}>
+                <div className={styles.AnalyticsCard}>
+                  <StatsCard />
+                </div>
+                <div className={styles.AnalyticsCard}>
+                  <StocksStatsCard />
+                </div>
+                <div className={styles.AnalyticsCard}>
+                  <ValuationCard />
+                </div>
+              </div>
+              <div className={styles.AnalyticsRow}>
+                <div className={styles.AnalyticsCard}>
+                  <EarningsCard />
+                </div>
+                <div className={styles.AnalyticsCard}>
+                  <AnalyticsGraph />
+                </div>
+              </div>
+            </>
+          )}
+         {stockPage && <CreatorStocks />}
         </div>
         <div id={styles.helpSection}>
           Need any further help?{" "}

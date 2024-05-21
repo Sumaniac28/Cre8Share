@@ -12,7 +12,7 @@ function EarningsCard() {
       <span>Your earnings till {new Date().toLocaleDateString()}</span>
       <br/>
       <br/>
-      <button>Withdraw</button>
+      <button id={styles.withdrawButton}>Withdraw</button>
     </>
   );
 }

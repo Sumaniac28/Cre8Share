@@ -1,0 +1,56 @@
+#UserInfoContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 50%;
+}
+
+#UserInfoContainer #UserInfoCard {
+  width: 90%;
+  height: 150px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background: #2f2f30;
+  /* border: 3px solid #31ff80; */
+  border-radius: 20px;
+  padding: 20px;
+  color: whitesmoke;
+  position: relative;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: "Orbitron", sans-serif;
+  }
+
+  ul {
+    border-left: 1px solid white;
+  }
+
+  li {
+    list-style-type: none;
+    font-size: 1.5rem;
+    margin-left: 20px;
+    color: #c8c8c8;
+    span {
+      font-weight: bold;
+      color: whitesmoke;
+      margin-right: 20px;
+    }
+  }
+}
+
+.point {
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+#statsPoint {
+  background: #fc1919;
+}

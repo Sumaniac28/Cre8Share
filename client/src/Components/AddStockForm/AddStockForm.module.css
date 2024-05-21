@@ -1,0 +1,89 @@
+.formContainer {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: rgb(8, 7, 11);
+  box-shadow: 0 0 10px 0 rgb(77, 255, 222);
+
+  h2 {
+    font-weight: bold;
+    text-decoration: underline;
+    font-family: "Orbitron", sans-serif;
+  }
+
+  h2,
+  p {
+    color: white;
+    margin-left: 15px;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: whitesmoke;
+  padding: 5px;
+}
+
+.form input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #333;
+  color: white;
+}
+
+.form label {
+  font-weight: bold;
+  margin: 10px;
+  color: whitesmoke;
+}
+
+.form button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #0076fd;
+  color: white;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#reqOTP {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #0076fd;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: whitesmoke;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+
+.closeBtn:hover {
+  color: #ff0000;
+}
