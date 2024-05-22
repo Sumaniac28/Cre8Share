@@ -44,9 +44,16 @@ function AnalyticsGraph() {
             },
           ]}
           height={250}
-          width={600}
+          width={500}
           margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
         />
+
+        <p>
+          "Your channel's current valuation as per our internal alogoritm is{" "}
+          <span>$400</span>. Channel analytics gets refreshed every friday and
+          is shown on the graph which affects price of all the stocks allocated
+          to your channel."
+        </p>
       </div>
     </>
   );

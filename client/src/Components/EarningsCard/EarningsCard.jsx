@@ -10,8 +10,8 @@ function EarningsCard() {
       </div>
       <h1>$3000</h1>
       <span>Your earnings till {new Date().toLocaleDateString()}</span>
-      <br/>
-      <br/>
+      <br />
+      <br />
       <button id={styles.withdrawButton}>Withdraw</button>
     </>
   );

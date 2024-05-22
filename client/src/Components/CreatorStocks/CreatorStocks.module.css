@@ -1,63 +1,52 @@
-#CreatorStocksHeading{
-    font-size: 2rem;
-    font-weight: bold;
-    color: whitesmoke;
-    font-family: "Quicksand", sans-serif;
-    /* border-radius: 15px; */
-    border-bottom: 1px solid whitesmoke;
-    padding: 10px;
-    margin-top: 20px;
+
+#stockListHeading {
+  display: flex;
+  justify-content: space-evenly;
+  width: 90%;
+  margin-top: 20px;
+  padding: 10px;
+  color: whitesmoke;
+  border-bottom: 1px solid whitesmoke;
 }
 
-#stockListHeading{
-    display: flex;
-    justify-content: space-evenly;
-    width: 90%;
-    margin-top: 50px;
-    padding: 10px;
-    color: whitesmoke;
-    border-bottom: 1px solid whitesmoke;
+#stockListHeading li {
+  list-style-type: none;
+  width: 100%;
+  text-align: center;
 }
 
-#stockListHeading li{
-    list-style-type: none;
-    width: 100%;
-    text-align: center;
+#stockList {
+  margin-top: 10px;
+  width: 90%;
 }
 
-#stockList{
-    margin-top: 10px;
-    width: 90%;
+#stockList ul {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 30px;
+  padding: 10px;
+  color: whitesmoke;
+  background: #2f2f30;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
-#stockList ul{
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 30px;
-    padding: 10px;
-    color: whitesmoke;
-    background: #2f2f30;
-    border-radius: 15px;
-    font-size: 1.2rem;
-    font-weight: 600;
+#stockList ul li {
+  list-style-type: none;
+  width: 100%;
+  text-align: center;
 }
 
-#stockList ul li{
-    list-style-type: none;
-    width: 100%;
-    text-align: center;
+.gain {
+  background: #31ff80;
+  color: black;
+  border-radius: 20px;
 }
 
-
-.gain{
-    background: #31ff80;
-    color: black;
-    border-radius: 20px;
-}
-
-.loss{
-    background: #ff3131;
-    color: whitesmoke;
-    border-radius: 20px;
+.loss {
+  background: #ff3131;
+  color: whitesmoke;
+  border-radius: 20px;
 }

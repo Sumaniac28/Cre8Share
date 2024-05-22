@@ -1,10 +1,16 @@
-.Container{
-    min-height: 100vh;
-    display: flex;
-    justify-content: space-evenly;
-    position: relative;
+.Container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.blur{
-    filter: blur(10px);
+#AnalyticsContainer {
+  display: grid;
+  grid-template-columns: 1.2fr 6fr;
+  grid-gap: 20px;
+  flex-grow: 1;
+}
+
+.blur {
+  filter: blur(10px);
 }

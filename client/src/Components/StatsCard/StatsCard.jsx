@@ -3,7 +3,7 @@ import styles from "./StatsCard.module.css";
 
 function StatsCard() {
   return (
-    <>
+    <section style={{ background: "#141417", padding: "20px" }}>
       <div className={styles.AnalyticsCardTitle}>
         <p>Statstics</p>
         <div className={styles.point} id={styles.statsPoint}></div>
@@ -26,7 +26,7 @@ function StatsCard() {
           <span>100</span>
         </li>
       </ul>
-    </>
+    </section>
   );
 }
 

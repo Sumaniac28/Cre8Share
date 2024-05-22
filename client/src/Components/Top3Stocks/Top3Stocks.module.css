@@ -19,12 +19,6 @@
   width: 20px;
 }
 
-#valuationPoint {
-  background-color: #ffd700;
-}
-
-h1 {
-  font-size: 1.7rem;
-  font-weight: bold;
-  margin-bottom: 10px;
+#top3stocksPoint {
+  background-color: #ff009c;
 }

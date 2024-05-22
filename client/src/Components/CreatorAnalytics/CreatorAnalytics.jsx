@@ -1,51 +1,32 @@
 import React from "react";
 import styles from "./CreatorAnalytics.module.css";
-import CreatorTopBar from "../CreatorTopBar/CreatorTopBar";
+import AnalyticsGraph from "../AnalyticsGraph/AnalyticsGraph";
 import StatsCard from "../StatsCard/StatsCard";
 import StocksStatsCard from "../StockStatsCard/StocksStatsCard";
-import ValuationCard from "../ValuationCard/ValuationCard";
-import AnalyticsGraph from "../AnalyticsGraph/AnalyticsGraph";
 import EarningsCard from "../EarningsCard/EarningsCard";
-import CreatorStocks from "../CreatorStocks/CreatorStocks";
-function CreatorAnalytics({stockPage}) {
-  
+import Top3Stocks from "../Top3Stocks/Top3Stocks";
+function CreatorAnalytics({ stockPage }) {
   return (
     <>
-      <div className={styles.container}>
-        <CreatorTopBar />
-        <div className={styles.CreatorAnalyticsContainer}>
-          {!stockPage && (
-            <>
-              <div className={styles.AnalyticsRow}>
-                <div className={styles.AnalyticsCard}>
-                  <StatsCard />
-                </div>
-                <div className={styles.AnalyticsCard}>
-                  <StocksStatsCard />
-                </div>
-                <div className={styles.AnalyticsCard}>
-                  <ValuationCard />
-                </div>
-              </div>
-              <div className={styles.AnalyticsRow}>
-                <div className={styles.AnalyticsCard}>
-                  <EarningsCard />
-                </div>
-                <div className={styles.AnalyticsCard}>
-                  <AnalyticsGraph />
-                </div>
-              </div>
-            </>
-          )}
-         {stockPage && <CreatorStocks />}
+      <section className={styles.Container}>
+        <div id={styles.StocksStatsCardContainer}>
+          <StatsCard />
+          <StocksStatsCard />
         </div>
-        <div id={styles.helpSection}>
-          Need any further help?{" "}
-          <span>
-            <a href="/">Contact us</a>
-          </span>
+        <div
+          id={styles.AnalyticsGraphContainer}
+          className={styles.AnalyticsCard}
+        >
+          <AnalyticsGraph />
         </div>
-      </div>
+        <div id={styles.EarningsContainer} className={styles.AnalyticsCard}>
+          <EarningsCard />
+        </div>
+
+        <div className={styles.AnalyticsCard} id={styles.top3PerformingStocks}>
+          <Top3Stocks />
+        </div>
+      </section>
     </>
   );
 }

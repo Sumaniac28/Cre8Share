@@ -3,7 +3,7 @@ import styles from "./StockStatsCard.module.css";
 import { PieChart } from "@mui/x-charts/PieChart";
 function StocksStatsCard() {
   return (
-    <>
+    <section style={{background:"#141417",padding:"20px"}}>
       <div className={styles.AnalyticsCardTitle}>
         <p>Stocks</p>
         <div className={styles.point} id={styles.stocksPoint}></div>
@@ -43,7 +43,7 @@ function StocksStatsCard() {
           height={100}
         />
       </div>
-    </>
+    </section>
   );
 }
 

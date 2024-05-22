@@ -1,73 +1,32 @@
-.container {
+.Container {
+  display: grid;
+  grid-template-columns: 3fr 5fr;
+  grid-template-rows: 1.1fr 1fr;
+  grid-gap: 20px;
   padding: 20px;
-  width: 90%;
+  color: white;
 }
 
-.CreatorAnalyticsContainer {
+.AnalyticsCard {
+  background: #141417;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+#EarningsContainer {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
+}
+
+#StocksStatsCardContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+}
+
+#top3PerformingStocks {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  /* margin-top: 40px; */
-}
-
-.CreatorAnalyticsContainer .AnalyticsRow {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  /* align-items: center; */
-  width: 90%;
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
-
-.CreatorAnalyticsContainer .AnalyticsRow .AnalyticsCard {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: space-evenly;
-  /* align-items: center; */
-  background: #2f2f30;
-  /* border: 3px solid #2f2f30; */
-  min-width: 20%;
-  border-radius: 20px;
-  padding: 20px;
-  color: whitesmoke;
-
-  .AnalyticsCardTitle {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.5rem;
-    font-family: "Quicksand", sans-serif;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  li {
-    list-style-type: none;
-  }
-
-  .point {
-    border-radius: 50%;
-    height: 20px;
-    width: 20px;
-  }
-}
-
-#helpSection {
-  font-size: 1.5rem;
-  font-family: "Quicksand", sans-serif;
-  font-weight: bold;
-  margin-bottom: 20px;
-  margin-top: 100px;
-  text-align: center;
-  color: whitesmoke;
-
-  span a {
-    text-decoration: none;
-    color: #1992fc;
-  }
 }

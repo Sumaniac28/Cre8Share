@@ -1,0 +1,24 @@
+#CreatorStocksHeading {
+  font-size: 2rem;
+  font-weight: bold;
+  color: whitesmoke;
+  font-family: "Quicksand", sans-serif;
+  border-bottom: 1px solid whitesmoke;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+
+#CreatorStocksContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+
+    p{
+        color: whitesmoke;
+        font-size: 1.2rem;
+        font-family: "Quicksand", sans-serif;
+        margin-top: 40px;
+    }
+}
