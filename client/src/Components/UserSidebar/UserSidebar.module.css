@@ -1,0 +1,42 @@
+.Container {
+    background: #141417;
+    height: fit-content;
+    padding: 20px;
+    position: sticky;
+    top: 0;
+  }
+  
+  .SidebarContainer {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 1.1rem;
+  }
+  
+  .SidebarContainer span {
+    margin: 10px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-bottom: 1px solid darkgrey;
+  
+    a {
+      text-decoration: none;
+      color: white;
+      transition: 0.3s ease-in-out;
+    }
+  }
+  
+  .SidebarContainer span i {
+    margin-right: 10px;
+  }
+  
+  .SidebarContainer span :hover {
+    color: #4ea0ff;
+    cursor: pointer;
+  }
+  
+  .SidebarContainer #signOut :hover {
+    color: red;
+    cursor: pointer;
+  }
+  

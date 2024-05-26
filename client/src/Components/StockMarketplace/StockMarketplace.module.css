@@ -1,0 +1,96 @@
+#StockMarketplaceContainer {
+  display: flex;
+  flex-direction: column; 
+  margin-top: 20px;
+  position: relative;
+}
+
+#StockMarketplaceTitle {
+  flex-shrink: 0; /* Prevents the title from shrinking */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  color: white;
+  background: #141417;
+  position: sticky;
+  top: 0;
+}
+
+#Appname {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+#search {
+  display: flex;
+  align-items: center;
+  background: #1e1e1f;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+}
+
+#search input {
+  background: #1e1e1f;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+#StockMarketplaceContent {
+  flex-grow: 1; /* Allows this element to grow and fill the remaining space */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  padding: 20px;
+  overflow-y: auto; /* Enables vertical scrolling */
+}
+
+
+
+#StockMarketplaceCard{
+  background: #141417;
+  padding: 20px;
+  margin: 10px;
+  color: white;
+  height: fit-content;
+}
+
+#StockMarketplaceCard h4 {
+  font-size: 1.5rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-family: "Quicksand", sans-serif;
+
+}
+
+#StockMarketplaceCard p {
+  font-size: 1rem;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  color: rgb(190, 190, 190);
+}
+
+#StockMarketplaceCard ul {
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+#StockMarketplaceCard li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: antiquewhite;
+  font-size: 1.1rem;
+}
+
+#StockMarketplaceCard button {
+  width: 90%;
+  background: lightgreen;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  cursor: pointer;
+}

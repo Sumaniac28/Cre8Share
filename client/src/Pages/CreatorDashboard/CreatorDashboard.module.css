@@ -9,8 +9,5 @@
   grid-template-columns: 1.2fr 6fr;
   grid-gap: 20px;
   flex-grow: 1;
-}
-
-.blur {
-  filter: blur(10px);
+  position: relative;
 }

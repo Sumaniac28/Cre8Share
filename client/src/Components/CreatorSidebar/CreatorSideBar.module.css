@@ -2,6 +2,8 @@
   background: #141417;
   height: fit-content;
   padding: 20px;
+  position: sticky;
+  top: 0;
 }
 
 .SidebarContainer {
@@ -25,7 +27,6 @@
 }
 
 .SidebarContainer span i {
-  transition: 0.3s ease-in-out;
   margin-right: 10px;
 }
 
