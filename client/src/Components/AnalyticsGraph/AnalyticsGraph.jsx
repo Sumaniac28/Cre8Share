@@ -2,7 +2,7 @@ import React from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
 import styles from "./AnalyticsGraph.module.css";
 
-function AnalyticsGraph() {
+function AnalyticsGraph({valuation}) {
   return (
     <>
       <div className={styles.AnalyticsCardTitle}>
@@ -50,7 +50,7 @@ function AnalyticsGraph() {
 
         <p>
           "Your channel's current valuation as per our internal alogoritm is{" "}
-          <span>$400</span>. Channel analytics gets refreshed every friday and
+          <span>${valuation}</span>. Channel analytics gets refreshed every friday and
           is shown on the graph which affects price of all the stocks allocated
           to your channel."
         </p>

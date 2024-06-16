@@ -18,7 +18,11 @@ const userSchema = new mongoose.Schema({
     portfolio:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"UserPortfolio"
-    }
+    },
+    funds:{
+        type:"Number",
+        default:0
+    },
 },{
     timestamps:true
 })

@@ -59,7 +59,7 @@
   margin-bottom: 20px;
 }
 
-.form a {
+.form #SignUpLink {
   color: white;
   text-decoration: none;
   margin-top: 10px;
@@ -68,6 +68,10 @@
   span {
     color: #0076fd;
     font-weight: bold;
+  }
+
+  span:hover {
+    cursor: pointer;
   }
 }
 

@@ -83,6 +83,10 @@
   margin-bottom: 5px;
   color: antiquewhite;
   font-size: 1.1rem;
+
+  span{
+    color: white;
+  }
 }
 
 #StockMarketplaceCard button {

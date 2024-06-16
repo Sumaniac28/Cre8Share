@@ -1,18 +1,18 @@
 import React from "react";
 import styles from "./EarningsCard.module.css";
 
-function EarningsCard() {
+function EarningsCard({earnings}) {
   return (
     <>
       <div className={styles.AnalyticsCardTitle}>
         <p>Earnings till date </p>
         <div className={styles.point} id={styles.earningsPoint}></div>
       </div>
-      <h1>$3000</h1>
+      <h1>${earnings}</h1>
       <span>Your earnings till {new Date().toLocaleDateString()}</span>
       <br />
       <br />
-      <button id={styles.withdrawButton}>Withdraw</button>
+      <button style={earnings===0 ? {cursor:'not-allowed'}: {cursor:'pointer'}} id={styles.withdrawButton}>Withdraw</button>
     </>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./UserStocks.module.css";
-function UserStocks() {
+function UserStocks({stocks}) {
 
     const userStocks=[
         {
@@ -42,46 +42,6 @@ function UserStocks() {
             quantity:10,
             gainLoss:50,
             className:styles.gain
-        },
-        {
-            name:"Share 6",
-            creatorName:"Creator 6",
-            currentPrice:610,
-            quantity:10,
-            gainLoss:-10,
-            className:styles.loss
-        },
-        {
-            name:"Share 7",
-            creatorName:"Creator 7",
-            currentPrice:710,
-            quantity:10,
-            gainLoss:50,
-            className:styles.gain
-        },
-        {
-            name:"Share 8",
-            creatorName:"Creator 8",
-            currentPrice:810,
-            quantity:10,
-            gainLoss:50,
-            className:styles.gain
-        },
-        {
-            name:"Share 9",
-            creatorName:"Creator 9",
-            currentPrice:910,
-            quantity:10,
-            gainLoss:-10,
-            className:styles.loss
-        },
-        {
-            name:"Share 10",
-            creatorName:"Creator 10",
-            currentPrice:1010,
-            quantity:10,
-            gainLoss:50,
-            className:styles.gain
         }
     ]
   return (
@@ -103,14 +63,14 @@ function UserStocks() {
           <li className={styles.gain}>50</li>
           <li><button className={styles.sellButton}>Sell</button></li>
         </ul> */}
-        {userStocks.map((stock)=>{
+        {stocks.map((stock)=>{
             return(
                 <ul>
-                    <li>{stock.name}</li>
+                    <li>{stock.stock.name}</li>
                     <li>{stock.creatorName}</li>
-                    <li>{stock.currentPrice}</li>
-                    <li>{stock.quantity}</li>
-                    <li className={stock.className}>{stock.gainLoss}</li>
+                    <li>{stock.stock.currentPrice.toFixed(3)}</li>
+                    <li>{stock.stock.quantity}</li>
+                    <li className={stock.className}>{(stock.stock.currentPrice-stock.stock.listPrice).toFixed(3)}</li>
                     <li><button className={styles.sellButton}>Sell</button></li>
                 </ul>
             )

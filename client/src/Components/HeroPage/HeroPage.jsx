@@ -9,10 +9,12 @@ function HeroPage() {
 
   const openSignupModal = () => {
     setShowSignup(true);
+    setShowLogin(false);
   };
 
   const openLoginModal = () => {
     setShowLogin(true);
+    setShowSignup(false);
   };
 
   const closeSignupModal = () => {
@@ -61,7 +63,7 @@ function HeroPage() {
               in on the action now!
             </p>
             <button>
-              Sign In with YouTube <i class="fa-brands fa-youtube"></i>
+             <a href="http://localhost:8000/creators/auth/youtube"> Sign In with YouTube <i class="fa-brands fa-youtube"></i></a>
             </button>
           </div>
           <div className={styles.stats}>
@@ -80,8 +82,8 @@ function HeroPage() {
         </div>
       </section>
 
-      {showSignup && <SignUpForm onClose={closeSignupModal} />}
-      {showLogin && <LogInForm onClose={closeLoginModal} />}
+      {showSignup && <SignUpForm onClose={closeSignupModal} onOpenLogin={openLoginModal} />}
+      {showLogin && <LogInForm onClose={closeLoginModal} onOpenSignUp={openSignupModal} />}
     </>
   );
 }

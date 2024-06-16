@@ -1,9 +1,8 @@
 import React from "react";
 import styles from "./CreatorNavBar.module.css";
-import profilePic from "../../assets/images/unnamed.jpg";
 import appLogo from "../../assets/images/anotherLogo.png";
 
-function CreatorNavBar() {
+function CreatorNavBar({name,channelImage}) {
   return (
     <div className={styles.Container}>
       <div id={styles.App}>
@@ -15,9 +14,9 @@ function CreatorNavBar() {
         <i class="fa-solid fa-search"></i>
       </div>
       <div className={styles.AboutCreator}>
-        <img src={profilePic} alt="Profile Pic" />
+        <img src={channelImage} alt="Profile Pic" />
         <p>
-          Sumit Grover
+          {name}
           <br />
           <span>YouTube Creator</span>
         </p>

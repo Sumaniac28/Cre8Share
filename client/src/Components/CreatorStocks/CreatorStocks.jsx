@@ -1,7 +1,12 @@
 import React from "react";
 import styles from "./CreatorStocks.module.css";
 
-function CreatorStocks() {
+function CreatorStocks({ creatorStocks }) {
+
+  const formatPrice = (price) => {
+    return parseFloat(price).toFixed(2);
+  };
+
   return (
     <>
       <div id={styles.stockListHeading}>
@@ -13,30 +18,19 @@ function CreatorStocks() {
         <li>Gain/Loss</li>
       </div>
       <div id={styles.stockList}>
-        <ul>
-          <li>Share 1</li>
-          <li>100</li>
-          <li>110</li>
-          <li>10</li>
-          <li>50</li>
-          <li className={styles.gain}>10</li>
-        </ul>
-        <ul>
-          <li>Share 2</li>
-          <li>200</li>
-          <li>210</li>
-          <li>10</li>
-          <li>50</li>
-          <li className={styles.gain}>10</li>
-        </ul>
-        <ul>
-          <li>Share 3</li>
-          <li>300</li>
-          <li>310</li>
-          <li>10</li>
-          <li>50</li>
-          <li className={styles.loss}>-10</li>
-        </ul>
+        {creatorStocks.map((stock) => {
+          const gainLoss = stock.currentPrice - stock.listPrice;
+          return (
+            <ul key={stock.name}>
+              <li>{stock.name}</li>
+              <li>{formatPrice(stock.listPrice)}</li>
+              <li>{formatPrice(stock.currentPrice)}</li>
+              <li>{stock.quantity}</li>
+              <li>{stock.sold}</li>
+              <li className={gainLoss >= 0 ? styles.gain : styles.loss}>{formatPrice(gainLoss)}</li>
+            </ul>
+          );
+        })}
       </div>
     </>
   );

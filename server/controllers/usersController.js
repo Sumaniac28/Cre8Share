@@ -16,9 +16,11 @@ module.exports.signUP = async function (req, res) {
     if (!user) {
       // Create the user if it doesn't exist
       await User.create(req.body);
-      return res.json(200, {
-        message: "User created successfully",
-      });
+      // 
+      return res.status(200).json({ message: "User created successfully" });
+    }
+    else{
+      return res.status(409).json({ message: "User already exists" });
     }
   } catch (err) {
     return res.status(500).json({ error: "Internal Server Error" });

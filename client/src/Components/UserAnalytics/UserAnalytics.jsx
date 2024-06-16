@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./UserAnalytics.module.css";
 import UserPortfolio from "../UserPortfolio/UserPortfolio";
-const UserAnalytics = () => {
+const UserAnalytics = ({funds,totalInvested,totalGain,totalQuantity,totalValue}) => {
   return (
     <div id={styles.userStats}>
-        <UserPortfolio/>
+        <UserPortfolio funds={funds} totalInvested={totalInvested} totalGain={totalGain} totalQuantity={totalQuantity} totalValue={totalValue}/>
       <div className={styles.statsCard}>
         
       </div>

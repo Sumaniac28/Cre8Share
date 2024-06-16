@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./StockStatsCard.module.css";
 import { PieChart } from "@mui/x-charts/PieChart";
-function StocksStatsCard() {
+function StocksStatsCard({stockTotals}) {
   return (
     <section style={{background:"#141417",padding:"20px"}}>
       <div className={styles.AnalyticsCardTitle}>
@@ -13,15 +13,15 @@ function StocksStatsCard() {
           <li>
             <i class="fa-solid fa-arrow-trend-up"></i>
             <span>Total Stocks</span>
-            <span>100</span>
+            <span>{stockTotals.totalStocks}</span>
           </li>
           <li>
             <i class="fa-solid fa-check"></i> <span>Sold</span>
-            <span>20</span>
+            <span>{stockTotals.totalSold}</span>
           </li>
           <li>
             <i class="fa-solid fa-xmark"></i> <span>Unsold</span>
-            <span>80</span>
+            <span>{stockTotals.totalUnsold}</span>
           </li>
         </ul>
         <PieChart
@@ -34,8 +34,8 @@ function StocksStatsCard() {
           series={[
             {
               data: [
-                { id: 1, value: 20, label: "Sold" },
-                { id: 2, value: 80, label: "Unsold" },
+                { id: 1, value: stockTotals.totalSold, label: "Sold" },
+                { id: 2, value: stockTotals.totalUnsold, label: "Unsold" },
               ],
             },
           ]}

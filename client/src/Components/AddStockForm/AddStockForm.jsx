@@ -12,9 +12,6 @@ function AddStockForm({ hideAddStockModal }) {
   return (
     <div id={styles.allocateStocksContainer}>
       <div className={styles.formContainer}>
-        {/* <button className={styles.closeBtn} onClick={hideAddStockModal}>
-        X
-      </button> */}
         <h2>Add stock</h2>
         <form className={styles.form}>
           <label htmlFor="stockName">Stock Name</label>

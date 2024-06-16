@@ -14,18 +14,20 @@ module.exports.signIN = async function (req, res) {
     }
 
     const token = jwt.sign(creator.toJSON(), "cre8share", { expiresIn: "1d" });
-    res.redirect(`http://localhost:3000/MyCreator?token=${token}`);
+
+    res.redirect(`http://localhost:3000/Creator?token=${token}`);
   } catch (err) {
     console.log(err);
-    return res.json(500, {
+    return res.staus(500).json({
       message: "Internal server error",
     });
   }
 };
 
-module.exports.refresh = async function (req, res) {
+
+async function refresh(creatorID) {
   try {
-    const creator = await Creator.findById(req.user._id);
+    const creator = await Creator.findById(creatorID);
 
     if (!creator) {
       return res.json(422, {
@@ -98,6 +100,7 @@ module.exports.refresh = async function (req, res) {
         dislikes: totalDislikes,
         videoCount: parseInt(channelData.statistics.videoCount),
         valuation: valuation,
+        date: new Date().toISOString(),
       };
       const stats = [data, ...analyticsData[0].stats];
 
@@ -106,6 +109,21 @@ module.exports.refresh = async function (req, res) {
       return res.json(200, analyticsData[0]);
     }
   } catch (err) {
+    console.log(err);
+    return res.json(500, {
+      message: "Internal server error",
+    });
+  }
+};
+
+module.exports.refreshAnalyticsForAllCreators = async function () {
+  try{
+    const creators = await Creator.find({});
+
+    for (let creator of creators) {
+      refresh(creator._id);
+    }
+  }catch(err){
     console.log(err);
     return res.json(500, {
       message: "Internal server error",

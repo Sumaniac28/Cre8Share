@@ -46,7 +46,12 @@ const userPortfolioSchema = new mongoose.Schema(
     totalQuantity:{
       type:Number,
       default:0
-    }
+    },
+    totalInvested: {
+      type: Number,
+      default: 0,
+    },
+
   },
   {
     timestamps: true,

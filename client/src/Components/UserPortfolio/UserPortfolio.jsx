@@ -1,22 +1,22 @@
 import React from "react";
 import styles from "./UserPortfolio.module.css";
 
-function UserPortfolio() {
+function UserPortfolio({funds,totalInvested,totalGain,totalQuantity,totalValue}) {
   const upperPortfolioItems = [
     {
       name: "Invested",
       id: styles.investedPoint,
-      value: "$1500",
+      value: totalInvested
     },
     {
       name: "Current Value",
       id: styles.currentValuePoint,
-      value: "$2000",
+      value: (totalInvested+totalGain).toFixed(3)
     },
     {
       name: "Total Quantity",
       id: styles.totalQuantityPoint,
-      value: "25",
+      value: totalQuantity
     },
     {
       name: "Dividends",
@@ -26,9 +26,11 @@ function UserPortfolio() {
     {
       name: "Profit/Loss",
       id: styles.profitLossPoint,
-      value: "$500",
+      value: totalGain.toFixed(3)
     },
   ];
+
+  const totalGainLossPercentage = (totalGain / totalInvested) * 100;
   return (
     <div id={styles.portfolioNumbers}>
       <div id={styles.portfolioUpperNumbers}>
@@ -53,8 +55,8 @@ function UserPortfolio() {
             <div className={styles.point} id={styles.profitLossPoint}></div>
           </div>
           <div id={styles.profitLossValue}>
-            <p>+$500</p>
-            <span id={styles.profitPercentage}>(+25%)</span>
+            <p>{totalGain.toFixed(3)}</p>
+            <span id={styles.profitPercentage}>({totalGainLossPercentage}%)</span>
           </div>
           <p>
             (This value gets updated in real time, when the price of your owned
@@ -67,7 +69,7 @@ function UserPortfolio() {
             <div className={styles.point} id={styles.fundsPoint}></div>
           </div>
           <div id={styles.fundsValue}>
-            <h2>1000 coins</h2>
+            <h2>{funds} coins</h2>
             <p>
               (These are Cre8Share funds, you can cash out them for real cash in
               your connected bank accounts)

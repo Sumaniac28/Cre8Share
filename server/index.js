@@ -5,7 +5,7 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
 const cron = require("node-cron");
-const {refresh}= require('./controllers/createorController');
+const {refreshAnalyticsForAllCreators}= require('./controllers/creatorController');
 
 // Requiring database
 const db = require("./config/mongoose");
@@ -24,12 +24,13 @@ const corsOptions = {
 //scheduling cron job for every friday to refresh
 cron.schedule("0 12 * * 5", async () => {
   try {
-    await refresh(req, res);
+    await refreshAnalyticsForAllCreators();
     console.log("Refresh function executed successfully");
   } catch (error) {
     console.error("Error executing refresh function:", error);
   }
 });
+
 
 //usimg express-session
 app.use(

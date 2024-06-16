@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./UserNavbar.module.css";
 import appLogo from "../../assets/images/anotherLogo.png";
 import investorProfile from "../../assets/images/UserProfile.jpg";
-function UserNavbar() {
+function UserNavbar({name}) {
   return (
     <div className={styles.Container}>
       <div id={styles.App}>
@@ -16,7 +16,7 @@ function UserNavbar() {
       <div className={styles.AboutUser}>
         <img src={investorProfile} alt="Profile Pic" />
         <p>
-          Sumit Grover
+          {name}
           <br />
           <span>Investor</span>
         </p>
