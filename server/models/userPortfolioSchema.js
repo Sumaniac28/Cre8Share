@@ -18,10 +18,12 @@ const userPortfolioSchema = new mongoose.Schema(
             quantity: {
               type: Number,
               required: true,
+              default: 0,
             },
             buyPrice: {
               type: Number,
               required: true,
+              default: 0,
             },
             gain:{
                 type:Number,
@@ -37,6 +39,10 @@ const userPortfolioSchema = new mongoose.Schema(
             type:Number,
             default:0
       },
+      investmentPerStock:{
+        type:Number,
+        default:0
+      }
     }
     ],
     totalGain: {

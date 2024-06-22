@@ -67,7 +67,7 @@ function CreatorDashboard() {
     return <Loader />;
   }
 
-  const { name, channelImage, balance } = creatorData;
+  const { name, channelImage, earnings } = creatorData;
 
   if (
     creatorDataStatus === "fulfilled" &&
@@ -85,7 +85,7 @@ function CreatorDashboard() {
               element={
                 <CreatorAnalytics
                   creatorAnalytics={creatorAnalytics}
-                  earnings={balance}
+                  earnings={earnings}
                   creatorStocks={creatorStocks}
                 />
               }

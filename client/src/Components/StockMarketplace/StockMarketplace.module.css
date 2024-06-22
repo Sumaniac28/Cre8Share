@@ -1,3 +1,8 @@
+.blur{
+  filter: blur(7px);
+
+}
+
 #StockMarketplaceContainer {
   display: flex;
   flex-direction: column; 

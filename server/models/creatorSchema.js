@@ -38,7 +38,7 @@ const creatorSchema = new mongoose.Schema({
             },
         }
     ],
-    balance:{
+    earnings:{
         type:Number,
         default:0
     }

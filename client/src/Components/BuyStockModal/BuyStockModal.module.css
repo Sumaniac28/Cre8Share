@@ -1,0 +1,55 @@
+#buyStockModalContainer{
+    min-width: 300px;
+    background: #1a1a1a;
+    padding: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+#stockInfo{
+    color: white;
+}
+
+#buyStockForm{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    input{
+        margin: 5px;
+        padding: 5px;
+        background-color: #1a1a1a;
+        color: white;
+        border: 1px solid white;
+    }
+
+    button{
+        border-radius: 10px;
+        border: none;
+        background: #0076fd;
+        color: white;
+        cursor: pointer;
+        padding: 10px;
+    }
+}
+
+.closeBtn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: whitesmoke;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .closeBtn:hover {
+    color: #ff0000;
+  }
+  

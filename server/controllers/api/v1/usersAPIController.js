@@ -4,7 +4,6 @@ const Portfolio = require("../../../models/userPortfolioSchema");
 exports.getUserData = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-_id -password");
-    console.log(user);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }

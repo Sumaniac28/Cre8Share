@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styles from "./AddStockForm.module.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function AddStockForm({ hideAddStockModal }) {
+function AddStockForm() {
+  const navigate = useNavigate();
   const [requestOTP, setrequestOTP] = useState(false);
   const [stockName, setStockName] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
@@ -9,11 +12,36 @@ function AddStockForm({ hideAddStockModal }) {
   const isRequestOTPEnabled =
     stockName.trim() !== "" && stockQuantity.trim() !== "";
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      name: stockName,
+      quantity: stockQuantity,
+    };
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:8000/stocks/addStock",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      alert("Stock added successfully");
+      navigate("/creator");
+    } catch (error) {
+      alert("Failed to add stock");
+      console.error("Failed to add stock:", error);
+    }
+  };
   return (
     <div id={styles.allocateStocksContainer}>
       <div className={styles.formContainer}>
         <h2>Add stock</h2>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <label htmlFor="stockName">Stock Name</label>
           <input
             type="text"
