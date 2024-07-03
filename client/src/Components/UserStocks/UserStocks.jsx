@@ -32,13 +32,18 @@ function UserStocks({ stocks }) {
               <ul>
                 <li>{stock.stock.name}</li>
                 <li>{stock.creatorName}</li>
-                <li>{stock.stock.currentPrice.toFixed(3)}</li>
+                {/* <li>{stock.stock.currentPrice.toFixed(3)}</li>
                 <li>{stock.totalQuantityPerStock}</li>
                 <li className={stock.className}>
                   {(stock.stock.currentPrice - stock.stock.listPrice).toFixed(
                     3
                   )}
-                </li>
+                </li> */}
+                <li>{stock.stock.currentPrice}</li>
+                <li>{stock.totalQuantityPerStock}</li>
+                <li className={stock.className}>
+                  {stock.stock.currentPrice - stock.stock.listPrice}
+                </li> 
                 <li>
                   <button className={styles.sellButton} onClick={() => handleSellClick(stock)}>Sell</button>
                 </li>

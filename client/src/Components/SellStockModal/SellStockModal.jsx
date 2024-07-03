@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./SellStockModal.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import socket from "../../socket";
 
 function SellStockModal({ stock, onClose }) {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ function SellStockModal({ stock, onClose }) {
           },
         }
       );
-      alert("Stock sold successfully!");
+      socket.emit("sellStock", stock.stock._id);
       onClose();
       navigate("/user");
     } catch (error) {

@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     },
     funds:{
         type:"Number",
-        default:0
+        default:10000
     },
 },{
     timestamps:true

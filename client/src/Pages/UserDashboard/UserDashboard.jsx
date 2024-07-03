@@ -13,6 +13,7 @@ import StockMarketplace from "../../Components/StockMarketplace/StockMarketplace
 import UserHoldings from "../../Components/UserHoldings/UserHoldings";
 import ServerError from "../ServerError/ServerError";
 import Loader from "../Loader/Loader";
+import socket from "../../socket";
 
 function UserDashboard() {
   const dispatch = useDispatch();
@@ -21,6 +22,19 @@ function UserDashboard() {
     dispatch(fetchUserData());
     dispatch(fetchUserStocks());
     dispatch(fetchAllStocks());
+
+    socket.on("refreshUserStocks", () => {
+      dispatch(fetchUserStocks());
+    });
+
+    socket.on("refreshCreatorStocks", () => {
+      dispatch(fetchAllStocks());
+    }
+  );
+
+    return () => {
+      socket.off("refresh");
+    };
   }, [dispatch]);
 
   const userData = useSelector((state) => state.user.data);
@@ -38,8 +52,8 @@ function UserDashboard() {
   const allStocksError = useSelector((state) => state.StocksMarketPlace.error);
 
   const isLoading =
-    userDataStatus === "loading" ||
-    userStocksStatus === "loading" ||
+    userDataStatus === "loading" &&
+    userStocksStatus === "loading" &&
     allStocksStatus === "loading";
 
   const hasError =
@@ -59,11 +73,6 @@ function UserDashboard() {
 
   const { name, funds } = userData;
 
-  if (
-    userDataStatus === "fulfilled" &&
-    userStocksStatus === "fulfilled" &&
-    allStocksStatus === "fulfilled"
-  ) {
     return (
       <>
         <section className={styles.container}>
@@ -71,12 +80,27 @@ function UserDashboard() {
           <div id={styles.UserDashboardContainer}>
             <UserSidebar />
             <Routes>
-              <Route path="/" element={<UserAnalytics funds={funds} totalInvested={userStocksData.totalInvested} totalGain={userStocksData.totalGain} totalQuantity= {userStocksData.totalQuantity} totalValue={userStocksData.totalValue} />} />
+              <Route
+                path="/"
+                element={
+                  <UserAnalytics
+                    funds={funds}
+                    totalInvested={userStocksData.totalInvested}
+                    totalGain={userStocksData.totalGain}
+                    totalQuantity={userStocksData.totalQuantity}
+                    totalValue={userStocksData.totalValue}
+                    totalProfitLossPercentage={ userStocksData.totalProfitLossPercentage}
+                  />
+                }
+              />
               <Route
                 path="stockmarketplace"
                 element={<StockMarketplace allStocks={allStocksData.data} />}
               />
-              <Route path="userholdings" element={<UserHoldings stocks={userStocksData.stocks} />} />
+              <Route
+                path="userholdings"
+                element={<UserHoldings stocks={userStocksData.stocks} />}
+              />
             </Routes>
           </div>
           <HelpSection />
@@ -84,6 +108,5 @@ function UserDashboard() {
       </>
     );
   }
-}
 
 export default UserDashboard;

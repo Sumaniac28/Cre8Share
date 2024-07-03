@@ -3,10 +3,6 @@ import styles from "./CreatorStocks.module.css";
 
 function CreatorStocks({ creatorStocks }) {
 
-  const formatPrice = (price) => {
-    return parseFloat(price).toFixed(2);
-  };
-
   return (
     <>
       <div id={styles.stockListHeading}>
@@ -23,11 +19,11 @@ function CreatorStocks({ creatorStocks }) {
           return (
             <ul key={stock.name}>
               <li>{stock.name}</li>
-              <li>{formatPrice(stock.listPrice)}</li>
-              <li>{formatPrice(stock.currentPrice)}</li>
+              <li>{stock.listPrice}</li>
+              <li>{stock.currentPrice}</li>
               <li>{stock.quantity}</li>
               <li>{stock.sold}</li>
-              <li className={gainLoss >= 0 ? styles.gain : styles.loss}>{formatPrice(gainLoss)}</li>
+              <li className={gainLoss >= 0 ? styles.gain : styles.loss}>{gainLoss}</li>
             </ul>
           );
         })}

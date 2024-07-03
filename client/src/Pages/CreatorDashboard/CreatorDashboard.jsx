@@ -13,6 +13,7 @@ import { fetchCreatorAnalytics } from "../../redux/reducers/creatorAnalyticsRedu
 import { fetchCreatorStocks } from "../../redux/reducers/creatorStocksReducer";
 import Loader from "../../Pages/Loader/Loader";
 import ServerError from "../ServerError/ServerError";
+import socket from "../../socket";
 
 function CreatorDashboard() {
   const dispatch = useDispatch();
@@ -29,6 +30,20 @@ function CreatorDashboard() {
     dispatch(fetchCreatorData());
     dispatch(fetchCreatorAnalytics());
     dispatch(fetchCreatorStocks());
+
+    socket.on("refreshCreatorStocks", () => {
+      dispatch(fetchCreatorStocks());
+    });
+
+    socket.on("refreshCreatorAnalytics", () => {
+      dispatch(fetchCreatorAnalytics());
+    });
+
+    return () => {
+      socket.off("refreshCreatorStocks");
+      socket.off("refreshCreatorAnalytics");
+    }
+    
   }, [dispatch, location.search]);
 
   const creatorData = useSelector((state) => state.Creator.data);
@@ -50,8 +65,8 @@ function CreatorDashboard() {
   const creatorStocksError = useSelector((state) => state.CreatorStocks.error);
 
   const isLoading =
-    creatorDataStatus === "loading" ||
-    creatorAnalyticsStatus === "loading" ||
+    creatorDataStatus === "loading" &&
+    creatorAnalyticsStatus === "loading" &&
     creatorStocksStatus === "loading";
 
   const hasError =
@@ -69,11 +84,6 @@ function CreatorDashboard() {
 
   const { name, channelImage, earnings } = creatorData;
 
-  if (
-    creatorDataStatus === "fulfilled" &&
-    creatorAnalyticsStatus === "fulfilled" &&
-    creatorStocksStatus === "fulfilled"
-  ) {
     return (
       <section className={styles.container}>
         <CreatorNavBar name={name} channelImage={channelImage} />
@@ -101,6 +111,4 @@ function CreatorDashboard() {
       </section>
     );
   }
-}
-
 export default CreatorDashboard;

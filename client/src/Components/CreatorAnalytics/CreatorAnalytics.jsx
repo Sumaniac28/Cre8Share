@@ -6,7 +6,7 @@ import StocksStatsCard from "../StockStatsCard/StocksStatsCard";
 import EarningsCard from "../EarningsCard/EarningsCard";
 import Top3Stocks from "../Top3Stocks/Top3Stocks";
 function CreatorAnalytics({ creatorAnalytics, earnings, creatorStocks }) {
-  const stats = creatorAnalytics.stats[0];
+  const stats = creatorAnalytics.stats?creatorAnalytics.stats[0]:{};
 
   const calculateStockTotals = (stocks) => {
     return stocks.reduce(

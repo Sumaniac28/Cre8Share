@@ -12,6 +12,7 @@ module.exports.addStock = async function (req, res) {
     const analyticsData = await Analytics.find({ creator: req.user._id });
     const currData = analyticsData[0];
     let currentPrice = currData.stats[0].valuation / quantity;
+    currentPrice = currentPrice<50?50:currentPrice;
     let basePrice = currentPrice;
 
     const newStock = await Stock.create({

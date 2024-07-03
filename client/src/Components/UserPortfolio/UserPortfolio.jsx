@@ -1,22 +1,28 @@
 import React from "react";
 import styles from "./UserPortfolio.module.css";
 
-function UserPortfolio({funds,totalInvested,totalGain,totalQuantity}) {
+function UserPortfolio({
+  funds,
+  totalInvested,
+  totalGain,
+  totalQuantity,
+  totalProfitLossPercentage,
+}) {
   const upperPortfolioItems = [
     {
       name: "Invested",
       id: styles.investedPoint,
-      value: totalInvested.toFixed(3)
+      value: totalInvested,
     },
     {
       name: "Current Value",
       id: styles.currentValuePoint,
-      value: (totalInvested+totalGain).toFixed(3)
+      value: totalInvested + totalGain,
     },
     {
       name: "Total Quantity",
       id: styles.totalQuantityPoint,
-      value: totalQuantity
+      value: totalQuantity,
     },
     {
       name: "Dividends",
@@ -26,11 +32,10 @@ function UserPortfolio({funds,totalInvested,totalGain,totalQuantity}) {
     {
       name: "Profit/Loss",
       id: styles.profitLossPoint,
-      value: totalGain.toFixed(3)
+      value: totalGain,
     },
   ];
 
-  const totalGainLossPercentage = (totalGain / totalInvested) * 100;
   return (
     <div id={styles.portfolioNumbers}>
       <div id={styles.portfolioUpperNumbers}>
@@ -55,8 +60,10 @@ function UserPortfolio({funds,totalInvested,totalGain,totalQuantity}) {
             <div className={styles.point} id={styles.profitLossPoint}></div>
           </div>
           <div id={styles.profitLossValue}>
-            <p>{totalGain.toFixed(3)}</p>
-            <span id={styles.profitPercentage}>({totalGainLossPercentage.toFixed(3)}%)</span>
+            <p>{totalGain}</p>
+            <span id={styles.profitPercentage}>
+              ({totalProfitLossPercentage}%)
+            </span>
           </div>
           <p>
             (This value gets updated in real time, when the price of your owned
@@ -69,7 +76,7 @@ function UserPortfolio({funds,totalInvested,totalGain,totalQuantity}) {
             <div className={styles.point} id={styles.fundsPoint}></div>
           </div>
           <div id={styles.fundsValue}>
-            <h2>{funds.toFixed(3)} coins</h2>
+            <h2>{funds} coins</h2>
             <p>
               (These are Cre8Share funds, you can cash out them for real cash in
               your connected bank accounts)

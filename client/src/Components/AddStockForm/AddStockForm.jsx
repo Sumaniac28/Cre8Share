@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./AddStockForm.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import socket from "../../socket";
 
 function AddStockForm() {
   const navigate = useNavigate();
@@ -29,8 +30,7 @@ function AddStockForm() {
           },
         }
       );
-      console.log(response);
-      alert("Stock added successfully");
+     socket.emit("addCreatorStocks");
       navigate("/creator");
     } catch (error) {
       alert("Failed to add stock");

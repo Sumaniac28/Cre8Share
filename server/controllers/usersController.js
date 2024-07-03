@@ -62,191 +62,17 @@ function calculateNewPrice(
     (totalQuantity - unsoldQuantity) / (soldQuantity + 1)
   ); // Avoid division by zero
 
-  console.log(demandSupplyRatio);
-
   // Dynamic price adjustment factor based on volatility and market sensitivity
   const priceAdjustmentFactor = marketSensitivity * (0.1 + volatility * 0.9);
 
-  console.log(priceAdjustmentFactor);
-
   // Trading volume effect (the higher the volume, the more significant the price adjustment)
   const volumeEffect = Math.log(1 + tradingVolume) / 10;
-
-  console.log(volumeEffect);
 
   const newPrice =
     basePrice + priceAdjustmentFactor * demandSupplyRatio * volumeEffect;
 
   return newPrice;
 }
-
-// module.exports.buyStock = async (req, res) => {
-//   try {
-//     const stockId = req.params.id;
-//     const quantity = parseInt(req.body.quantity);
-//     const userId = req.user._id;
-
-//     const stock = await Stock.findById(stockId).populate("creator");
-//     const creatorID = stock.creator._id;
-//     let userPortfolio = await UserPortfolio.findOne({ user: userId });
-
-//     if (!stock) {
-//       return res.status(404).json({
-//         message: "Stock not found",
-//       });
-//     }
-
-//     const currentPrice = stock.currentPrice;
-
-//     if (!userPortfolio) {
-//       userPortfolio = await UserPortfolio.create({
-//         user: userId,
-//         stocks: [
-//           {
-//             stock: stock._id,
-//             stockInfo: [
-//               {
-//                 quantity: quantity,
-//                 buyPrice: currentPrice,
-//               },
-//             ],
-//             totalQuantityPerStock: quantity,
-//             investmentPerStock: parseFloat(currentPrice * quantity),
-//           },
-//         ],
-//         totalQuantity: quantity,
-//         totalInvested: parseFloat(currentPrice * quantity),
-//       });
-//     } else {
-//       let stockIndex = userPortfolio.stocks.findIndex((s) =>
-//         s.stock.equals(stock._id)
-//       );
-
-//       if (stockIndex === -1) {
-//         userPortfolio.stocks.push({
-//           stock: stock._id,
-//           stockInfo: [
-//             {
-//               quantity: quantity,
-//               buyPrice: currentPrice,
-//             },
-//           ],
-//           totalQuantityPerStock: quantity,
-//           investmentPerStock: parseFloat(currentPrice * quantity),
-//         });
-//         userPortfolio.totalQuantity += quantity;
-//         userPortfolio.totalInvested = parseFloat(
-//           userPortfolio.totalInvested + currentPrice * quantity
-//         );
-//       } else {
-//         // let totalGainPerStock = 0;
-//         // let totalQuantityPerStock = 0;
-//         // let totalInvestedPerStock = 0;
-//         // userPortfolio.stocks[stockIndex].stockInfo.map((info) => {
-//         //   info.gain = parseFloat(
-//         //     (currentPrice - info.buyPrice) * info.quantity
-//         //   );
-//         //   totalGainPerStock += info.gain;
-//         //   totalQuantityPerStock += info.quantity;
-//         //   totalInvestedPerStock += info.buyPrice * info.quantity;
-//         // });
-//         userPortfolio.stocks[stockIndex].stockInfo.push({
-//           quantity: quantity,
-//           buyPrice: currentPrice,
-//         });
-//         // userPortfolio.stocks[stockIndex].gainPerStock = totalGainPerStock;
-//         userPortfolio.stocks[stockIndex].totalQuantityPerStock += quantity;
-//         userPortfolio.stocks[stockIndex].investmentPerStock += (currentPrice * quantity);
-//       }
-//     }
-//     let totalGain = 0;
-//     let totalQuantity = 0;
-//     let totalInvested = 0;
-//     userPortfolio.stocks.map((stock) => {
-//       totalGain += stock.gainPerStock;
-//       totalQuantity += stock.totalQuantityPerStock;
-//       totalInvested += stock.investmentPerStock;
-//     });
-
-//     userPortfolio.totalGain += totalGain;
-//     userPortfolio.totalQuantity = totalQuantity;
-//     userPortfolio.totalInvested = totalInvested;
-
-//     await userPortfolio.save();
-
-//     // Update stock data
-//     const parsedQuantity = parseInt(quantity);
-
-//     Creator.findByIdAndUpdate(creatorID, {
-//       earnings: parseFloat(currentPrice * parsedQuantity),
-//     });
-
-//     User.findByIdAndUpdate(userId, {
-//       funds: parseFloat(req.user.funds - currentPrice * parsedQuantity),
-//     });
-
-//     stock.sold += parsedQuantity;
-//     stock.unsold -= parsedQuantity;
-
-//     const newPrice = parseFloat(
-//       calculateNewPrice(
-//         stock.listPrice,
-//         stock.quantity,
-//         stock.sold,
-//         stock.unsold,
-//         0.5
-//       )
-//     );
-
-//     stock.currentPrice += newPrice;
-
-//     await stock.save();
-
-//     User.findByIdAndUpdate(userId, {
-//       portfolio: userPortfolio._id,
-//       funds: parseFloat(req.user.funds - currentPrice * parsedQuantity),
-//     });
-
-//     //Update gain and total gain for all users who have this stock
-
-//     const affectedPortfolios = await UserPortfolio.find({
-//       "stocks.stock": stockId,
-//     });
-
-//     for (const portfolio of affectedPortfolios) {
-//       if (portfolio.user.equals(userId)) {
-//         continue;
-//       }
-//       let totalGain = 0;
-//       let stockIndex = portfolio.stocks.findIndex((s) =>
-//         s.stock.equals(stockId)
-//       );
-//       let currstock = portfolio.stocks[stockIndex];
-//       let stockGain = 0;
-//       for (const info of currstock.stockInfo) {
-//         const gain = (stock.currentPrice - info.buyPrice) * info.quantity;
-//         info.gain = gain;
-//         stockGain += gain;
-//       }
-//       portfolio.totalGain = portfolio.totalGain - currstock.gainPerStock;
-//       currstock.gainPerStock = stockGain;
-//       totalGain += stockGain;
-//       portfolio.totalGain = portfolio.totalGain + totalGain;
-//       await portfolio.save();
-//     }
-
-//     return res.status(200).json({
-//       message: "Stock bought successfully",
-//       data: userPortfolio,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({
-//       message: "Internal server error",
-//       data: err,
-//     });
-//   }
-// };
 
 module.exports.buyStock = async (req, res) => {
   try {
@@ -271,7 +97,14 @@ module.exports.buyStock = async (req, res) => {
       }));
 
     const currentPrice = stock.currentPrice;
-    const investment = parseFloat(currentPrice * quantity);
+    const investment = parseFloat((currentPrice * quantity).toFixed(2));
+
+    // Check if user has enough funds
+    const user = await User.findById(userId);
+    if (user.funds < investment) {
+      return res.status(400).json({ message: "Insufficient funds" });
+    }
+
     const stockIndex = userPortfolio.stocks.findIndex((s) =>
       s.stock.equals(stockId)
     );
@@ -288,10 +121,19 @@ module.exports.buyStock = async (req, res) => {
       userStock.stockInfo.push({ quantity, buyPrice: currentPrice });
       userStock.totalQuantityPerStock += quantity;
       userStock.investmentPerStock += investment;
+      userStock.investmentPerStock = parseFloat(
+        userStock.investmentPerStock.toFixed(2)
+      );
     }
 
     userPortfolio.totalQuantity += quantity;
     userPortfolio.totalInvested += investment;
+    userPortfolio.totalInvested = parseFloat(
+      userPortfolio.totalInvested.toFixed(2)
+    );
+    userPortfolio.totalProfitLossPercentage = parseFloat(
+      ((userPortfolio.totalGain / userPortfolio.totalInvested) * 100).toFixed(2)
+    );
     await userPortfolio.save();
 
     // Update creator earnings and user funds
@@ -315,8 +157,8 @@ module.exports.buyStock = async (req, res) => {
       tradingVolume,
       volatility
     );
-    console.log(newPrice);
     stock.currentPrice += newPrice;
+    stock.currentPrice = parseFloat(stock.currentPrice.toFixed(2));
     await stock.save();
     // Update gain and total gain for all users who have this stock
     const affectedPortfolios = await UserPortfolio.find({
@@ -331,12 +173,16 @@ module.exports.buyStock = async (req, res) => {
       let totalGain = 0;
       const portfolioStock = portfolio.stocks[portfolioStockIndex];
       portfolioStock.stockInfo.forEach((info) => {
-        const gain = (stock.currentPrice - info.buyPrice) * info.quantity;
+        const gain = parseFloat(
+          ((stock.currentPrice - info.buyPrice) * info.quantity).toFixed(2)
+        );
         totalGain += gain;
         info.gain = gain;
       });
 
-      portfolio.totalGain += totalGain - portfolioStock.gainPerStock;
+      portfolio.totalGain += parseFloat(
+        (totalGain - portfolioStock.gainPerStock).toFixed(2)
+      );
       portfolioStock.gainPerStock = totalGain;
       await portfolio.save();
     }
@@ -351,156 +197,6 @@ module.exports.buyStock = async (req, res) => {
       .json({ message: "Internal server error", data: err });
   }
 };
-
-// module.exports.sellStock = async (req, res) => {
-//   try {
-//     const stockId = req.params.id;
-//     const quantity = parseInt(req.body.quantity);
-//     const userId = req.user._id;
-
-//     const stock = await Stock.findById(stockId).populate("creator");
-//     const creatorID = stock.creator._id;
-//     let userPortfolio = await UserPortfolio.findOne({ user: userId });
-
-//     if (!stock) {
-//       return res.status(404).json({
-//         message: "Stock not found",
-//       });
-//     }
-
-//     const currentPrice = stock.currentPrice;
-
-//     if (!userPortfolio) {
-//       return res.status(404).json({
-//         message: "User portfolio not found",
-//       });
-//     } else {
-//       let stockIndex = userPortfolio.stocks.findIndex((s) =>
-//         s.stock.equals(stock._id)
-//       );
-
-//       if (stockIndex === -1) {
-//         return res.status(404).json({
-//           message: "Stock not found in user portfolio",
-//         });
-//       } else {
-//         let totalGainPerStock = 0;
-//         let totalQuantityPerStock = 0;
-//         let totalInvestedPerStock = 0;
-//         let stockInfoIndex = userPortfolio.stocks[
-//           stockIndex
-//         ].stockInfo.findIndex((info) => info.quantity >= quantity);
-
-//         if (stockInfoIndex === -1) {
-//           return res.status(400).json({
-//             message: "Insufficient quantity",
-//           });
-//         }
-
-//         userPortfolio.stocks[stockIndex].stockInfo.map((info) => {
-//           info.gain = parseFloat(
-//             (currentPrice - info.buyPrice) * info.quantity
-//           );
-//           totalGainPerStock += info.gain;
-//           totalQuantityPerStock += info.quantity;
-//           totalInvestedPerStock += info.buyPrice * info.quantity;
-//         });
-
-//         userPortfolio.stocks[stockIndex].stockInfo[stockInfoIndex].quantity -=
-//           quantity;
-//         userPortfolio.stocks[stockIndex].stockInfo[stockInfoIndex].gain =
-//           parseFloat(
-//             (currentPrice -
-//               userPortfolio.stocks[stockIndex].stockInfo[stockInfoIndex]
-//                 .buyPrice) *
-//               quantity
-//           );
-//         userPortfolio.stocks[stockIndex].gainPerStock = totalGainPerStock;
-//         userPortfolio.stocks[stockIndex].totalQuantityPerStock =
-//           totalQuantityPerStock - quantity;
-//         userPortfolio.stocks[stockIndex].investmentPerStock =
-//           totalInvestedPerStock - currentPrice * quantity;
-//       }
-//     }
-
-//     let totalGain = 0;
-//     let totalQuantity = 0;
-//     let totalInvested = 0;
-//     userPortfolio.stocks.map((stock) => {
-//       totalGain += stock.gainPerStock;
-//       totalQuantity += stock.totalQuantityPerStock;
-//       totalInvested += stock.investmentPerStock;
-//     });
-
-//     userPortfolio.totalGain = totalGain;
-//     userPortfolio.totalQuantity = totalQuantity;
-//     userPortfolio.totalInvested = totalInvested;
-
-//     await userPortfolio.save();
-
-//     // Update stock data
-//     const parsedQuantity = parseInt(quantity);
-
-//     Creator.findByIdAndUpdate(creatorID, {
-//       earnings: parseFloat(currentPrice * parsedQuantity),
-//     });
-//     stock.sold -= parsedQuantity;
-//     stock.unsold += parsedQuantity;
-
-//     const newPrice = parseFloat(
-//       calculateNewPrice(
-//         stock.listPrice,
-//         stock.quantity,
-//         stock.sold,
-//         stock.unsold,
-//         0.5
-//       )
-//     );
-
-//     stock.currentPrice -= newPrice;
-
-//     await stock.save();
-
-//     //Update gain and total gain for all users who have this stock
-
-//     const affectedPortfolios = await UserPortfolio.find({
-//       "stocks.stock": stockId,
-//     });
-
-//     for (const portfolio of affectedPortfolios) {
-//       if (portfolio.user.equals(userId)) {
-//         continue;
-//       }
-//       let totalGain = 0;
-//       let stockIndex = portfolio.stocks.findIndex((s) =>
-//         s.stock.equals(stockId)
-//       );
-//       let currstock = portfolio.stocks[stockIndex];
-//       let stockGain = 0;
-//       for (const info of currstock.stockInfo) {
-//         const gain = (stock.currentPrice - info.buyPrice) * info.quantity;
-//         info.gain = gain;
-//         stockGain += gain;
-//       }
-//       portfolio.totalGain = portfolio.totalGain - currstock.gainPerStock;
-//       currstock.gainPerStock = stockGain;
-//       totalGain += stockGain;
-//       portfolio.totalGain = portfolio.totalGain + totalGain;
-//       await portfolio.save();
-//     }
-
-//     return res.status(200).json({
-//       message: "Stock sold successfully",
-//       data: userPortfolio,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({
-//       message: "Internal server error",
-//       data: err,
-//     });
-//   }
-// };
 
 module.exports.sellStock = async (req, res) => {
   try {
@@ -544,11 +240,15 @@ module.exports.sellStock = async (req, res) => {
       if (remainingQuantity <= 0) break;
 
       if (info.quantity <= remainingQuantity) {
-        totalSellAmount += info.quantity * currentPrice;
+        totalSellAmount += parseFloat(
+          (info.quantity * currentPrice).toFixed(2)
+        );
         remainingQuantity -= info.quantity;
         info.quantity = 0;
       } else {
-        totalSellAmount += remainingQuantity * currentPrice;
+        totalSellAmount += parseFloat(
+          (remainingQuantity * currentPrice).toFixed(2)
+        );
         info.quantity -= remainingQuantity;
         remainingQuantity = 0;
       }
@@ -559,13 +259,19 @@ module.exports.sellStock = async (req, res) => {
       (info) => info.quantity > 0
     );
 
-    userPortfolio.totalInvested -=
-      (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
-      quantity;
+    userPortfolio.totalInvested -= parseFloat(
+      (
+        (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
+        quantity
+      ).toFixed(2)
+    );
     userStock.totalQuantityPerStock -= quantity;
-    userStock.investmentPerStock -=
-      (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
-      quantity;
+    userStock.investmentPerStock -= parseFloat(
+      (
+        (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
+        quantity
+      ).toFixed(2)
+    );
 
     // If all quantities of the stock are sold, remove the stock from the portfolio
     if (userStock.totalQuantityPerStock <= 0) {
@@ -590,6 +296,7 @@ module.exports.sellStock = async (req, res) => {
       volatility
     );
     stock.currentPrice -= newPrice;
+    stock.currentPrice = parseFloat(stock.currentPrice.toFixed(2));
     await stock.save();
 
     // Update user funds
@@ -611,12 +318,16 @@ module.exports.sellStock = async (req, res) => {
       let totalGain = 0;
       const portfolioStock = portfolio.stocks[portfolioStockIndex];
       portfolioStock.stockInfo.forEach((info) => {
-        const gain = (stock.currentPrice - info.buyPrice) * info.quantity;
+        const gain = parseFloat(
+          ((stock.currentPrice - info.buyPrice) * info.quantity).toFixed(2)
+        );
         totalGain += gain;
         info.gain = gain;
       });
 
-      portfolio.totalGain += totalGain - portfolioStock.gainPerStock;
+      portfolio.totalGain += parseFloat(
+        (totalGain - portfolioStock.gainPerStock).toFixed(2)
+      );
       portfolioStock.gainPerStock = totalGain;
       await portfolio.save();
     }

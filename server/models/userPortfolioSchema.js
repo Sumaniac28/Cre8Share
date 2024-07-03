@@ -25,39 +25,42 @@ const userPortfolioSchema = new mongoose.Schema(
               required: true,
               default: 0,
             },
-            gain:{
-                type:Number,
-                default:0
-            }
+            gain: {
+              type: Number,
+              default: 0,
+            },
           },
         ],
-        gainPerStock:{
-            type:Number,
-            default:0
+        gainPerStock: {
+          type: Number,
+          default: 0,
         },
-        totalQuantityPerStock:{
-            type:Number,
-            default:0
+        totalQuantityPerStock: {
+          type: Number,
+          default: 0,
+        },
+        investmentPerStock: {
+          type: Number,
+          default: 0,
+        },
       },
-      investmentPerStock:{
-        type:Number,
-        default:0
-      }
-    }
     ],
     totalGain: {
       type: Number,
       default: 0,
     },
-    totalQuantity:{
-      type:Number,
-      default:0
+    totalQuantity: {
+      type: Number,
+      default: 0,
     },
     totalInvested: {
       type: Number,
       default: 0,
     },
-
+    totalProfitLossPercentage: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

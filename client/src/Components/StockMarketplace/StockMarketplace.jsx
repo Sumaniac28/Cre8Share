@@ -15,7 +15,10 @@ function StockMarketplace({ allStocks }) {
 
   return (
     <>
-      <div id={styles.StockMarketplaceContainer} className={selectedStock && styles.blur}>
+      <div
+        id={styles.StockMarketplaceContainer}
+        className={selectedStock && styles.blur}
+      >
         <div id={styles.StockMarketplaceTitle}>
           <p id={styles.Appname}>CRE8SHARE MARKETPLACE</p>
           <div id={styles.search}>
@@ -29,10 +32,18 @@ function StockMarketplace({ allStocks }) {
               <h4>{stock.name}</h4>
               <p>{stock.creator.name}</p>
               <ul>
-                <li>Current Price :- <span>{stock.currentPrice.toFixed(3)}</span></li>
-                <li>List Price :- <span>{stock.listPrice.toFixed(3)}</span></li>
-                <li>P&L :- <span>{(stock.currentPrice - stock.listPrice).toFixed(3)}</span></li>
-                <li>Units Available :- <span>{stock.unsold}</span></li>
+                <li>
+                  Current Price :- <span>{stock.currentPrice}</span>
+                </li>
+                <li>
+                  List Price :- <span>{stock.listPrice}</span>
+                </li>
+                <li>
+                  P&L :- <span>{stock.currentPrice - stock.listPrice}</span>
+                </li>
+                <li>
+                  Units Available :- <span>{stock.unsold}</span>
+                </li>
               </ul>
               <button onClick={() => handleBuyClick(stock)}>Buy</button>
             </div>
@@ -40,10 +51,7 @@ function StockMarketplace({ allStocks }) {
         </div>
       </div>
       {selectedStock && (
-        <BuyStockModal
-          stock={selectedStock}
-          onClose={closeModal}
-        />
+        <BuyStockModal stock={selectedStock} onClose={closeModal} />
       )}
     </>
   );
