@@ -66,8 +66,6 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("Hello Uncle Howdy");
-
   const refreshEvents = () => {
     socket.broadcast.emit("refreshUserStocks");
     socket.broadcast.emit("refreshCreatorStocks");

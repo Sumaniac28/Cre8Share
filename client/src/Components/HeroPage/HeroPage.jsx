@@ -27,7 +27,6 @@ function HeroPage() {
   return (
     <>
       <section className={`${showSignup || showLogin ? styles.blur : ""}`}>
-        <Navbar />
         <div className={styles.Motocontainer}>
           <div className={styles.moto}>
             <span>We're here to help</span>

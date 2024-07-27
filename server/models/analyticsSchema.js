@@ -29,10 +29,6 @@ const analyticsSchema = new mongoose.Schema({
         valuation:{
             type:Number,
             default:1
-        },
-        date: {
-            type: Date,
-            default: Date.now
         }
     }],
     creator: {

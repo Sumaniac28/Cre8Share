@@ -1,0 +1,186 @@
+
+.padding10px{
+    padding: 10px;
+}
+
+.aboutHeadings {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  font-family: "Orbitron", sans-serif;
+  color: palegreen;
+  border-bottom: 1px solid;
+}
+#aboutCre8shareContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+
+  p {
+    font-size: 1.3rem;
+  }
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 90%;
+  }
+}
+
+#lol {
+  grid-column: 1/3;
+}
+
+.flashMessage {
+  color: #ff0019;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 1.6rem;
+  text-align: center;
+  animation: flash 2s infinite;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#roles{
+  display: flex;
+  flex-direction: column;   
+}
+
+
+#roleTitles{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  p{
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: center;
+    font-family: "Quicksand", sans-serif;
+    border: 1px solid white;
+    width: 100%;
+    cursor: pointer;
+  }
+}
+
+.roleContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  img{
+    width: 400px;
+    height: 400px;
+  }
+
+}
+
+.activeRole{
+  background-color: white;
+  color: black;
+}
+
+.aboutRole{
+  font-size: 1.3rem;
+}
+
+#marquee{
+  display: flex;
+  overflow: hidden;
+}
+
+#marqueeGroup{
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  animation: marquee 20s linear infinite;
+}
+
+.marqueeItem{
+  place-items: center;
+  width: clamp(10rem, 1rem + 40vmin, 30rem);
+  padding: calc(clamp(10rem, 1rem + 30vmin, 30rem) / 10);
+}
+
+.userContent{
+  font-size: 1.2rem;
+  text-align: left;
+}
+
+.userName{
+  /* font-size: 1.3rem; */
+  font-weight: 700;
+  font-family: "Quicksand", sans-serif;
+  color: yellow;
+}
+
+@keyframes marquee{
+  0%{
+    transform: translateX(0);
+  }
+  100%{
+    transform: translateX(-100%);
+  }
+}
+
+#accordionContainer{
+  display: flex;
+  flex-direction: column;
+}
+.accordionItem{
+  border: 1px solid white;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+.accordionTitle{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 20px;
+ 
+}
+
+.accrdionIcon{
+  font-size: 2rem;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.accordionContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+
+  p{
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-left: 20px;
+    color: palegreen;
+  }
+}
+
+
+
+.active {
+  max-height: 500px; /* Adjust this value as needed to fit your content */
+}

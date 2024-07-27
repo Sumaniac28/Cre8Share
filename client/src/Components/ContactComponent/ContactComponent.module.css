@@ -1,0 +1,181 @@
+#contactHeading {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  font-family: "Orbitron", sans-serif;
+  color: palegreen;
+  border-bottom: 1px solid;
+}
+
+#aboutDeveloperContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+}
+
+#aboutDeveloper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  text-align: center;
+  width: 80%;
+}
+
+#developerImageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    font-family: "Quicksand", sans-serif;
+    font-size: 1.8rem;
+  }
+}
+
+#developerImageContainer img {
+  width: 250px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+}
+
+#developerInfo p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: left;
+  margin-top: 0px;
+  border-radius: 10px;
+  background-color: #1f1f1f;
+  padding: 20px;
+}
+
+#techStackContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#techStackContainer h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+}
+
+#techStack {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1rem;
+  text-align: center;
+  width: 80%;
+}
+
+#techStackItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #1f1f1f;
+  color: white;
+}
+
+#techStackItem i {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+#techStackItem p {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+#contactInfoContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  padding-top: 20px;
+}
+
+#contactInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#contactInfoItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+#contactInfoItem i {
+  font-size: 1.8rem;
+  margin-right: 30px;
+}
+
+#contactInfoItem p {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+#contactInfoItem a{
+  color: palegreen;
+  text-decoration: none;
+  transition: 0.5s ease-in-out;
+}
+
+#contactInfoItem a:hover{
+  color: white;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: whitesmoke;
+  padding: 5px;
+  width: 70%;
+}
+
+.form input,textarea {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #333;
+  color: white;
+}
+
+.form label {
+  font-weight: bold;
+  margin: 10px;
+  color: whitesmoke;
+}
+
+.form button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: palegreen;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+#loveMessage{
+  text-align: center;
+  font-size: 1.5rem;
+
+  margin-top: 5rem;
+  margin-bottom: 10px;
+
+  p{
+    margin: 0
+  };
+}

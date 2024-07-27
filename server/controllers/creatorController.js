@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const Analytics = require("../models/analyticsSchema");
 const google = require("googleapis").google;
 
+
 module.exports.signIN = async function (req, res) {
   try {
     const creator = await Creator.findOne({ email: req.user.email });
@@ -24,10 +25,33 @@ module.exports.signIN = async function (req, res) {
   }
 };
 
+calculateTotalChange = (stats) => {
+  let totalChange = 0;
+
+  if (stats.length >= 2) {
+    for (let i = 1; i < stats.length; i++) {
+      const current = stats[i - 1];
+      const previous = stats[i];
+
+      const calculateRateChange = (currentValue, previousValue) => {
+        const rateChange = (currentValue - previousValue) / previousValue;
+        const intensity = Math.abs(rateChange);
+        return rateChange * intensity;
+      };
+
+      totalChange += calculateRateChange(current.subscribers, previous.subscribers);
+      totalChange += calculateRateChange(current.likes, previous.likes);
+      totalChange += calculateRateChange(current.dislikes, previous.dislikes);
+      totalChange += calculateRateChange(current.videoCount, previous.videoCount);
+      totalChange += calculateRateChange(current.valuation, previous.valuation);
+    }
+  }
+  return totalChange;
+}
 
 async function refresh(creatorID) {
   try {
-    const creator = await Creator.findById(creatorID);
+    const creator = await Creator.findById(creatorID).populate("stocks");
 
     if (!creator) {
       return res.json(422, {
@@ -102,15 +126,31 @@ async function refresh(creatorID) {
         valuation: valuation,
         date: new Date().toISOString(),
       };
+      
+      // Add the new stat at the start of the array
       const stats = [data, ...analyticsData[0].stats];
+      
+      // Ensure the array has a maximum of 4 elements
+      if (stats.length > 4) {
+        stats.pop(); // Remove the last element
+      }
 
+      const totalChange = calculateTotalChange(stats);
+
+      // changing stocks current value based on the total change
+      for (let stock of creator.stocks) {
+        const stockChange = totalChange * stock.weight;
+        stock.currentValue += stockChange;
+        await stock.save();
+      }
+      
       await analyticsData[0].updateOne({ stats: stats });
-
-      return res.json(200, analyticsData[0]);
+      
+      return res.status(200).json(analyticsData[0]);
     }
   } catch (err) {
     console.log(err);
-    return res.json(500, {
+    return res.status(500).json({
       message: "Internal server error",
     });
   }

@@ -29,8 +29,7 @@ function UserDashboard() {
 
     socket.on("refreshCreatorStocks", () => {
       dispatch(fetchAllStocks());
-    }
-  );
+    });
 
     return () => {
       socket.off("refresh");
@@ -69,44 +68,44 @@ function UserDashboard() {
     return <Loader />;
   }
 
-  console.log(userData, userStocksData, allStocksData);
-
   const { name, funds } = userData;
 
-    return (
-      <>
-        <section className={styles.container}>
-          <UserNavbar name={name} />
-          <div id={styles.UserDashboardContainer}>
-            <UserSidebar />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <UserAnalytics
-                    funds={funds}
-                    totalInvested={userStocksData.totalInvested}
-                    totalGain={userStocksData.totalGain}
-                    totalQuantity={userStocksData.totalQuantity}
-                    totalValue={userStocksData.totalValue}
-                    totalProfitLossPercentage={ userStocksData.totalProfitLossPercentage}
-                  />
-                }
-              />
-              <Route
-                path="stockmarketplace"
-                element={<StockMarketplace allStocks={allStocksData.data} />}
-              />
-              <Route
-                path="userholdings"
-                element={<UserHoldings stocks={userStocksData.stocks} />}
-              />
-            </Routes>
-          </div>
-          <HelpSection />
-        </section>
-      </>
-    );
-  }
+  return (
+    <>
+      <section className={styles.container}>
+        <UserNavbar name={name} />
+        <div id={styles.UserDashboardContainer}>
+          <UserSidebar />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <UserAnalytics
+                  funds={funds}
+                  totalInvested={userStocksData.totalInvested}
+                  totalGain={userStocksData.totalGain}
+                  totalQuantity={userStocksData.totalQuantity}
+                  totalValue={userStocksData.totalValue}
+                  totalProfitLossPercentage={
+                    userStocksData.totalProfitLossPercentage
+                  }
+                />
+              }
+            />
+            <Route
+              path="stockmarketplace"
+              element={<StockMarketplace allStocks={allStocksData.data} />}
+            />
+            <Route
+              path="userholdings"
+              element={<UserHoldings stocks={userStocksData.stocks} />}
+            />
+          </Routes>
+        </div>
+        <HelpSection />
+      </section>
+    </>
+  );
+}
 
 export default UserDashboard;

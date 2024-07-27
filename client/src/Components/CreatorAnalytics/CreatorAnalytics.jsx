@@ -7,6 +7,7 @@ import EarningsCard from "../EarningsCard/EarningsCard";
 import Top3Stocks from "../Top3Stocks/Top3Stocks";
 function CreatorAnalytics({ creatorAnalytics, earnings, creatorStocks }) {
   const stats = creatorAnalytics.stats?creatorAnalytics.stats[0]:{};
+  const statsArray = creatorAnalytics.stats?creatorAnalytics.stats:[];
 
   const calculateStockTotals = (stocks) => {
     return stocks.reduce(
@@ -33,7 +34,7 @@ function CreatorAnalytics({ creatorAnalytics, earnings, creatorStocks }) {
           id={styles.AnalyticsGraphContainer}
           className={styles.AnalyticsCard}
         >
-          <AnalyticsGraph valuation={stats.valuation} />
+          <AnalyticsGraph valuation={stats.valuation} statsArray={statsArray}  />
         </div>
         <div id={styles.EarningsContainer} className={styles.AnalyticsCard}>
           <EarningsCard earnings={earnings} />
