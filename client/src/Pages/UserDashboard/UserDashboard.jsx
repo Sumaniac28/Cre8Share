@@ -11,7 +11,7 @@ import { fetchUserStocks } from "../../redux/reducers/userStocksReducer";
 import { fetchAllStocks } from "../../redux/reducers/stocksMarketPlaceReducer";
 import StockMarketplace from "../../Components/StockMarketplace/StockMarketplace";
 import UserHoldings from "../../Components/UserHoldings/UserHoldings";
-import ServerError from "../ServerError/ServerError";
+import ServerError from "../ErrorPages/ServerError/ServerError";
 import Loader from "../Loader/Loader";
 import socket from "../../socket";
 
@@ -61,6 +61,7 @@ function UserDashboard() {
     allStocksStatus === "rejected";
 
   if (hasError) {
+    console.log(hasError);
     return <ServerError />;
   }
 
@@ -69,6 +70,7 @@ function UserDashboard() {
   }
 
   const { name, funds } = userData;
+ console.log(userDataError, userStocksError, allStocksError);
 
   return (
     <>

@@ -22,15 +22,16 @@ function BuyStockModal({ stock, onClose }) {
     }
 
     try {
-      const token = localStorage.getItem("token");
+      // const token = localStorage.getItem("token");
       await axios.post(
         `http://localhost:8000/users/buy/${stock._id}`,
         { quantity },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        {withCredentials: true}
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }
       );
       socket.emit("buyStock", stock._id);
       onClose();

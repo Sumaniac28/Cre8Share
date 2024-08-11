@@ -28,6 +28,10 @@ function ContactComponent() {
       icon: "fas fa-database",
     },
     {
+      name: "Express",
+      icon: "fas fa-server",
+    },
+    {
       name: "AWS",
       icon: "fab fa-aws",
     },

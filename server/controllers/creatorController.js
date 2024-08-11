@@ -3,29 +3,33 @@ const jwt = require("jsonwebtoken");
 const Analytics = require("../models/analyticsSchema");
 const google = require("googleapis").google;
 
-
-module.exports.signIN = async function (req, res) {
+module.exports.signIN = async function (req, res, next) {
   try {
-    const creator = await Creator.findOne({ email: req.user.email });
+    const creator = await Creator.findOne({ email: req.body.email });
 
-    if (!creator || creator.password != req.user.password) {
-      return res.json(422, {
-        message: "Invalid username or password",
-      });
+    if (!creator || creator.password !== req.body.password) {
+      const erroMsg = new Error("Invalid email or password");
+      erroMsg.statusCode = 401;
+      return next(erroMsg);
     }
 
     const token = jwt.sign(creator.toJSON(), "cre8share", { expiresIn: "1d" });
 
-    res.redirect(`http://localhost:3000/Creator?token=${token}`);
-  } catch (err) {
-    console.log(err);
-    return res.staus(500).json({
-      message: "Internal server error",
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 86400000),
+      httpOnly: true,
+      sameSite: "strict",
+      secure: false,
     });
+
+    res.redirect(`http://localhost:3000/Creator`);
+  } catch (err) {
+    const erroMsg = new Error("Internal server error");
+    erroMsg.statusCode = 500;
+    next(erroMsg);
   }
 };
-
-calculateTotalChange = (stats) => {
+const calculateTotalChange = (stats) => {
   let totalChange = 0;
 
   if (stats.length >= 2) {
@@ -39,30 +43,36 @@ calculateTotalChange = (stats) => {
         return rateChange * intensity;
       };
 
-      totalChange += calculateRateChange(current.subscribers, previous.subscribers);
+      totalChange += calculateRateChange(
+        current.subscribers,
+        previous.subscribers
+      );
       totalChange += calculateRateChange(current.likes, previous.likes);
       totalChange += calculateRateChange(current.dislikes, previous.dislikes);
-      totalChange += calculateRateChange(current.videoCount, previous.videoCount);
+      totalChange += calculateRateChange(
+        current.videoCount,
+        previous.videoCount
+      );
       totalChange += calculateRateChange(current.valuation, previous.valuation);
     }
   }
   return totalChange;
-}
+};
 
-async function refresh(creatorID) {
+async function refresh(creatorID, next) {
   try {
     const creator = await Creator.findById(creatorID).populate("stocks");
 
     if (!creator) {
-      return res.json(422, {
-        message: "Invalid user",
-      });
+      const erroMsg = new Error("Creator not found");
+      erroMsg.statusCode = 404;
+      return next(erroMsg);
     } else {
-      const analyticsData = await Analytics.find({ creator: req.user._id });
+      const analyticsData = await Analytics.find({ creator: creatorID });
       const accesstoken = creator.accessToken;
       const oauth2Client = new google.auth.OAuth2();
       oauth2Client.setCredentials({ access_token: accesstoken });
-      // Create a new instance of YouTube Data API
+
       const youtube = google.youtube({ version: "v3", auth: oauth2Client });
       const response = await youtube.channels.list({
         mine: true,
@@ -73,7 +83,6 @@ async function refresh(creatorID) {
       const uploadsPlaylistId =
         channelData.contentDetails.relatedPlaylists.uploads;
 
-      // Fetch all videos in the uploads playlist
       const playlistResponse = await youtube.playlistItems.list({
         playlistId: uploadsPlaylistId,
         part: "contentDetails",
@@ -87,7 +96,6 @@ async function refresh(creatorID) {
       let totalLikes = 0;
       let totalDislikes = 0;
 
-      // Helper function to fetch video statistics recursively
       async function fetchVideoStats(videoIds, pageToken) {
         const videoResponse = await youtube.videos.list({
           id: videoIds.join(","),
@@ -111,7 +119,9 @@ async function refresh(creatorID) {
       let valuation;
       if (channelData.statistics.videoCount > 0) {
         valuation = parseFloat(
-          (channelData.statistics.subscriberCount * 0.1 + likes - dislikes) /
+          (channelData.statistics.subscriberCount * 0.1 +
+            totalLikes -
+            totalDislikes) /
             channelData.statistics.videoCount
         );
       } else {
@@ -126,47 +136,48 @@ async function refresh(creatorID) {
         valuation: valuation,
         date: new Date().toISOString(),
       };
-      
-      // Add the new stat at the start of the array
+
       const stats = [data, ...analyticsData[0].stats];
-      
-      // Ensure the array has a maximum of 4 elements
+
       if (stats.length > 4) {
-        stats.pop(); // Remove the last element
+        stats.pop();
       }
 
       const totalChange = calculateTotalChange(stats);
 
-      // changing stocks current value based on the total change
       for (let stock of creator.stocks) {
         const stockChange = totalChange * stock.weight;
         stock.currentValue += stockChange;
         await stock.save();
       }
-      
+
       await analyticsData[0].updateOne({ stats: stats });
-      
-      return res.status(200).json(analyticsData[0]);
     }
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      message: "Internal server error",
-    });
+    const erroMsg = new Error("Internal server error");
+    erroMsg.statusCode = 500;
+    next(erroMsg);
   }
-};
+}
 
-module.exports.refreshAnalyticsForAllCreators = async function () {
-  try{
+module.exports.refreshAnalyticsForAllCreators = async function (
+  req,
+  res,
+  next
+) {
+  try {
     const creators = await Creator.find({});
 
     for (let creator of creators) {
-      refresh(creator._id);
+      await refresh(creator._id, next);
     }
-  }catch(err){
+
+    res.status(200).json({ message: "Analytics refreshed for all creators" });
+  } catch (err) {
     console.log(err);
-    return res.json(500, {
-      message: "Internal server error",
-    });
+    const erroMsg = new Error("Internal server error");
+    erroMsg.statusCode = 500;
+    next(erroMsg);
   }
 };

@@ -20,17 +20,14 @@ function AddStockForm() {
       quantity: stockQuantity,
     };
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.post(
         "http://localhost:8000/stocks/addStock",
         data,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         }
       );
-     socket.emit("addCreatorStocks");
+      socket.emit("addCreatorStocks");
       navigate("/creator");
     } catch (error) {
       alert("Failed to add stock");

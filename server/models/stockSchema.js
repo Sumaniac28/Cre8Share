@@ -32,6 +32,14 @@ const stockSchema = new mongoose.Schema({
     creator:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Creator"
+    },
+    uniqueBuyers:{
+        type:[String],
+        default: []
+    },
+    totalSoldPercentage:{
+        type:Number,
+        default:0
     }
 },{
     timestamps:true

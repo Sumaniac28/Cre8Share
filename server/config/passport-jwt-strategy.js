@@ -8,8 +8,11 @@ const User = require("../models/userSchema");
 
 const Creator = require("../models/creatorSchema");
 
+const cookieExtractor = require("./cookieExtractor");
+const { ExtractJwt } = require("passport-jwt");
+
 let opts = {
-  jwtFromRequest: extractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
   secretOrKey: "cre8share",
 };
 

@@ -21,7 +21,10 @@ function LogInForm({ onClose, onOpenSignUp }) {
     try {
       const response = await axios.post(
         "http://localhost:8000/users/signIn",
-        formData
+        formData,
+        {
+          withCredentials: true,
+        }
       );
       const token = response.data.token;
       localStorage.setItem("token", token);

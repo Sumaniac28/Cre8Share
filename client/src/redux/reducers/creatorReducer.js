@@ -28,7 +28,7 @@ export const fetchCreatorData = createAsyncThunk(
             })
             .addCase(fetchCreatorData.rejected,(state,action)=>{
                 state.status='rejected';
-                state.error=action.error.message;
+                state.error=action.error ;
             })
         }
     })

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./CreatorDashboard.module.css";
 import CreatorAnalytics from "../../Components/CreatorAnalytics/CreatorAnalytics";
@@ -12,21 +12,13 @@ import { fetchCreatorData } from "../../redux/reducers/creatorReducer";
 import { fetchCreatorAnalytics } from "../../redux/reducers/creatorAnalyticsReducer";
 import { fetchCreatorStocks } from "../../redux/reducers/creatorStocksReducer";
 import Loader from "../../Pages/Loader/Loader";
-import ServerError from "../ServerError/ServerError";
+import ServerError from "../ErrorPages/ServerError/ServerError";
 import socket from "../../socket";
 
 function CreatorDashboard() {
   const dispatch = useDispatch();
-  const location = useLocation();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get("token");
-
-    if (token) {
-      localStorage.setItem("token", token);
-    }
-
     dispatch(fetchCreatorData());
     dispatch(fetchCreatorAnalytics());
     dispatch(fetchCreatorStocks());
@@ -42,9 +34,8 @@ function CreatorDashboard() {
     return () => {
       socket.off("refreshCreatorStocks");
       socket.off("refreshCreatorAnalytics");
-    }
-    
-  }, [dispatch, location.search]);
+    };
+  }, [dispatch]);
 
   const creatorData = useSelector((state) => state.Creator.data);
   const creatorDataStatus = useSelector((state) => state.Creator.status);
@@ -70,11 +61,15 @@ function CreatorDashboard() {
     creatorStocksStatus === "loading";
 
   const hasError =
-    creatorDataStatus === "rejected" ||
-    creatorAnalyticsStatus === "rejected" ||
-    creatorStocksStatus === "rejected";
+    // creatorDataStatus === "rejected" ||
+    // creatorAnalyticsStatus === "rejected" ||
+    // creatorStocksStatus === "rejected";
+
+    creatorDataError || creatorAnalyticsError || creatorStocksError;
 
   if (hasError) {
+    console.log(hasError);
+
     return <ServerError />;
   }
 
@@ -84,31 +79,31 @@ function CreatorDashboard() {
 
   const { name, channelImage, earnings } = creatorData;
 
-    return (
-      <section className={styles.container}>
-        <CreatorNavBar name={name} channelImage={channelImage} />
-        <div id={styles.AnalyticsContainer}>
-          <CreatorSideBar />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <CreatorAnalytics
-                  creatorAnalytics={creatorAnalytics}
-                  earnings={earnings}
-                  creatorStocks={creatorStocks}
-                />
-              }
-            />
-            <Route
-              path="allocatedStocks"
-              element={<CreatorAllocatedStocks creatorStocks={creatorStocks} />}
-            />
-            <Route path="allocateStocks" element={<AddStockForm />} />
-          </Routes>
-        </div>
-        <HelpSection />
-      </section>
-    );
-  }
+  return (
+    <section className={styles.container}>
+      <CreatorNavBar name={name} channelImage={channelImage} />
+      <div id={styles.AnalyticsContainer}>
+        <CreatorSideBar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <CreatorAnalytics
+                creatorAnalytics={creatorAnalytics}
+                earnings={earnings}
+                creatorStocks={creatorStocks}
+              />
+            }
+          />
+          <Route
+            path="allocatedStocks"
+            element={<CreatorAllocatedStocks creatorStocks={creatorStocks} />}
+          />
+          <Route path="allocateStocks" element={<AddStockForm />} />
+        </Routes>
+      </div>
+      <HelpSection />
+    </section>
+  );
+}
 export default CreatorDashboard;

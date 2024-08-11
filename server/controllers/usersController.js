@@ -1,13 +1,19 @@
 const User = require("../models/userSchema");
 const jwt = require("jsonwebtoken");
-const Stock = require("../models/stockSchema");
-const Creator = require("../models/creatorSchema");
 const UserPortfolio = require("../models/userPortfolioSchema");
 const socket = require("socket.io");
+const cookieParser = require("cookie-parser");
+// const redisClient = require('../config/redis');
+// const { promisify } = require('util');
+// const getAsync = promisify(redisClient.get).bind(redisClient);
+// const setAsync = promisify(redisClient.set).bind(redisClient);
+// const queue = require("../config/kue");
 
-module.exports.signUP = async function (req, res) {
+module.exports.signUP = async (req, res, next) => {
   if (req.body.password !== req.body.confirm_password) {
-    return res.status(401).json({ error: "Unauthorized" });
+    const erroMsg = new Error("Unauthorized");
+    erroMsg.statusCode = 401;
+    return next(erroMsg);
   }
 
   try {
@@ -15,330 +21,329 @@ module.exports.signUP = async function (req, res) {
 
     if (!user) {
       // Create the user if it doesn't exist
-      const user = await User.create(req.body);
-      await UserPortfolio.create({ user: user._id });
+      const newUser = await User.create(req.body);
+      await UserPortfolio.create({ user: newUser._id });
       return res.status(200).json({ message: "User created successfully" });
     } else {
-      return res.status(409).json({ message: "User already exists" });
+      const erroMsg = new Error("User already exists");
+      erroMsg.statusCode = 409;
+      return next(erroMsg);
     }
   } catch (err) {
-    return res.status(500).json({ error: "Internal Server Error" });
+    const erroMsg = new Error("Internal Server Error");
+    erroMsg.statusCode = 500;
+    next(erroMsg);
   }
 };
 
-module.exports.signIN = async (req, res) => {
+module.exports.signIN = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
-    if (!user || user.password != req.body.password) {
-      return res.json(422, {
-        message: "Invalid username or password",
-      });
+    if (!user || user.password !== req.body.password) {
+      const erroMsg = new Error("Invalid username or password");
+      erroMsg.statusCode = 422;
+      return next(erroMsg);
     }
 
     const token = jwt.sign(user.toJSON(), "cre8share", { expiresIn: "1d" });
+
+    console.log("Token generated successfully", token);
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 86400000),
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+      crossSite: true,
+    });
 
     return res
       .status(200)
       .json({ message: "Token generated successfully", token });
   } catch (err) {
     console.log(err);
-    return res.json(500, {
-      message: "Internal server error",
-    });
+    const erroMsg = new Error("Internal server error");
+    erroMsg.statusCode = 500;
+    next(erroMsg);
   }
 };
+// function calculateNewPrice(
+//   basePrice,
+//   totalQuantity,
+//   soldQuantity,
+//   unsoldQuantity,
+//   marketSensitivity,
+//   tradingVolume,
+//   volatility
+// ) {
+//   const demandSupplyRatio = parseFloat(
+//     (totalQuantity - unsoldQuantity) / (soldQuantity + 1)
+//   ); // Avoid division by zero
 
-function calculateNewPrice(
-  basePrice,
-  totalQuantity,
-  soldQuantity,
-  unsoldQuantity,
-  marketSensitivity,
-  tradingVolume,
-  volatility
-) {
-  const demandSupplyRatio = parseFloat(
-    (totalQuantity - unsoldQuantity) / (soldQuantity + 1)
-  ); // Avoid division by zero
+//   const priceAdjustmentFactor = marketSensitivity * (0.1 + volatility * 0.9);
+//   const volumeEffect = Math.log(1 + tradingVolume) / 10;
+//   const newPrice =
+//     basePrice + priceAdjustmentFactor * demandSupplyRatio * volumeEffect;
 
-  // Dynamic price adjustment factor based on volatility and market sensitivity
-  const priceAdjustmentFactor = marketSensitivity * (0.1 + volatility * 0.9);
+//   return newPrice;
+// }
 
-  // Trading volume effect (the higher the volume, the more significant the price adjustment)
-  const volumeEffect = Math.log(1 + tradingVolume) / 10;
+// async function updatePortfolioForBuy(userId, stockId, quantity, currentPrice) {
+//   const investment = parseFloat((currentPrice * quantity).toFixed(2));
+//   const userPortfolio =
+//     (await UserPortfolio.findOne({ user: userId })) ||
+//     (await UserPortfolio.create({
+//       user: userId,
+//       stocks: [],
+//       totalQuantity: 0,
+//       totalInvested: 0,
+//       totalGain: 0,
+//     }));
 
-  const newPrice =
-    basePrice + priceAdjustmentFactor * demandSupplyRatio * volumeEffect;
+//   const stockIndex = userPortfolio.stocks.findIndex((s) =>
+//     s.stock.equals(stockId)
+//   );
+//   if (stockIndex === -1) {
+//     userPortfolio.stocks.push({
+//       stock: stockId,
+//       stockInfo: [{ quantity, buyPrice: currentPrice }],
+//       totalQuantityPerStock: quantity,
+//       investmentPerStock: investment,
+//     });
+//   } else {
+//     const userStock = userPortfolio.stocks[stockIndex];
+//     userStock.stockInfo.push({ quantity, buyPrice: currentPrice });
+//     userStock.totalQuantityPerStock += quantity;
+//     userStock.investmentPerStock = parseFloat(
+//       (userStock.investmentPerStock + investment).toFixed(2)
+//     );
+//   }
 
-  return newPrice;
-}
+//   userPortfolio.totalQuantity += quantity;
+//   userPortfolio.totalInvested = parseFloat(
+//     (userPortfolio.totalInvested + investment).toFixed(2)
+//   );
+//   userPortfolio.totalProfitLossPercentage = parseFloat(
+//     ((userPortfolio.totalGain / userPortfolio.totalInvested) * 100).toFixed(2)
+//   );
 
-module.exports.buyStock = async (req, res) => {
-  try {
-    const { id: stockId } = req.params;
-    const { quantity: quantityStr } = req.body;
-    const userId = req.user._id;
-    const quantity = parseInt(quantityStr);
+//   await userPortfolio.save();
+//   return { investment, userPortfolio };
+// }
 
-    const stock = await Stock.findById(stockId).populate("creator");
-    if (!stock) {
-      return res.status(404).json({ message: "Stock not found" });
-    }
+// async function updatePortfolioForSell(userId, stockId, quantity, currentPrice) {
+//   const userPortfolio = await UserPortfolio.findOne({ user: userId });
+//   const stockIndex = userPortfolio.stocks.findIndex((s) =>
+//     s.stock.equals(stockId)
+//   );
+//   const userStock = userPortfolio.stocks[stockIndex];
 
-    const userPortfolio =
-      (await UserPortfolio.findOne({ user: userId })) ||
-      (await UserPortfolio.create({
-        user: userId,
-        stocks: [],
-        totalQuantity: 0,
-        totalInvested: 0,
-        totalGain: 0,
-      }));
+//   let totalSellAmount = 0;
+//   let remainingQuantity = quantity;
 
-    const currentPrice = stock.currentPrice;
-    const investment = parseFloat((currentPrice * quantity).toFixed(2));
+//   userStock.stockInfo.sort((a, b) => a.buyPrice - b.buyPrice);
 
-    // Check if user has enough funds
-    const user = await User.findById(userId);
-    if (user.funds < investment) {
-      return res.status(400).json({ message: "Insufficient funds" });
-    }
+//   for (const info of userStock.stockInfo) {
+//     if (remainingQuantity <= 0) break;
 
-    const stockIndex = userPortfolio.stocks.findIndex((s) =>
-      s.stock.equals(stockId)
-    );
+//     if (info.quantity <= remainingQuantity) {
+//       totalSellAmount += parseFloat((info.quantity * currentPrice).toFixed(2));
+//       remainingQuantity -= info.quantity;
+//       info.quantity = 0;
+//     } else {
+//       totalSellAmount += parseFloat(
+//         (remainingQuantity * currentPrice).toFixed(2)
+//       );
+//       info.quantity -= remainingQuantity;
+//       remainingQuantity = 0;
+//     }
+//   }
 
-    if (stockIndex === -1) {
-      userPortfolio.stocks.push({
-        stock: stock._id,
-        stockInfo: [{ quantity, buyPrice: currentPrice }],
-        totalQuantityPerStock: quantity,
-        investmentPerStock: investment,
-      });
-    } else {
-      const userStock = userPortfolio.stocks[stockIndex];
-      userStock.stockInfo.push({ quantity, buyPrice: currentPrice });
-      userStock.totalQuantityPerStock += quantity;
-      userStock.investmentPerStock += investment;
-      userStock.investmentPerStock = parseFloat(
-        userStock.investmentPerStock.toFixed(2)
-      );
-    }
+//   userStock.stockInfo = userStock.stockInfo.filter((info) => info.quantity > 0);
+//   userPortfolio.totalInvested = parseFloat(
+//     (
+//       userPortfolio.totalInvested -
+//       (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
+//         quantity
+//     ).toFixed(2)
+//   );
+//   userStock.totalQuantityPerStock -= quantity;
+//   userStock.investmentPerStock = parseFloat(
+//     (
+//       userStock.investmentPerStock -
+//       (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
+//         quantity
+//     ).toFixed(2)
+//   );
 
-    userPortfolio.totalQuantity += quantity;
-    userPortfolio.totalInvested += investment;
-    userPortfolio.totalInvested = parseFloat(
-      userPortfolio.totalInvested.toFixed(2)
-    );
-    userPortfolio.totalProfitLossPercentage = parseFloat(
-      ((userPortfolio.totalGain / userPortfolio.totalInvested) * 100).toFixed(2)
-    );
-    await userPortfolio.save();
+//   if (userStock.totalQuantityPerStock <= 0) {
+//     userPortfolio.stocks.splice(stockIndex, 1);
+//   }
 
-    // Update creator earnings and user funds
-    const creatorID = stock.creator._id;
-    await Creator.findByIdAndUpdate(creatorID, {
-      $inc: { earnings: investment },
-    });
-    await User.findByIdAndUpdate(userId, { $inc: { funds: -investment } });
+//   userPortfolio.totalQuantity -= quantity;
+//   await userPortfolio.save();
+//   return { totalSellAmount, userPortfolio };
+// }
 
-    // Update stock data
-    stock.sold += quantity;
-    stock.unsold -= quantity;
-    const tradingVolume = quantity;
-    const volatility = 0.2;
-    const newPrice = calculateNewPrice(
-      stock.listPrice,
-      stock.quantity,
-      stock.sold,
-      stock.unsold,
-      0.5,
-      tradingVolume,
-      volatility
-    );
-    stock.currentPrice += newPrice;
-    stock.currentPrice = parseFloat(stock.currentPrice.toFixed(2));
-    await stock.save();
-    // Update gain and total gain for all users who have this stock
-    const affectedPortfolios = await UserPortfolio.find({
-      "stocks.stock": stockId,
-    });
-    for (const portfolio of affectedPortfolios) {
-      const portfolioStockIndex = portfolio.stocks.findIndex((s) =>
-        s.stock.equals(stockId)
-      );
-      if (portfolioStockIndex === -1 || portfolio.user.equals(userId)) continue;
+// async function updateStockPriceAndSave(
+//   stock,
+//   tradingVolume,
+//   volatility,
+//   quantity
+// ) {
+//   if (stock.totalSoldPercentage >= 20 && stock.uniqueBuyers.size >= 5) {
+//     const newPrice = calculateNewPrice(
+//       stock.listPrice,
+//       stock.quantity,
+//       stock.sold,
+//       stock.unsold,
+//       0.5,
+//       tradingVolume,
+//       volatility
+//     );
 
-      let totalGain = 0;
-      const portfolioStock = portfolio.stocks[portfolioStockIndex];
-      portfolioStock.stockInfo.forEach((info) => {
-        const gain = parseFloat(
-          ((stock.currentPrice - info.buyPrice) * info.quantity).toFixed(2)
-        );
-        totalGain += gain;
-        info.gain = gain;
-      });
+//     stock.currentPrice += newPrice;
+//     stock.currentPrice = parseFloat(stock.currentPrice.toFixed(2));
+//   }
 
-      portfolio.totalGain += parseFloat(
-        (totalGain - portfolioStock.gainPerStock).toFixed(2)
-      );
-      portfolioStock.gainPerStock = totalGain;
-      await portfolio.save();
-    }
+//   await stock.save();
+// }
 
-    return res
-      .status(200)
-      .json({ message: "Stock bought successfully", data: userPortfolio });
-  } catch (err) {
-    console.error(err);
-    return res
-      .status(500)
-      .json({ message: "Internal server error", data: err });
-  }
-};
+// async function updateCreatorEarningsAndUserFunds(
+//   creatorID,
+//   userId,
+//   investment
+// ) {
+//   await Creator.findByIdAndUpdate(creatorID, {
+//     $inc: { earnings: investment },
+//   });
+//   await User.findByIdAndUpdate(userId, { $inc: { funds: -investment } });
+// }
 
-module.exports.sellStock = async (req, res) => {
-  try {
-    const stockId = req.params.id;
-    const quantity = parseInt(req.body.quantity);
-    const userId = req.user._id;
+// async function updateAffectedPortfolios(stockId, userId, stock) {
+//   const affectedPortfolios = await UserPortfolio.find({
+//     "stocks.stock": stockId,
+//   });
 
-    const stock = await Stock.findById(stockId).populate("creator");
-    if (!stock) {
-      return res.status(404).json({ message: "Stock not found" });
-    }
+//   for (const portfolio of affectedPortfolios) {
+//     const portfolioStockIndex = portfolio.stocks.findIndex((s) =>
+//       s.stock.equals(stockId)
+//     );
+//     if (portfolioStockIndex === -1 || portfolio.user.equals(userId)) continue;
 
-    const userPortfolio = await UserPortfolio.findOne({ user: userId });
-    if (!userPortfolio) {
-      return res.status(404).json({ message: "User portfolio not found" });
-    }
+//     let totalGain = 0;
+//     const portfolioStock = portfolio.stocks[portfolioStockIndex];
+//     portfolioStock.stockInfo.forEach((info) => {
+//       const gain = parseFloat(
+//         ((stock.currentPrice - info.buyPrice) * info.quantity).toFixed(2)
+//       );
+//       totalGain += gain;
+//       info.gain = gain;
+//     });
 
-    const stockIndex = userPortfolio.stocks.findIndex((s) =>
-      s.stock.equals(stockId)
-    );
-    if (stockIndex === -1) {
-      return res
-        .status(400)
-        .json({ message: "Stock not found in user portfolio" });
-    }
+//     portfolio.totalGain += parseFloat(
+//       (totalGain - portfolioStock.gainPerStock).toFixed(2)
+//     );
+//     portfolioStock.gainPerStock = totalGain;
+//     await portfolio.save();
+//   }
+// }
 
-    const userStock = userPortfolio.stocks[stockIndex];
-    if (userStock.totalQuantityPerStock < quantity) {
-      return res.status(400).json({ message: "Insufficient stock quantity" });
-    }
+// module.exports.buyStock = async (req, res) => {
+//   try {
+//     const { id: stockId } = req.params;
+//     const { quantity: quantityStr } = req.body;
+//     const userId = req.user._id;
+//     const quantity = parseInt(quantityStr);
 
-    const currentPrice = stock.currentPrice;
-    let totalSellAmount = 0;
-    let remainingQuantity = quantity;
+//     const stock = await Stock.findById(stockId).populate("creator");
+//     if (!stock) {
+//       return res.status(404).json({ message: "Stock not found" });
+//     }
 
-    // Sort stockInfo by buyPrice to sell the oldest ones first
-    userStock.stockInfo.sort((a, b) => a.buyPrice - b.buyPrice);
+//     const user = await User.findById(userId);
+//     const currentPrice = stock.currentPrice;
+//     const { investment, userPortfolio } = await updatePortfolioForBuy(
+//       userId,
+//       stockId,
+//       quantity,
+//       currentPrice
+//     );
 
-    // Iterate over stockInfo to sell the specified quantity
-    for (const info of userStock.stockInfo) {
-      if (remainingQuantity <= 0) break;
+//     if (user.funds < investment) {
+//       return res.status(400).json({ message: "Insufficient funds" });
+//     }
+//     await updateCreatorEarningsAndUserFunds(
+//       stock.creator._id,
+//       userId,
+//       investment
+//     );
 
-      if (info.quantity <= remainingQuantity) {
-        totalSellAmount += parseFloat(
-          (info.quantity * currentPrice).toFixed(2)
-        );
-        remainingQuantity -= info.quantity;
-        info.quantity = 0;
-      } else {
-        totalSellAmount += parseFloat(
-          (remainingQuantity * currentPrice).toFixed(2)
-        );
-        info.quantity -= remainingQuantity;
-        remainingQuantity = 0;
-      }
-    }
+//     stock.sold += quantity;
+//     stock.unsold -= quantity;
 
-    // Remove stockInfo with quantity 0
-    userStock.stockInfo = userStock.stockInfo.filter(
-      (info) => info.quantity > 0
-    );
+//     // Track unique buyers
+//     if (!stock.uniqueBuyers.includes(userId.toString())) {
+//       stock.uniqueBuyers.push(userId.toString());
+//     }
 
-    userPortfolio.totalInvested -= parseFloat(
-      (
-        (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
-        quantity
-      ).toFixed(2)
-    );
-    userStock.totalQuantityPerStock -= quantity;
-    userStock.investmentPerStock -= parseFloat(
-      (
-        (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
-        quantity
-      ).toFixed(2)
-    );
+//     // Calculate total sold percentage
+//     stock.totalSoldPercentage = (stock.sold / stock.quantity) * 100;
 
-    // If all quantities of the stock are sold, remove the stock from the portfolio
-    if (userStock.totalQuantityPerStock <= 0) {
-      userPortfolio.stocks.splice(stockIndex, 1);
-    }
-    userPortfolio.totalQuantity -= quantity;
+//     if (stock.totalSoldPercentage >= 20 && stock.uniqueBuyers.length >= 5) {
+//       await updateStockPriceAndSave(stock, quantity, 0.2, quantity);
+//     }
 
-    await userPortfolio.save();
+//     await stock.save();
+//     await updateAffectedPortfolios(stockId, userId, stock);
 
-    // Update stock data
-    stock.sold -= quantity;
-    stock.unsold += quantity;
-    const tradingVolume = quantity;
-    const volatility = 0.2;
-    const newPrice = calculateNewPrice(
-      stock.listPrice,
-      stock.quantity,
-      stock.sold,
-      stock.unsold,
-      0.5,
-      tradingVolume,
-      volatility
-    );
-    stock.currentPrice -= newPrice;
-    stock.currentPrice = parseFloat(stock.currentPrice.toFixed(2));
-    await stock.save();
+//     console.log("Stock bought successfully");
+//     return res
+//       .status(200)
+//       .json({ message: "Stock bought successfully", data: userPortfolio });
+//   } catch (err) {
+//     console.error(err);
+//     return res
+//       .status(500)
+//       .json({ message: "Internal server error", data: err });
+//   }
+// };
 
-    // Update user funds
-    await User.findByIdAndUpdate(userId, { $inc: { funds: totalSellAmount } });
+// module.exports.sellStock = async (req, res) => {
+//   try {
+//     const { id: stockId } = req.params;
+//     const { quantity: quantityStr } = req.body;
+//     const userId = req.user._id;
+//     const quantity = parseInt(quantityStr);
 
-    // Update gain and total gain for all users who have this stock
-    const affectedPortfolios = await UserPortfolio.find({
-      "stocks.stock": stockId,
-    });
-    for (const portfolio of affectedPortfolios) {
-      if (portfolio.user.equals(userId)) {
-        continue;
-      }
-      const portfolioStockIndex = portfolio.stocks.findIndex((s) =>
-        s.stock.equals(stockId)
-      );
-      if (portfolioStockIndex === -1 || portfolio.user.equals(userId)) continue;
+//     const stock = await Stock.findById(stockId).populate("creator");
+//     if (!stock) {
+//       return res.status(404).json({ message: "Stock not found" });
+//     }
 
-      let totalGain = 0;
-      const portfolioStock = portfolio.stocks[portfolioStockIndex];
-      portfolioStock.stockInfo.forEach((info) => {
-        const gain = parseFloat(
-          ((stock.currentPrice - info.buyPrice) * info.quantity).toFixed(2)
-        );
-        totalGain += gain;
-        info.gain = gain;
-      });
+//     const { totalSellAmount, userPortfolio } = await updatePortfolioForSell(
+//       userId,
+//       stockId,
+//       quantity,
+//       stock.currentPrice
+//     );
 
-      portfolio.totalGain += parseFloat(
-        (totalGain - portfolioStock.gainPerStock).toFixed(2)
-      );
-      portfolioStock.gainPerStock = totalGain;
-      await portfolio.save();
-    }
+//     await User.findByIdAndUpdate(userId, { $inc: { funds: totalSellAmount } });
 
-    return res
-      .status(200)
-      .json({ message: "Stock sold successfully", data: userPortfolio });
-  } catch (err) {
-    console.error(err);
-    return res
-      .status(500)
-      .json({ message: "Internal server error", data: err });
-  }
-};
+//     stock.sold -= quantity;
+//     stock.unsold += quantity;
+//     await updateStockPriceAndSave(stock, quantity, 0.2, quantity);
+
+//     await updateAffectedPortfolios(stockId, userId, stock);
+
+//     return res
+//       .status(200)
+//       .json({ message: "Stock sold successfully", data: userPortfolio });
+//   } catch (err) {
+//     console.error(err);
+//     return res
+//       .status(500)
+//       .json({ message: "Internal server error", data: err });
+//   }
+// };

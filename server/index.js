@@ -1,30 +1,54 @@
-// Requiring dependencies
 const express = require("express");
 const cors = require("cors");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
 const cron = require("node-cron");
-const { refreshAnalyticsForAllCreators } = require("./controllers/creatorController");
+const {
+  refreshAnalyticsForAllCreators,
+} = require("./controllers/creatorController");
 const http = require("http");
 const { Server } = require("socket.io");
 const db = require("./config/mongoose");
 const passportJWT = require("./config/passport-jwt-strategy");
 const passportYouTube = require("./config/passport-youtube-strategy");
+const cookieParser = require("cookie-parser");
+const errorHandler = require("./middlewares/errorHandler");
 
-// Initializing port
+const axios = require("axios");
+
 const port = process.env.PORT || 8000;
-
-// Initializing app
 const app = express();
 const server = http.createServer(app);
 
-// Initializing CORS options
-const corsOptions = {
-  origin: "http://localhost:3000",
-};
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+app.use(
+  expressSession({
+    secret: "cre8share",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true for HTTPS in production
+      httpOnly: true,
+      sameSite: "Lax",
+    },
+  })
+);
 
-// Scheduling cron job for every Friday to refresh
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(errorHandler);
+
+app.use("/", require("./routes"));
+
 cron.schedule("0 12 * * 5", async () => {
   try {
     await refreshAnalyticsForAllCreators();
@@ -34,30 +58,6 @@ cron.schedule("0 12 * * 5", async () => {
   }
 });
 
-// Using express-session
-app.use(
-  expressSession({
-    secret: "cre8share",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
-// Initialize Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Enabling CORS middleware
-app.use(cors(corsOptions));
-
-// Including bodyparser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Using router (should always be defined after session middleware)
-app.use("/", require("./routes"));
-
-// Handling socket events
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -67,9 +67,9 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   const refreshEvents = () => {
-    socket.broadcast.emit("refreshUserStocks");
-    socket.broadcast.emit("refreshCreatorStocks");
-    socket.broadcast.emit("refreshCreatorAnalytics");
+    io.emit("refreshUserStocks");
+    io.emit("refreshCreatorStocks");
+    io.emit("refreshCreatorAnalytics");
   };
 
   socket.on("addCreatorStocks", refreshEvents);
@@ -77,7 +77,6 @@ io.on("connection", (socket) => {
   socket.on("sellStock", refreshEvents);
 });
 
-// Firing up server
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

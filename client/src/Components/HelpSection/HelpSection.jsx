@@ -5,7 +5,7 @@ function HelpSection() {
     <div id={styles.helpSection}>
       Need any further help?{" "}
       <span>
-        <a href="/">Contact us</a>
+        <a href="/contact">Contact us</a>
       </span>
     </div>
   );

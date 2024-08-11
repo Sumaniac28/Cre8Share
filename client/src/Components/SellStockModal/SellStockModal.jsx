@@ -23,14 +23,14 @@ function SellStockModal({ stock, onClose }) {
     }
 
     try {
-      const token = localStorage.getItem("token");
       await axios.post(
         `http://localhost:8000/users/sell/${stock.stock._id}`,
         { quantity },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          // headers: {
+          //   Authorization: `Bearer ${token}`,
+          // },
+          withCredentials: true,
         }
       );
       socket.emit("sellStock", stock.stock._id);
