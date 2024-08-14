@@ -40,28 +40,20 @@ function UserDashboard() {
   const userDataStatus = useSelector((state) => state.user.status);
   const userDataError = useSelector((state) => state.user.error);
 
-  const userStocksData = useSelector((state) => state.UserStocks.data);
   const userStocksStatus = useSelector((state) => state.UserStocks.status);
-  const userStocksError = useSelector((state) => state.UserStocks.error);
 
-  const allStocksData = useSelector((state) => state.StocksMarketPlace.data);
   const allStocksStatus = useSelector(
     (state) => state.StocksMarketPlace.status
   );
-  const allStocksError = useSelector((state) => state.StocksMarketPlace.error);
 
   const isLoading =
     userDataStatus === "loading" &&
     userStocksStatus === "loading" &&
     allStocksStatus === "loading";
 
-  const hasError =
-    userDataStatus === "rejected" ||
-    userStocksStatus === "rejected" ||
-    allStocksStatus === "rejected";
+  const hasError = userDataError;
 
   if (hasError) {
-    console.log(hasError);
     return <ServerError />;
   }
 
@@ -69,8 +61,7 @@ function UserDashboard() {
     return <Loader />;
   }
 
-  const { name, funds } = userData;
- console.log(userDataError, userStocksError, allStocksError);
+  const { name } = userData;
 
   return (
     <>
@@ -79,29 +70,9 @@ function UserDashboard() {
         <div id={styles.UserDashboardContainer}>
           <UserSidebar />
           <Routes>
-            <Route
-              path="/"
-              element={
-                <UserAnalytics
-                  funds={funds}
-                  totalInvested={userStocksData.totalInvested}
-                  totalGain={userStocksData.totalGain}
-                  totalQuantity={userStocksData.totalQuantity}
-                  totalValue={userStocksData.totalValue}
-                  totalProfitLossPercentage={
-                    userStocksData.totalProfitLossPercentage
-                  }
-                />
-              }
-            />
-            <Route
-              path="stockmarketplace"
-              element={<StockMarketplace allStocks={allStocksData.data} />}
-            />
-            <Route
-              path="userholdings"
-              element={<UserHoldings stocks={userStocksData.stocks} />}
-            />
+            <Route path="/" element={<UserAnalytics />} />
+            <Route path="stockmarketplace" element={<StockMarketplace />} />
+            <Route path="userholdings" element={<UserHoldings />} />
           </Routes>
         </div>
         <HelpSection />

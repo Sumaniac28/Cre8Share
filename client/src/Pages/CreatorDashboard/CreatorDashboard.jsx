@@ -41,31 +41,8 @@ function CreatorDashboard() {
   const creatorDataStatus = useSelector((state) => state.Creator.status);
   const creatorDataError = useSelector((state) => state.Creator.error);
 
-  const creatorAnalytics = useSelector((state) => state.CreatorAnalytics.data);
-  const creatorAnalyticsStatus = useSelector(
-    (state) => state.CreatorAnalytics.status
-  );
-  const creatorAnalyticsError = useSelector(
-    (state) => state.CreatorAnalytics.error
-  );
-
-  const creatorStocks = useSelector((state) => state.CreatorStocks.data);
-  const creatorStocksStatus = useSelector(
-    (state) => state.CreatorStocks.status
-  );
-  const creatorStocksError = useSelector((state) => state.CreatorStocks.error);
-
-  const isLoading =
-    creatorDataStatus === "loading" &&
-    creatorAnalyticsStatus === "loading" &&
-    creatorStocksStatus === "loading";
-
-  const hasError =
-    // creatorDataStatus === "rejected" ||
-    // creatorAnalyticsStatus === "rejected" ||
-    // creatorStocksStatus === "rejected";
-
-    creatorDataError || creatorAnalyticsError || creatorStocksError;
+  const isLoading = creatorDataStatus === "loading";
+  const hasError = creatorDataError;
 
   if (hasError) {
     console.log(hasError);
@@ -77,7 +54,7 @@ function CreatorDashboard() {
     return <Loader />;
   }
 
-  const { name, channelImage, earnings } = creatorData;
+  const { name, channelImage } = creatorData;
 
   return (
     <section className={styles.container}>
@@ -85,20 +62,8 @@ function CreatorDashboard() {
       <div id={styles.AnalyticsContainer}>
         <CreatorSideBar />
         <Routes>
-          <Route
-            path="/"
-            element={
-              <CreatorAnalytics
-                creatorAnalytics={creatorAnalytics}
-                earnings={earnings}
-                creatorStocks={creatorStocks}
-              />
-            }
-          />
-          <Route
-            path="allocatedStocks"
-            element={<CreatorAllocatedStocks creatorStocks={creatorStocks} />}
-          />
+          <Route path="/" element={<CreatorAnalytics />} />
+          <Route path="allocatedStocks" element={<CreatorAllocatedStocks />} />
           <Route path="allocateStocks" element={<AddStockForm />} />
         </Routes>
       </div>

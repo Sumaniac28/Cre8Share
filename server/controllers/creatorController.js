@@ -5,9 +5,9 @@ const google = require("googleapis").google;
 
 module.exports.signIN = async function (req, res, next) {
   try {
-    const creator = await Creator.findOne({ email: req.body.email });
+    const creator = await Creator.findOne({ email: req.user.email });
 
-    if (!creator || creator.password !== req.body.password) {
+    if (!creator || creator.password !== req.user.password) {
       const erroMsg = new Error("Invalid email or password");
       erroMsg.statusCode = 401;
       return next(erroMsg);

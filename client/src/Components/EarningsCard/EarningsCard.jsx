@@ -8,7 +8,7 @@ function EarningsCard({earnings}) {
         <p>Earnings till date </p>
         <div className={styles.point} id={styles.earningsPoint}></div>
       </div>
-      <h1>${earnings}</h1>
+      <h1>{earnings} coins</h1>
       <span>Your earnings till {new Date().toLocaleDateString()}</span>
       <br />
       <br />

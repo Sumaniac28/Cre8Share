@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import styles from "./StockMarketplace.module.css";
 import BuyStockModal from "../BuyStockModal/BuyStockModal";
+import { useSelector } from "react-redux";
+import Loader from "../../Pages/Loader/Loader";
+import ServerError from "../../Pages/ErrorPages/ServerError/ServerError";
 
-function StockMarketplace({ allStocks }) {
+function StockMarketplace() {
   const [selectedStock, setSelectedStock] = useState(null);
 
   const handleBuyClick = (stock) => {
@@ -12,6 +15,22 @@ function StockMarketplace({ allStocks }) {
   const closeModal = () => {
     setSelectedStock(null);
   };
+
+  const allStocksData = useSelector((state) => state.StocksMarketPlace.data);
+  const allStocksStatus = useSelector(
+    (state) => state.StocksMarketPlace.status
+  );
+  const allStocksError = useSelector((state) => state.StocksMarketPlace.error);
+
+  if (allStocksError) {
+    return <ServerError />;
+  }
+
+  if (allStocksStatus == "loading") {
+    return <Loader />;
+  }
+
+  const allStocks = allStocksData.data || [];
 
   return (
     <>
