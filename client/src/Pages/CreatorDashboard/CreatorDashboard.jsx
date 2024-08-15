@@ -14,6 +14,7 @@ import { fetchCreatorStocks } from "../../redux/reducers/creatorStocksReducer";
 import Loader from "../../Pages/Loader/Loader";
 import ServerError from "../ErrorPages/ServerError/ServerError";
 import socket from "../../socket";
+import CreatorLogout from "../../Components/CreatorLogout/CreatorLogout";
 
 function CreatorDashboard() {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ function CreatorDashboard() {
           <Route path="/" element={<CreatorAnalytics />} />
           <Route path="allocatedStocks" element={<CreatorAllocatedStocks />} />
           <Route path="allocateStocks" element={<AddStockForm />} />
+          <Route path="/logout" element={<CreatorLogout/>}/>
         </Routes>
       </div>
       <HelpSection />

@@ -14,6 +14,7 @@ import UserHoldings from "../../Components/UserHoldings/UserHoldings";
 import ServerError from "../ErrorPages/ServerError/ServerError";
 import Loader from "../Loader/Loader";
 import socket from "../../socket";
+import UserLogout from "../../Components/UserLogout/UserLogout";
 
 function UserDashboard() {
   const dispatch = useDispatch();
@@ -73,6 +74,7 @@ function UserDashboard() {
             <Route path="/" element={<UserAnalytics />} />
             <Route path="stockmarketplace" element={<StockMarketplace />} />
             <Route path="userholdings" element={<UserHoldings />} />
+            <Route path="logout" element={<UserLogout />}/>
           </Routes>
         </div>
         <HelpSection />

@@ -1,0 +1,49 @@
+#logoutContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#logoutHeading{
+    color: white;
+    font-size: 2rem;
+    font-family: 'Quicksand';
+}
+
+#buttonContainer{
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.logoutBtn{
+    font-size: 1.4rem;
+    background-color: inherit;
+    color: white;
+    font-weight: bold;
+    font-family: 'Orbitron';
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.8s ease-in-out;
+    cursor: pointer;
+}
+
+#success{
+    border: 1px solid red;
+}
+
+#success:hover{
+    background-color: red;
+}
+
+#reject{
+    border: 1px solid greenyellow;
+}
+
+#reject:hover{
+    /* color: black; */
+    background-color: greenyellow;
+}

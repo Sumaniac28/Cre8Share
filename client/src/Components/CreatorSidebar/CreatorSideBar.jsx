@@ -27,12 +27,12 @@ function CreatorSideBar() {
     {
       icon: 'fa-phone',
       label: 'Contact Us',
-      path: '#',
+      path: '/contact',
     },
     {
       icon: 'fa-right-from-bracket',
-      label: 'Sign Out',
-      path: '#',
+      label: 'Log Out',
+      path: '/creator/logout',
       id: styles.signOut,
     },
   ];

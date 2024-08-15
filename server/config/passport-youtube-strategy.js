@@ -25,10 +25,9 @@ passport.use(
       } else {
         const oauth2Client = new google.auth.OAuth2();
         oauth2Client.setCredentials({ access_token: accessToken });
-        // Create a new instance of YouTube Data API
+
         const youtube = google.youtube({ version: "v3", auth: oauth2Client });
 
-        // Fetch user's channel data
         const response = await youtube.channels.list({
           mine: true,
           part: "snippet,contentDetails,statistics",
@@ -40,7 +39,6 @@ passport.use(
         const uploadsPlaylistId =
           channelData.contentDetails.relatedPlaylists.uploads;
 
-        // Fetch all videos in the uploads playlist
         const playlistResponse = await youtube.playlistItems.list({
           playlistId: uploadsPlaylistId,
           part: "contentDetails",
@@ -54,7 +52,6 @@ passport.use(
         let totalLikes = 0;
         let totalDislikes = 0;
 
-        // Helper function to fetch video statistics recursively
         async function fetchVideoStats(videoIds, pageToken) {
           const videoResponse = await youtube.videos.list({
             id: videoIds.join(","),

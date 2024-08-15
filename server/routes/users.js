@@ -16,4 +16,6 @@ router.post('/buy/:id',passport.authenticate('user-jwt'),stocksController.buySto
 
 router.post('/sell/:id',passport.authenticate('user-jwt'),stocksController.sellStock);
 
+router.get('/logout',usersController.logOut);
+
 module.exports=router;

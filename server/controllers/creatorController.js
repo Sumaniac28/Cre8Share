@@ -29,6 +29,32 @@ module.exports.signIN = async function (req, res, next) {
     next(erroMsg);
   }
 };
+
+module.exports.logOut = async function (req, res, next) {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: false, 
+      path: "/",
+    });
+
+    if (req.session) {
+      req.session.destroy(err => {
+        if (err) {
+          return next(new Error("Failed to destroy session"));
+        }
+      });
+    }
+
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    const erroMsg = new Error("Internal server error");
+    erroMsg.statusCode = 500;
+    next(erroMsg);
+  }
+};
+
 const calculateTotalChange = (stats) => {
   let totalChange = 0;
 

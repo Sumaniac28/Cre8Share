@@ -63,7 +63,7 @@ function calculateNewPrice(
 ) {
   const demandSupplyRatio = parseFloat(
     (totalQuantity - unsoldQuantity) / (soldQuantity + 1)
-  ); // Avoid division by zero
+  ); 
 
   const priceAdjustmentFactor = marketSensitivity * (0.1 + volatility * 0.9);
   const volumeEffect = Math.log(1 + tradingVolume) / 10;

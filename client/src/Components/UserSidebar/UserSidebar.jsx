@@ -26,12 +26,12 @@ function UserSidebar() {
     {
       icon: "fa-phone",
       label: "Contact Us",
-      path: "#",
+      path: "/contact",
     },
     {
       icon: "fa-right-from-bracket",
-      label: "Sign Out",
-      path: "#",
+      label: "Log Out",
+      path: "/user/logout",
       id: styles.signOut,
     },
   ];

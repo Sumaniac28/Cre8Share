@@ -45,17 +45,17 @@ function ContactComponent() {
     },
     {
       icon: "fa fa-twitter",
-      link: "lol",
+      link: "https://x.com/_Sumaniac",
       name: "Twitter",
     },
     {
       icon: "fab fa-linkedin",
-      link: "https://www.linkedin.com/in/sumitgrover/",
+      link: "https://www.linkedin.com/in/sumit-grover-29a277256/",
       name: "LinkedIn",
     },
     {
       icon: "fab fa-github",
-      link: "lol",
+      link: "https://github.com/Sumaniac28",
       name: "GitHub",
     },
   ]

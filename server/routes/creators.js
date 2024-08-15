@@ -26,4 +26,6 @@ router.get(
   creatorController.signIN
 );
 
+router.get("/logout", creatorController.logOut);
+
 module.exports = router;

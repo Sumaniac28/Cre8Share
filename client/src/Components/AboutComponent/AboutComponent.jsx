@@ -19,23 +19,23 @@ function AboutComponent() {
 
   const testimonials = [
     {
-      text: "This app has changed the way I manage my projects. It's intuitive and user-friendly.",
+      text: "Cre8Share is an interactive project to play with",
       user: "John Doe",
     },
     {
-      text: "Excellent tool for collaboration. Our team productivity has increased significantly.",
+      text: "Though this is not a real investing tool but it has all feature it requires as an investing tool",
       user: "Jane Smith",
     },
     {
-      text: "A must-have app for every professional. It simplifies complex tasks effortlessly.",
+      text: "A great mern stack project built by Sumit",
       user: "Mike Johnson",
     },
     {
-      text: "I love the clean interface and the ease of use. It's a game-changer for me.",
+      text: "Cre8Share truly bridges the gap between youtube creators and their fans",
       user: "Sarah Williams",
     },
     {
-      text: "The best project management app I've ever used. Highly recommended to everyone.",
+      text: "As a creator this is a very amazing to know value of your channel and content",
       user: "David Brown",
     },
   ];
