@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./AddStockForm.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -6,26 +6,102 @@ import socket from "../../socket";
 
 function AddStockForm() {
   const navigate = useNavigate();
-  const [requestOTP, setrequestOTP] = useState(false);
+  const [requestOTP, setRequestOTP] = useState(false);
   const [stockName, setStockName] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpExpiry, setOtpExpiry] = useState(null);
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  const [remainingTime, setRemainingTime] = useState(0);
 
   const isRequestOTPEnabled =
     stockName.trim() !== "" && stockQuantity.trim() !== "";
 
+  // Function to generate OTP
+  const generateOtp = (length = 6) => {
+    let otp = "";
+    for (let i = 0; i < length; i++) {
+      otp += Math.floor(Math.random() * 10);
+    }
+    return otp;
+  };
+
+  const sendOtp = async (otp) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/creators/sendOTP",
+        { otp },
+        { withCredentials: true }
+      );
+      console.log("OTP sent successfully:", response);
+    } catch (error) {
+      alert("Failed to send OTP");
+      console.error("Failed to send OTP:", error);
+    }
+  };
+
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+    if (!isRequestOTPEnabled || remainingTime > 0) return;
+
+    let otpToSend = generatedOtp;
+
+    if (!otpSent) {
+      otpToSend = generateOtp();
+      setGeneratedOtp(otpToSend);
+    }
+
+    await sendOtp(otpToSend);
+
+    setRequestOTP(true);
+    setOtpSent(true);
+    setOtpExpiry(Date.now() + 10 * 60 * 1000);
+    setRemainingTime(180);
+  };
+
+  useEffect(() => {
+    if (otpExpiry) {
+      const interval = setInterval(() => {
+        const timeLeft = Math.max(0, otpExpiry - Date.now());
+        if (timeLeft === 0) {
+          setRequestOTP(false);
+          setOtpSent(false);
+          setOtpExpiry(null);
+          setGeneratedOtp("");
+          setRemainingTime(0);
+          clearInterval(interval);
+        } else {
+          setRemainingTime(Math.floor((timeLeft % (60 * 1000)) / 1000));
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [otpExpiry]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!otpSent) {
+      alert("Please request an OTP before submitting.");
+      return;
+    }
+
+    if (otp !== generatedOtp) {
+      alert("Invalid OTP. Please try again.");
+      return;
+    }
+
     const data = {
       name: stockName,
       quantity: stockQuantity,
     };
+
     try {
       const response = await axios.post(
         "http://localhost:8000/stocks/addStock",
         data,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       socket.emit("addCreatorStocks");
       navigate("/creator");
@@ -34,10 +110,11 @@ function AddStockForm() {
       console.error("Failed to add stock:", error);
     }
   };
+
   return (
     <div id={styles.allocateStocksContainer}>
       <div className={styles.formContainer}>
-        <h2>Add stock</h2>
+        <h2>Add Stock</h2>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label htmlFor="stockName">Stock Name</label>
           <input
@@ -60,23 +137,28 @@ function AddStockForm() {
           {requestOTP && (
             <>
               <label htmlFor="otp">OTP</label>
-              <input type="number" placeholder="OTP" name="otp" required />
+              <input
+                type="number"
+                placeholder="OTP"
+                name="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+              />
             </>
           )}
           <div
             id={styles.reqOTP}
-            onClick={(e) => {
-              e.preventDefault();
-              if (isRequestOTPEnabled) {
-                setrequestOTP(true);
-              }
-            }}
+            onClick={handleSendOtp}
             style={{
-              cursor: isRequestOTPEnabled ? "pointer" : "not-allowed",
-              opacity: isRequestOTPEnabled ? 1 : 0.5,
+              cursor:
+                isRequestOTPEnabled && remainingTime === 0
+                  ? "pointer"
+                  : "not-allowed",
+              opacity: isRequestOTPEnabled && remainingTime === 0 ? 1 : 0.5,
             }}
           >
-            {requestOTP ? "Send OTP again" : "Request OTP"}
+            {otpSent ? `Send OTP Again (${remainingTime}s)` : "Request OTP"}
           </div>
           <button type="submit">Add Stock</button>
         </form>

@@ -27,5 +27,10 @@ router.get(
 );
 
 router.get("/logout", creatorController.logOut);
+router.post(
+  "/sendOTP",
+  passport.authenticate("creator-jwt", { session: false }),
+  creatorController.sendOTP
+);
 
 module.exports = router;

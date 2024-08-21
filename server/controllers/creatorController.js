@@ -2,6 +2,16 @@ const Creator = require("../models/creatorSchema");
 const jwt = require("jsonwebtoken");
 const Analytics = require("../models/analyticsSchema");
 const google = require("googleapis").google;
+const sendMail = require("../config/emailService");
+const fs = require("fs");
+const path = require("path");
+
+const otpMailPath = path.join(
+  __dirname,
+  "../EmailTemplates",
+  "stockOTPTemplate.html"
+);
+let stockOTPTemplate = fs.readFileSync(otpMailPath, "utf8");
 
 module.exports.signIN = async function (req, res, next) {
   try {
@@ -35,12 +45,12 @@ module.exports.logOut = async function (req, res, next) {
     res.clearCookie("token", {
       httpOnly: true,
       sameSite: "strict",
-      secure: false, 
+      secure: false,
       path: "/",
     });
 
     if (req.session) {
-      req.session.destroy(err => {
+      req.session.destroy((err) => {
         if (err) {
           return next(new Error("Failed to destroy session"));
         }
@@ -48,6 +58,25 @@ module.exports.logOut = async function (req, res, next) {
     }
 
     res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    const erroMsg = new Error("Internal server error");
+    erroMsg.statusCode = 500;
+    next(erroMsg);
+  }
+};
+
+module.exports.sendOTP = async function (req, res, next) {
+  try {
+    const creatorMail = await Creator.findById(req.user.id).select(
+      "email , name"
+    );
+    stockOTPTemplate = stockOTPTemplate.replace(
+      "{{username}}",
+      creatorMail.name
+    );
+    stockOTPTemplate = stockOTPTemplate.replace("{{OTP_CODE}}", req.body.otp);
+    //sendMail(creatorMail.email, "OTP to add stock", stockOTPTemplate);
+    res.status(200).json({ message: "Otp mail sent successfully" });
   } catch (err) {
     const erroMsg = new Error("Internal server error");
     erroMsg.statusCode = 500;

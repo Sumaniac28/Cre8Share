@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import anotherLogo from "../../assets/images/anotherLogo.png";
 
 function Navbar() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const menu = [
     { id: 1, name: "Home", url: "/" },
@@ -12,9 +14,10 @@ function Navbar() {
     { id: 4, name: "Contact", url: "/contact" },
   ];
 
-  const toggleIndex = (index) => {
+  const toggleIndex = (index, url) => {
     if (activeIndex !== index) {
-      setActiveIndex(index); 
+      setActiveIndex(index);
+      navigate(url); // Navigate to the specified URL
     }
   };
 
@@ -26,19 +29,18 @@ function Navbar() {
       </div>
       <ul>
         {menu.map((item, index) => (
-          <li key={item.id} >
-            <a
-              onClick={()=>toggleIndex(index)}
-              href={item.url}
+          <li key={item.id}>
+            <button
+              onClick={() => toggleIndex(index, item.url)}
               className={activeIndex === index ? styles.activeMenu : ""}
             >
               {item.name}
-            </a>
+            </button>
           </li>
         ))}
       </ul>
       <div className={styles.getStarted}>
-        <a href="/signup">Get Started</a>
+        <button onClick={() => navigate("/signup")}>Get Started</button>
       </div>
     </div>
   );

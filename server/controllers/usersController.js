@@ -1,6 +1,16 @@
 const User = require("../models/userSchema");
 const jwt = require("jsonwebtoken");
 const UserPortfolio = require("../models/userPortfolioSchema");
+const sendMail = require("../config/emailService");
+const fs = require("fs");
+const path = require("path");
+
+const welcomeMailPath = path.join(
+  __dirname,
+  "../EmailTemplates",
+  "welcomeTemplate.html"
+);
+let welcomeMailTemplate = fs.readFileSync(welcomeMailPath, "utf8");
 
 module.exports.signUP = async (req, res, next) => {
   if (req.body.password !== req.body.confirm_password) {
@@ -13,9 +23,13 @@ module.exports.signUP = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      // Create the user if it doesn't exist
       const newUser = await User.create(req.body);
       await UserPortfolio.create({ user: newUser._id });
+      welcomeMailTemplate = welcomeMailTemplate.replace(
+        "{{username}}",
+        req.body.name
+      );
+      sendMail(req.body.email, "Welcome to Cre8Share", welcomeMailTemplate);
       return res.status(200).json({ message: "User created successfully" });
     } else {
       const erroMsg = new Error("User already exists");
@@ -65,12 +79,12 @@ module.exports.logOut = async (req, res, next) => {
     res.clearCookie("token", {
       httpOnly: true,
       sameSite: "strict",
-      secure: false, 
+      secure: false,
       path: "/",
     });
 
     if (req.session) {
-      req.session.destroy(err => {
+      req.session.destroy((err) => {
         if (err) {
           return next(new Error("Failed to destroy session"));
         }
