@@ -27,7 +27,6 @@ function CreatorAnalytics() {
   );
   const creatorStocksError = useSelector((state) => state.CreatorStocks.error);
 
-  
   const hasError =
     creatorDataError || creatorStocksError || creatorAnalyticsError;
 
@@ -36,12 +35,15 @@ function CreatorAnalytics() {
     creatorAnalyticsStatus === "loading" &&
     creatorStocksStatus === "loading";
 
-
   if (hasError) {
-    const errorCode = creatorDataError?.code || creatorAnalyticsError?.code || creatorStocksError?.code;
-  const errorMessage = creatorDataError?.message || creatorAnalyticsError?.message || creatorStocksError?.message;
-  console.log(errorCode);
-  console.log(errorMessage);
+    const errorCode =
+      creatorDataError?.code ||
+      creatorAnalyticsError?.code ||
+      creatorStocksError?.code;
+    const errorMessage =
+      creatorDataError?.message ||
+      creatorAnalyticsError?.message ||
+      creatorStocksError?.message;
     return <ServerError />;
   }
 

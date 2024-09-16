@@ -23,4 +23,3 @@ function Top3Stocks({ creatorStocks }) {
 }
 
 export default Top3Stocks;
-

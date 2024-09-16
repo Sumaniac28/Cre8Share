@@ -9,21 +9,21 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999;
+  z-index: 999;
   background: rgb(8, 7, 11);
   box-shadow: 0 0 10px 0 rgb(77, 255, 222);
+}
 
-  h2 {
-    font-weight: bold;
-    text-decoration: underline;
-    font-family: "Orbitron", sans-serif;
-  }
+.formContainer h2 {
+  font-weight: bold;
+  text-decoration: underline;
+  font-family: "Orbitron", sans-serif;
+}
 
-  h2,
-  p {
-    color: white;
-    margin-left: 15px;
-  }
+.formContainer h2,
+.formContainer p {
+  color: white;
+  margin-left: 15px;
 }
 
 .form {
@@ -64,15 +64,15 @@
   text-decoration: none;
   margin-top: 10px;
   margin-bottom: 10px;
+}
 
-  span {
-    color: #0076fd;
-    font-weight: bold;
-  }
+.form #SignUpLink span {
+  color: #0076fd;
+  font-weight: bold;
+}
 
-  span:hover {
-    cursor: pointer;
-  }
+.form #SignUpLink span:hover {
+  cursor: pointer;
 }
 
 .closeBtn {
@@ -90,4 +90,48 @@
 
 .closeBtn:hover {
   color: #ff0000;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .formContainer {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .formContainer {
+    width: 70%;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .formContainer {
+    width: 80%;
+    padding: 20px;
+    top: 45%;
+  }
+
+  .formContainer h2,
+  .formContainer p {
+    font-size: 1.2rem;
+    margin-left: 10px;
+  }
+
+  .closeBtn {
+    top: 20px;
+    right: 20px;
+    font-size: 1.3rem;
+  }
+
+  .form input {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .form button {
+    padding: 8px;
+    font-size: 1rem;
+  }
 }

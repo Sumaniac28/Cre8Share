@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./UserDashboard.module.css";
 import UserNavbar from "../../Components/UserNavbar/UserNavbar";
 import UserSidebar from "../../Components/UserSidebar/UserSidebar";
@@ -15,8 +15,16 @@ import ServerError from "../ErrorPages/ServerError/ServerError";
 import Loader from "../Loader/Loader";
 import socket from "../../socket";
 import UserLogout from "../../Components/UserLogout/UserLogout";
+import { Drawer, useMediaQuery } from "@mui/material";
 
 function UserDashboard() {
+  const [open, setOpen] = useState(false);
+
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -68,13 +76,33 @@ function UserDashboard() {
     <>
       <section className={styles.container}>
         <UserNavbar name={name} />
+        {isSmallScreen && (
+          <div
+            className={`${styles.trapezoidButton} ${
+              open ? styles.moveRight : ""
+            }`}
+            onClick={toggleDrawer(!open)}
+          >
+            {open ? "←" : "→"}
+          </div>
+        )}
+
         <div id={styles.UserDashboardContainer}>
-          <UserSidebar />
+          {isSmallScreen ? (
+            <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+              <div className={styles.drawerSahab}>
+                <h2 id={styles.drawerTitle}>MENU</h2>
+                <UserSidebar toggleDrawer={toggleDrawer} />
+              </div>
+            </Drawer>
+          ) : (
+            <UserSidebar toggleDrawer={toggleDrawer} />
+          )}
           <Routes>
             <Route path="/" element={<UserAnalytics />} />
             <Route path="stockmarketplace" element={<StockMarketplace />} />
             <Route path="userholdings" element={<UserHoldings />} />
-            <Route path="logout" element={<UserLogout />}/>
+            <Route path="logout" element={<UserLogout />} />
           </Routes>
         </div>
         <HelpSection />

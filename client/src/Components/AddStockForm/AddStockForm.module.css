@@ -1,10 +1,10 @@
-#allocateStocksContainer{
+#allocateStocksContainer {
   height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
 
-  p{
+  p {
     font-size: 1.3rem;
     color: white;
     width: 50%;
@@ -92,4 +92,61 @@
 
 .closeBtn:hover {
   color: #ff0000;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  #allocateStocksContainer {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  #allocateStocksContainer p {
+    font-size: 1.1rem;
+    width: 80%;
+    margin: 20px 0;
+  }
+
+  .formContainer {
+    width: 70%;
+    padding: 15px;
+  }
+
+  .form button,
+  #reqOTP {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  #allocateStocksContainer {
+    padding: 10px;
+  }
+
+  #allocateStocksContainer p {
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  .formContainer {
+    width: 90%;
+    padding: 10px;
+  }
+
+  .form input {
+    padding: 8px;
+  }
+
+  .form button,
+  #reqOTP {
+    padding: 7px;
+  }
+
+  .closeBtn {
+    top: 20px;
+    right: 20px;
+    font-size: 1.3rem;
+  }
 }

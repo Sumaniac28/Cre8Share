@@ -1,3 +1,8 @@
+#contactComponent {
+  padding: 10px 20px;
+}
+
+/* Heading Styling */
 #contactHeading {
   font-size: 2.1rem;
   font-weight: 700;
@@ -7,6 +12,7 @@
   border-bottom: 1px solid;
 }
 
+/* Developer Section */
 #aboutDeveloperContainer {
   display: flex;
   justify-content: center;
@@ -22,16 +28,12 @@
   width: 80%;
 }
 
+/* Developer Image */
 #developerImageContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  h2 {
-    font-family: "Quicksand", sans-serif;
-    font-size: 1.8rem;
-  }
 }
 
 #developerImageContainer img {
@@ -40,6 +42,7 @@
   border-radius: 20px;
 }
 
+/* Developer Info */
 #developerInfo p {
   font-size: 1.2rem;
   font-weight: 500;
@@ -50,6 +53,7 @@
   padding: 20px;
 }
 
+/* Tech Stack */
 #techStackContainer {
   display: flex;
   flex-direction: column;
@@ -57,15 +61,9 @@
   align-items: center;
 }
 
-#techStackContainer h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 3rem;
-}
-
 #techStack {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   grid-gap: 1rem;
   text-align: center;
   width: 80%;
@@ -92,6 +90,7 @@
   font-weight: 500;
 }
 
+/* Contact Info */
 #contactInfoContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -115,7 +114,7 @@
 
 #contactInfoItem i {
   font-size: 1.8rem;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 
 #contactInfoItem p {
@@ -123,16 +122,17 @@
   font-weight: 500;
 }
 
-#contactInfoItem a{
+#contactInfoItem a {
   color: palegreen;
   text-decoration: none;
   transition: 0.5s ease-in-out;
 }
 
-#contactInfoItem a:hover{
+#contactInfoItem a:hover {
   color: white;
 }
 
+/* Form */
 .form {
   display: flex;
   flex-direction: column;
@@ -142,7 +142,8 @@
   width: 70%;
 }
 
-.form input,textarea {
+.form input,
+textarea {
   padding: 10px;
   border-radius: 10px;
   border: none;
@@ -168,14 +169,90 @@
   font-weight: 700;
 }
 
-#loveMessage{
+/* Love Message */
+#loveMessage {
   text-align: center;
   font-size: 1.5rem;
-
   margin-top: 5rem;
   margin-bottom: 10px;
+}
 
-  p{
-    margin: 0
-  };
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  #aboutDeveloper {
+    width: 90%;
+  }
+  .form {
+    width: 80%;
+  }
+}
+
+@media (max-width: 768px) {
+  #contactHeading {
+    font-size: 1.7rem;
+  }
+
+  #aboutDeveloper {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  #developerImageContainer img {
+    width: 200px;
+  }
+
+  #techStack {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  #contactInfoContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  #contactHeading {
+    font-size: 1.4rem;
+  }
+
+  #developerImageContainer img {
+    width: 150px;
+  }
+
+  #developerInfo p {
+    font-size: 1rem;
+  }
+
+  #techStackItem i {
+    font-size: 1.5rem;
+  }
+
+  #techStackItem p {
+    font-size: 1rem;
+  }
+
+  #contactInfoItem i {
+    font-size: 1.5rem;
+  }
+
+  #contactInfoItem p {
+    font-size: 1rem;
+  }
+
+  .form input,
+  textarea {
+    padding: 8px;
+  }
+
+  .form button {
+    padding: 8px;
+  }
+
+  .form {
+    width: 95%;
+  }
 }

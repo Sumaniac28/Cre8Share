@@ -4,7 +4,10 @@ const transporter = nodeMailer.createTransport({
   service: "Gmail",
   secure: true,
   port: 465,
-  auth: {},
+  auth: {
+    user: "",
+    pass: ""
+  },
 });
 
 transporter.verify((error, success) => {
@@ -17,7 +20,7 @@ transporter.verify((error, success) => {
 
 const sendmail = async (to, subject, html) => {
   const mailOptions = {
-    from:
+    from:"",
     to,
     subject,
     html,

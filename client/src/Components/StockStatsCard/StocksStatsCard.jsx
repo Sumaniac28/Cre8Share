@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./StockStatsCard.module.css";
 import { PieChart } from "@mui/x-charts/PieChart";
-function StocksStatsCard({stockTotals}) {
+function StocksStatsCard({ stockTotals }) {
   return (
-    <section style={{background:"#141417",padding:"20px"}}>
+    <section style={{ background: "#141417", padding: "20px" }}>
       <div className={styles.AnalyticsCardTitle}>
         <p>Stocks</p>
         <div className={styles.point} id={styles.stocksPoint}></div>
@@ -25,11 +25,11 @@ function StocksStatsCard({stockTotals}) {
           </li>
         </ul>
         <PieChart
-        sx={{
-          "& .MuiChartsLegend-column text":{
-            fill: "white !important",
-          }
-        }}
+          sx={{
+            "& .MuiChartsLegend-column text": {
+              fill: "white !important",
+            },
+          }}
           className={styles.pieChart}
           series={[
             {

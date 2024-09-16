@@ -1,39 +1,82 @@
 #StockMarketplaceContainer {
-    display: flex;
-    flex-direction: column; 
-    margin-top: 20px;
-    position: relative;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  position: relative;
+}
+
+#StockMarketplaceTitle {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  color: white;
+  background: #141417;
+  position: sticky;
+  top: 0;
+}
+
+#Appname {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+#search {
+  display: flex;
+  align-items: center;
+  background: #1e1e1f;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+}
+
+#search input {
+  background: #1e1e1f;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+/* Responsive Styles */
+
+/* Tablet and Small Screens */
+@media (max-width: 768px) {
   #StockMarketplaceTitle {
-    flex-shrink: 0; /* Prevents the title from shrinking */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    color: white;
-    background: #141417;
-    position: sticky;
-    top: 0;
+    padding: 1rem;
+    font-size: 1.1rem;
   }
-  
+
   #Appname {
-    font-family: "Orbitron", sans-serif;
-    font-size: 1.4rem;
-    font-weight: bold;
+    font-size: 1.2rem;
   }
-  
+
   #search {
-    display: flex;
-    align-items: center;
-    background: #1e1e1f;
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
+    padding: 0.4rem 0.8rem;
+    margin-top: 10px;
   }
-  
+
   #search input {
-    background: #1e1e1f;
-    border: none;
-    outline: none;
-    color: white;
+    font-size: 0.9rem;
   }
+}
+
+/* Small Mobile Screens */
+@media (max-width: 480px) {
+  #StockMarketplaceTitle {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+
+  #Appname {
+    font-size: 1rem;
+  }
+
+  #search {
+    padding: 0.3rem 0.6rem;
+  }
+
+  #search input {
+    font-size: 0.8rem;
+  }
+}

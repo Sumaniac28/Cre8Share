@@ -1,11 +1,10 @@
-.blur{
+.blur {
   filter: blur(7px);
-
 }
 
 #StockMarketplaceContainer {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   margin-top: 20px;
   position: relative;
 }
@@ -44,17 +43,15 @@
 }
 
 #StockMarketplaceContent {
-  flex-grow: 1; /* Allows this element to grow and fill the remaining space */
+  flex-grow: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
   padding: 20px;
-  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-y: auto;
 }
 
-
-
-#StockMarketplaceCard{
+#StockMarketplaceCard {
   background: #141417;
   padding: 20px;
   margin: 10px;
@@ -67,7 +64,6 @@
   margin-top: 5px;
   margin-bottom: 5px;
   font-family: "Quicksand", sans-serif;
-
 }
 
 #StockMarketplaceCard p {
@@ -89,7 +85,7 @@
   color: antiquewhite;
   font-size: 1.1rem;
 
-  span{
+  span {
     color: white;
   }
 }
@@ -102,4 +98,61 @@
   padding: 0.5rem 1rem;
   border-radius: 15px;
   cursor: pointer;
+}
+
+/* Responsive Styles */
+
+/* Tablet Screens */
+@media (max-width: 1024px) {
+  #StockMarketplaceContent {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens */
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 768px) {
+  #StockMarketplaceContent {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
+  }
+
+  #StockMarketplaceTitle {
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+
+  #search {
+    margin-top: 10px;
+  }
+}
+
+/* Very Small Mobile Screens */
+@media (max-width: 480px) {
+  #StockMarketplaceContent {
+    grid-template-columns: 1fr;
+  }
+
+  #StockMarketplaceTitle {
+    padding: 0 0.5rem;
+  }
+
+  #search {
+    padding: 0.5rem;
+  }
+
+  #StockMarketplaceCard h4 {
+    font-size: 1.2rem;
+  }
+
+  #StockMarketplaceCard p {
+    font-size: 0.9rem;
+  }
+
+  #StockMarketplaceCard li {
+    font-size: 1rem;
+  }
+
+  #StockMarketplaceCard button {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+  }
 }

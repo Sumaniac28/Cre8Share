@@ -41,6 +41,10 @@ function CreatorLogout() {
           No, get back to dashboard
         </button>
       </div>
+      <p id={styles.logOutPara}>
+        We are extremely sad to let you go :( . But you can always remember that
+        CRE8SHARE is all yours, you can still come back again.
+      </p>
     </div>
   );
 }

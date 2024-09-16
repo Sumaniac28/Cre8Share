@@ -1,4 +1,3 @@
-
 #stockListHeading {
   display: flex;
   justify-content: space-evenly;
@@ -49,4 +48,43 @@
   background: #ff3131;
   color: whitesmoke;
   border-radius: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  #stockListHeading,
+  #stockList ul {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #stockListHeading,
+  #stockList ul {
+    align-items: center;
+  }
+
+  #stockListHeading,
+  #stockList ul li {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .gain,
+  .loss {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #stockListHeading,
+  #stockList ul {
+    padding: 5px;
+    font-size: 0.9rem;
+  }
+
+  .gain,
+  .loss {
+    font-size: 0.9rem;
+  }
 }

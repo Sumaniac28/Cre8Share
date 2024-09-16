@@ -26,7 +26,7 @@ function StockMarketplace() {
     return <ServerError />;
   }
 
-  if (allStocksStatus == "loading") {
+  if (allStocksStatus === "loading") {
     return <Loader />;
   }
 

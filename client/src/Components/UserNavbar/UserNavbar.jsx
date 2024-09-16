@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./UserNavbar.module.css";
 import appLogo from "../../assets/images/anotherLogo.png";
 import investorProfile from "../../assets/images/developer2.jpg";
-function UserNavbar({name}) {
+function UserNavbar({ name }) {
   return (
     <div className={styles.Container}>
       <div id={styles.App}>

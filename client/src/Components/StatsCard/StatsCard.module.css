@@ -7,10 +7,10 @@
   font-family: "Quicksand", sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
+}
 
-  p {
-    text-decoration: underline;
-  }
+.AnalyticsCardTitle p {
+  text-decoration: underline;
 }
 
 ul {
@@ -32,11 +32,53 @@ li {
   background: #fc1919;
 }
 
-#statistics {
-  li {
-    margin-bottom: 10px;
+#statistics li {
+  margin-bottom: 10px;
+}
+
+#statistics span {
+  margin-left: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .AnalyticsCardTitle {
+    font-size: 1.3rem;
   }
-  span {
-    margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+  .AnalyticsCardTitle {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  .point {
+    height: 18px;
+    width: 18px;
+  }
+
+  #statistics li {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .AnalyticsCardTitle {
+    font-size: 1rem;
+    justify-content: space-between;
+  }
+
+  .point {
+    height: 15px;
+    width: 15px;
+  }
+
+  #statistics li {
+    margin-bottom: 6px;
+  }
+
+  #statistics span {
+    margin-left: 5px;
   }
 }

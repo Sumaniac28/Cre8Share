@@ -7,10 +7,10 @@
   font-family: "Quicksand", sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
+}
 
-  p {
-    text-decoration: underline;
-  }
+.AnalyticsCardTitle p {
+  text-decoration: underline;
 }
 
 .point {
@@ -28,20 +28,83 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-
-  p {
-    margin-top: 40px;
-    span {
-      font-size: 1.5rem;
-      font-family: "Qrbitron", sans-serif;
-      font-weight: bold;
-    }
-  }
 }
 
+.graphContainer p {
+  margin-top: 40px;
+}
 
-#notEnoughData{
+.graphContainer p span {
+  font-size: 1.5rem;
+  font-family: "Qrbitron", sans-serif;
+  font-weight: bold;
+}
+
+#notEnoughData {
   color: red;
   font-size: 1.5rem;
   text-align: center;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .AnalyticsCardTitle {
+    font-size: 1.3rem;
+  }
+
+  .graphContainer p {
+    margin-top: 30px;
+  }
+
+  .graphContainer p span {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .AnalyticsCardTitle {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  .point {
+    height: 18px;
+    width: 18px;
+  }
+
+  .graphContainer p {
+    margin-top: 20px;
+  }
+
+  .graphContainer p span {
+    font-size: 1.2rem;
+  }
+
+  #notEnoughData {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .AnalyticsCardTitle {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  .point {
+    height: 15px;
+    width: 15px;
+  }
+
+  .graphContainer p {
+    margin-top: 15px;
+  }
+
+  .graphContainer p span {
+    font-size: 1rem;
+  }
+
+  #notEnoughData {
+    font-size: 1.1rem;
+  }
 }

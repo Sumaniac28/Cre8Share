@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import anotherLogo from "../../assets/images/anotherLogo.png";
+import { FaBars, FaTimes } from "react-icons/fa"; // For hamburger icon
 
 function Navbar() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [drawerOpen, setDrawerOpen] = useState(false); // State for controlling the side drawer
+  const navigate = useNavigate();
 
   const menu = [
     { id: 1, name: "Home", url: "/" },
@@ -17,8 +19,13 @@ function Navbar() {
   const toggleIndex = (index, url) => {
     if (activeIndex !== index) {
       setActiveIndex(index);
-      navigate(url); // Navigate to the specified URL
+      navigate(url);
     }
+    setDrawerOpen(false);
+  };
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
   };
 
   return (
@@ -27,7 +34,12 @@ function Navbar() {
         <img src={anotherLogo} alt="Company Logo" />
         <h1>CRE8SHARE</h1>
       </div>
-      <ul>
+
+      <div className={styles.MenuIcon} onClick={toggleDrawer}>
+        {drawerOpen ? <FaTimes /> : <FaBars />}
+      </div>
+
+      <ul className={`${styles.NavLinks} ${drawerOpen ? styles.Open : ""}`}>
         {menu.map((item, index) => (
           <li key={item.id}>
             <button
@@ -39,6 +51,7 @@ function Navbar() {
           </li>
         ))}
       </ul>
+
       <div className={styles.getStarted}>
         <button onClick={() => navigate("/signup")}>Get Started</button>
       </div>

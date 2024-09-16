@@ -6,6 +6,7 @@
   text-align: center;
 }
 
+/* Responsive layout for portfolio numbers */
 #portfolioNumbers {
   display: grid;
   grid-template-columns: 1fr;
@@ -45,10 +46,10 @@
   font-family: "Quicksand", sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
+}
 
-  p {
-    text-decoration: underline;
-  }
+.cardTitle p {
+  text-decoration: underline;
 }
 
 .point {
@@ -61,7 +62,6 @@
   font-size: 1.5rem;
   font-weight: bold;
   text-align: end;
-
   p {
     margin: 5px;
   }
@@ -78,6 +78,7 @@
 #totalQuantityPoint {
   background: #ff00ff;
 }
+
 #dividendsPoint {
   background: #ffcc00;
 }
@@ -87,60 +88,60 @@
 }
 
 #fundsPoint {
-  /* background: #ff6600; */
   background: darkgreen;
 }
 
 #profitLossValue {
   display: flex;
-  /* justify-content: center; */
   align-items: center;
-
-  p {
-    margin: 5px;
-    font-size: 2.2rem;
-    font-weight: bold;
-    font-family: "Urbanist", sans-serif;
-  }
-
-  span {
-    font-size: 1.2rem;
-  }
-
-  #profitPercentage {
-    color: #00ff00;
-  }
-
-  #lossPercentage {
-    color: #fc1919;
-  }
 }
 
-#fundsValue{
+#profitLossValue p {
+  margin: 5px;
+  font-size: 2.2rem;
+  font-weight: bold;
+  font-family: "Urbanist", sans-serif;
+}
+
+#profitLossValue span {
+  font-size: 1.2rem;
+}
+
+#profitPercentage {
+  color: #00ff00;
+}
+
+#lossPercentage {
+  color: #fc1919;
+}
+
+/* Funds value styling */
+#fundsValue {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  h2{
-    font-size: 2.2rem;
-    font-weight: bold;
-    font-family: "Urbanist", sans-serif;
-  }
-
-  p{
-    width: 60%;
-    padding: 10px;
-  }
 }
 
-#cashBtn{
+#fundsValue h2 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  font-family: "Urbanist", sans-serif;
+}
+
+#fundsValue p {
+  width: 60%;
+  padding: 10px;
+}
+
+/* Cash button container */
+#cashBtn {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   margin-top: 10px;
 }
 
-#cashBtn > button{
+#cashBtn > button {
   padding: 10px;
   border-radius: 5px;
   background: inherit;
@@ -152,6 +153,49 @@
   transition: 0.3s ease-in-out;
 }
 
-#cashBtn > button:hover{
+#cashBtn > button:hover {
   background: darkgreen;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  #portfolioUpperNumbers {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #portfolioLowerNumbers {
+    grid-template-columns: 1fr;
+  }
+
+  .cardValue {
+    font-size: 1.2rem;
+  }
+
+  #fundsValue h2 {
+    font-size: 1.8rem;
+  }
+
+  #cashBtn > button {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  #portfolioUpperNumbers {
+    grid-template-columns: 1fr;
+  }
+
+  .cardValue {
+    font-size: 1rem;
+  }
+
+  #fundsValue h2 {
+    font-size: 1.6rem;
+  }
+
+  #cashBtn > button {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
 }

@@ -13,6 +13,10 @@
   border-right: 1px solid whitesmoke;
 }
 
+/* .Motocontainer, .CreatorsContainer {
+  padding: 1rem;
+} */
+
 .Motocontainer .moto span {
   font-size: 3.5rem;
   font-family: "Quicksand", sans-serif;
@@ -102,7 +106,6 @@
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  /* border-right: 1px solid whitesmoke; */
 }
 
 .CreatorsContainer #creator p {
@@ -112,7 +115,6 @@
 
 .CreatorsContainer #creator button {
   background: rgba(255, 26, 26, 1);
-
   padding: 0.5rem 1rem;
   border-radius: 15px;
   border: none;
@@ -173,4 +175,92 @@
 
 .blur {
   filter: blur(10px);
+}
+
+@media (max-width: 992px) {
+  .Motocontainer,
+  .CreatorsContainer {
+    flex-direction: column;
+    height: auto;
+    padding: 2rem 0rem;
+    justify-content: center;
+  }
+
+  .Motocontainer .moto,
+  .Motocontainer .userMessage,
+  .CreatorsContainer #creator,
+  .CreatorsContainer .stats {
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .Motocontainer .moto span {
+    font-size: 2.5rem;
+  }
+
+  .Motocontainer .userMessage p,
+  .CreatorsContainer #creator p {
+    font-size: 1.3rem;
+    line-height: 1.4;
+  }
+
+  .Motocontainer .userMessage #joinContainer #SignIn,
+  .Motocontainer .userMessage #joinContainer #SignUp {
+    padding: 0.6rem 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .Motocontainer .moto span {
+    font-size: 1.5rem;
+  }
+
+  .Motocontainer .userMessage p,
+  .CreatorsContainer #creator p {
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+  }
+
+  .Motocontainer .userMessage #joinContainer #SignIn,
+  .Motocontainer .userMessage #joinContainer #SignUp {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .CreatorsContainer .stats #stat1,
+  .CreatorsContainer .stats #stat2 {
+    width: 90%;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .CreatorsContainer .stats p span {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .Motocontainer .moto span {
+    font-size: 2rem;
+  }
+
+  .Motocontainer .userMessage p,
+  .CreatorsContainer #creator p {
+    font-size: 1rem;
+    line-height: 1.4;
+    padding: 0 1rem;
+  }
+
+  .Motocontainer .userMessage #joinContainer #SignIn,
+  .Motocontainer .userMessage #joinContainer #SignUp {
+    padding: 0.5rem 0.8rem;
+    font-size: 1rem;
+  }
+
+  .CreatorsContainer .stats #stat1,
+  .CreatorsContainer .stats #stat2 {
+    width: 85%;
+    padding: 0.5rem 1rem;
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./CreatorDashboard.module.css";
@@ -15,8 +15,16 @@ import Loader from "../../Pages/Loader/Loader";
 import ServerError from "../ErrorPages/ServerError/ServerError";
 import socket from "../../socket";
 import CreatorLogout from "../../Components/CreatorLogout/CreatorLogout";
+import { Drawer, useMediaQuery } from "@mui/material";
 
 function CreatorDashboard() {
+  const [open, setOpen] = useState(false);
+
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,8 +54,6 @@ function CreatorDashboard() {
   const hasError = creatorDataError;
 
   if (hasError) {
-    console.log(hasError);
-
     return <ServerError />;
   }
 
@@ -60,15 +66,34 @@ function CreatorDashboard() {
   return (
     <section className={styles.container}>
       <CreatorNavBar name={name} channelImage={channelImage} />
+      {isSmallScreen && (
+        <div
+          className={`${styles.trapezoidButton} ${
+            open ? styles.moveRight : ""
+          }`}
+          onClick={toggleDrawer(!open)}
+        >
+          {open ? "←" : "→"}
+        </div>
+      )}
+
       <div id={styles.AnalyticsContainer}>
-        <CreatorSideBar />
+        {isSmallScreen ? (
+          <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+            <CreatorSideBar toggleDrawer={toggleDrawer} />
+          </Drawer>
+        ) : (
+          <CreatorSideBar toggleDrawer={toggleDrawer} />
+        )}
+
         <Routes>
           <Route path="/" element={<CreatorAnalytics />} />
           <Route path="allocatedStocks" element={<CreatorAllocatedStocks />} />
           <Route path="allocateStocks" element={<AddStockForm />} />
-          <Route path="/logout" element={<CreatorLogout/>}/>
+          <Route path="/logout" element={<CreatorLogout />} />
         </Routes>
       </div>
+
       <HelpSection />
     </section>
   );

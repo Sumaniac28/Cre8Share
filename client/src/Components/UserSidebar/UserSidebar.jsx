@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./UserSidebar.module.css";
 import { Link } from "react-router-dom";
-function UserSidebar() {
+import { Box } from "@mui/material";
+function UserSidebar({ toggleDrawer }) {
   const sidebarItems = [
     {
       icon: "fa-chart-line",
@@ -37,22 +38,24 @@ function UserSidebar() {
   ];
 
   return (
-    <div className={styles.Container}>
-      <div className={styles.SidebarContainer}>
-        {sidebarItems.map((item, index) => (
-          <span key={index} id={item.id}>
-            <Link to={item.path}>
-              <i className={`fa-solid ${item.icon}`}></i>
-              {item.path === "#" ? (
-                <a href={item.path}>{item.label}</a>
-              ) : (
-                item.label
-              )}
-            </Link>
-          </span>
-        ))}
+    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <div className={styles.Container}>
+        <div className={styles.SidebarContainer}>
+          {sidebarItems.map((item, index) => (
+            <span key={index} id={item.id}>
+              <Link to={item.path}>
+                <i className={`fa-solid ${item.icon}`}></i>
+                {item.path === "#" ? (
+                  <a href={item.path}>{item.label}</a>
+                ) : (
+                  item.label
+                )}
+              </Link>
+            </span>
+          ))}
+        </div>
       </div>
-    </div>
+    </Box>
   );
 }
 

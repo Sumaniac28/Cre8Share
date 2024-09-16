@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styles from "./HeroPage.module.css";
 import SignUpForm from "../SignUpForm/SignUpForm";
 import LogInForm from "../LogInForm/LogInForm";
-import Navbar from "../Navbar/Navbar";
+import IntroVideo from "../IntroVideo/IntroVideo";
+import HelpSection from "../HelpSection/HelpSection";
 function HeroPage() {
   const [showSignup, setShowSignup] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -26,6 +27,7 @@ function HeroPage() {
   };
   return (
     <>
+    <IntroVideo showSignup={showSignup} showLogin={showLogin}/>
       <section className={`${showSignup || showLogin ? styles.blur : ""}`}>
         <div className={styles.Motocontainer}>
           <div className={styles.moto}>
@@ -79,6 +81,7 @@ function HeroPage() {
             </div>
           </div>
         </div>
+        <HelpSection/>
       </section>
 
       {showSignup && <SignUpForm onClose={closeSignupModal} onOpenLogin={openLoginModal} />}

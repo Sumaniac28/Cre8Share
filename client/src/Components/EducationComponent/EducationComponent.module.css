@@ -1,5 +1,5 @@
-.padding10px{
-    padding: 10px;
+.padding10px {
+  padding: 10px;
 }
 
 .aboutHeadings {
@@ -9,9 +9,10 @@
   margin-top: 0.5rem;
   font-family: "Orbitron", sans-serif;
   color: #eb75fb;
-  border-bottom: 1px solid;   
+  border-bottom: 1px solid;
 }
 
+/* About Education Container: Grid for larger screens, stacking on smaller ones */
 #aboutEducationContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -30,15 +31,18 @@
 
   img {
     width: 90%;
+    max-width: 500px;
+    height: auto;
   }
 }
 
-#roleTitles{
+/* Role Titles: Flex layout */
+#roleTitles {
   display: flex;
   justify-content: space-around;
   align-items: center;
 
-  p{
+  p {
     font-size: 1.6rem;
     font-weight: 700;
     text-align: center;
@@ -48,14 +52,71 @@
     cursor: pointer;
   }
 
-  a{
+  a {
     width: 100%;
     color: white;
     text-decoration: none;
   }
 }
 
-.activeRole{
+.activeRole {
   background-color: white;
   color: black;
+}
+
+/* Medium Devices (e.g., Tablets, smaller laptops) */
+@media (max-width: 992px) {
+  #aboutEducationContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .aboutHeadings {
+    font-size: 1.8rem;
+  }
+
+  #roleTitles p {
+    font-size: 1.4rem;
+  }
+}
+
+/* Small Devices (e.g., Mobile Phones) */
+@media (max-width: 768px) {
+  .aboutHeadings {
+    font-size: 1.2rem;
+  }
+
+  #aboutEducationContainer p {
+    font-size: 1.1rem;
+  }
+
+  #roleTitles {
+    flex-direction: row;
+  }
+
+  #roleTitles p {
+    font-size: 1.2rem;
+  }
+
+  .imageContainer img {
+    width: 100%;
+  }
+}
+
+/* Extra Small Devices (e.g., small mobile phones) */
+@media (max-width: 576px) {
+  .aboutHeadings {
+    font-size: 1.1rem;
+  }
+
+  #aboutEducationContainer p {
+    font-size: 1rem;
+  }
+
+  #roleTitles p {
+    font-size: 1rem;
+  }
+
+  .imageContainer img {
+    width: 100%;
+  }
 }

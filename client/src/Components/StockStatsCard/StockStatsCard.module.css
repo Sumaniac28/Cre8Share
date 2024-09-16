@@ -7,10 +7,10 @@
   font-family: "Quicksand", sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
+}
 
-  p {
-    text-decoration: underline;
-  }
+.AnalyticsCardTitle p {
+  text-decoration: underline;
 }
 
 #StockStatsCardContainer {
@@ -39,11 +39,76 @@ li {
   background: #19fc55;
 }
 
-#stockStatistics {
-  li {
-    margin-bottom: 10px;
+#stockStatistics li {
+  margin-bottom: 10px;
+}
+
+#stockStatistics span {
+  margin-left: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .AnalyticsCardTitle {
+    font-size: 1.3rem;
   }
-  span {
-    margin-left: 10px;
+
+  #StockStatsCardContainer {
+    /* flex-direction: column;  */
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  ul {
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .AnalyticsCardTitle {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  #StockStatsCardContainer {
+    align-items: flex-start;
+  }
+
+  .point {
+    height: 18px;
+    width: 18px;
+  }
+
+  #stockStatistics li {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .AnalyticsCardTitle {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  #StockStatsCardContainer {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  ul {
+    margin-right: 10px;
+  }
+
+  .point {
+    height: 15px;
+    width: 15px;
+  }
+
+  #stockStatistics li {
+    margin-bottom: 5px;
+  }
+
+  #stockStatistics span {
+    margin-left: 5px;
   }
 }

@@ -54,11 +54,57 @@
   color: #ff3131;
 }
 
-.sellButton{
-    width: 100%;
-    background: #cb3030;
-    color: whitesmoke;
-    border-radius: 20px;
+.sellButton {
+  width: 100%;
+  background: #cb3030;
+  color: whitesmoke;
+  border-radius: 20px;
+  padding: 5px;
+  margin: 5px;
+}
+
+/* Responsive Styles */
+
+/* Tablet and Small Screens */
+@media (max-width: 768px) {
+  #stockListHeading {
     padding: 5px;
-    margin: 5px;
+    font-size: 1.1rem;
+  }
+
+  #stockListHeading li {
+    width: 100%;
+  }
+
+  #stockList ul {
+    font-size: 1rem;
+  }
+
+  #stockList ul li {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .sellButton {
+    padding: 8px;
+    margin: 10px;
+  }
+}
+
+/* Small Mobile Screens */
+@media (max-width: 480px) {
+  #stockListHeading {
+    font-size: 0.8rem;
+    padding: 5px;
+  }
+
+  #stockList ul {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .sellButton {
+    font-size: 0.9rem;
+    padding: 6px;
+  }
 }

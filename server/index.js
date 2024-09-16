@@ -77,6 +77,49 @@ io.on("connection", (socket) => {
   socket.on("sellStock", refreshEvents);
 });
 
+async function testNotiflow(){
+  try{
+    const response = axios.post('http://localhost:8080/user/register',{
+      name:'Sumit Grover',
+      email:'',
+      phone:'',
+      password:'password',
+      confirmPassword:'password'
+    })
+
+    console.log(response.message);
+  }catch(err){
+    console.log(err);
+  }
+}
+
+async function testNotiflowMail(){
+  try{
+    const response = axios.post('http://localhost:8080/api/email/schedule/sendTemplateMail',{
+      fromEmail: "",
+      password: "",
+      subject: "Testing scheduled mail",
+      message: "Email for testing scheduled mail",
+      recipients: [
+          { "email": "", "type": "TO" },
+          { "email": "", "type": "CC" },
+          { "email": "", "type": "BCC" }
+      ],
+      scheduleFutureMail: '2024-08-31T19:56:00',
+      templateImages: {
+          "coverImageUrl": "https://images.unsplash.com/photo-1723398466717-12d0c8f6299c?q=80&w=2024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "companyLogoUrl": "https://images.unsplash.com/photo-1720491468850-368cd24ce9d5?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      }
+  })
+    console.log(response.data);
+  }catch(err){
+    console.log("error in sending mail "+err.data);
+  }
+}
+
+//testNotiflow();
+//testNotiflowMail();
+
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

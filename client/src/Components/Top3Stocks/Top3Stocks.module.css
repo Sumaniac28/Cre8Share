@@ -7,10 +7,10 @@
   font-family: "Quicksand", sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
+}
 
-  p {
-    text-decoration: underline;
-  }
+.AnalyticsCardTitle p {
+  text-decoration: underline;
 }
 
 .point {
@@ -21,4 +21,40 @@
 
 #top3stocksPoint {
   background-color: #ff009c;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .AnalyticsCardTitle {
+    font-size: 1.3rem;
+  }
+
+  .point {
+    height: 18px;
+    width: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .AnalyticsCardTitle {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  .point {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .AnalyticsCardTitle {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  .point {
+    height: 14px;
+    width: 14px;
+  }
 }

@@ -75,7 +75,7 @@ module.exports.sendOTP = async function (req, res, next) {
       creatorMail.name
     );
     stockOTPTemplate = stockOTPTemplate.replace("{{OTP_CODE}}", req.body.otp);
-    //sendMail(creatorMail.email, "OTP to add stock", stockOTPTemplate);
+    sendMail(creatorMail.email, "OTP to add stock", stockOTPTemplate);
     res.status(200).json({ message: "Otp mail sent successfully" });
   } catch (err) {
     const erroMsg = new Error("Internal server error");

@@ -63,3 +63,87 @@
   height: 50px;
   margin-right: 20px;
 }
+
+/* Responsive Styles for .Container */
+@media (max-width: 1200px) {
+  .Container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .Container {
+    padding: 1rem;
+  }
+
+  #App {
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .Container #AppImage {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .Container #Appname {
+    font-size: 1.2rem;
+  }
+
+  #search {
+    display: none;
+  }
+
+  .AboutCreator {
+    align-items: center;
+  }
+
+  .AboutCreator p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+
+  .AboutCreator img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Container {
+    padding: 1rem;
+  }
+
+  #App {
+    margin-bottom: 0.5rem;
+  }
+
+  .Container #AppImage {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+  }
+
+  .Container #Appname {
+    font-size: 1rem;
+  }
+
+  .AboutCreator p {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+
+  .AboutCreator img {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 400px) {
+  .Container #Appname {
+    display: none;
+  }
+}

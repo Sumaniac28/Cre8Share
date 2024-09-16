@@ -30,3 +30,43 @@
   flex-direction: column;
   align-items: center;
 }
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .Container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .Container {
+    grid-template-columns: 1fr;
+    grid-gap: 15px;
+  }
+
+  .AnalyticsCard {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Container {
+    padding: 10px;
+    grid-gap: 10px;
+  }
+
+  .AnalyticsCard {
+    padding: 10px;
+    box-shadow: none;
+  }
+
+  #StocksStatsCardContainer {
+    grid-template-columns: 1fr;
+  }
+
+  #top3PerformingStocks {
+    flex-direction: column;
+    padding: 10px;
+  }
+}
