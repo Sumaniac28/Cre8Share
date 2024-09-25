@@ -15,14 +15,14 @@ function CreatorStocks({ creatorStocks }) {
       </div>
       <div id={styles.stockList}>
         {creatorStocks.map((stock) => {
-          const gainLoss = stock.currentPrice - stock.listPrice;
+          const gainLoss = stock.currentPrice - stock.basePrice;
           return (
             <ul key={stock.name}>
               <li>{stock.name}</li>
-              <li>{stock.listPrice}</li>
+              <li>{stock.basePrice}</li>
               <li>{stock.currentPrice}</li>
               <li>{stock.quantity}</li>
-              <li>{stock.sold}</li>
+              <li>{stock.stocksAllocated}</li>
               <li className={gainLoss >= 0 ? styles.gain : styles.loss}>{gainLoss}</li>
             </ul>
           );

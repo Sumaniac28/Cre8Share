@@ -59,8 +59,8 @@ function CreatorAnalytics() {
     return stocks.reduce(
       (totals, stock) => {
         totals.totalStocks += stock.quantity;
-        totals.totalSold += stock.sold;
-        totals.totalUnsold += stock.quantity - stock.sold;
+        totals.totalSold += stock.stocksAllocated;
+        totals.totalUnsold += stock.stocksUnallocated;
         return totals;
       },
       { totalStocks: 0, totalSold: 0, totalUnsold: 0 }

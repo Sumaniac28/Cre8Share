@@ -33,7 +33,7 @@ function UserStocks({ stocks }) {
                 <li>{stock.stock.currentPrice}</li>
                 <li>{stock.totalQuantityPerStock}</li>
                 <li className={stock.className}>
-                  {stock.stock.currentPrice - stock.stock.listPrice}
+                  {(stock.stock.currentPrice - stock.stock.basePrice).toFixed(3)}
                 </li>
                 <li>
                   <button

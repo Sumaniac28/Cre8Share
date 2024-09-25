@@ -28,8 +28,8 @@ module.exports.addStock = async function (req, res, next) {
 
     const newStock = await Stock.create({
       name: name,
+      basePrice: basePrice,
       currentPrice: currentPrice,
-      listPrice: basePrice,
       quantity: quantity,
       creator: creator._id,
     });
@@ -51,27 +51,6 @@ module.exports.addStock = async function (req, res, next) {
     next(erroMsg);
   }
 };
-
-function calculateNewPrice(
-  basePrice,
-  totalQuantity,
-  soldQuantity,
-  unsoldQuantity,
-  marketSensitivity,
-  tradingVolume,
-  volatility
-) {
-  const demandSupplyRatio = parseFloat(
-    (totalQuantity - unsoldQuantity) / (soldQuantity + 1)
-  ); 
-
-  const priceAdjustmentFactor = marketSensitivity * (0.1 + volatility * 0.9);
-  const volumeEffect = Math.log(1 + tradingVolume) / 10;
-  const newPrice =
-    basePrice + priceAdjustmentFactor * demandSupplyRatio * volumeEffect;
-
-  return newPrice;
-}
 
 async function updatePortfolioForBuy(userId, stockId, quantity, currentPrice) {
   const investment = parseFloat((currentPrice * quantity).toFixed(2));
@@ -125,6 +104,7 @@ async function updatePortfolioForSell(userId, stockId, quantity, currentPrice) {
 
   let totalSellAmount = 0;
   let remainingQuantity = quantity;
+  let totalInvestmentDeducted = 0;
 
   userStock.stockInfo.sort((a, b) => a.buyPrice - b.buyPrice);
 
@@ -132,10 +112,12 @@ async function updatePortfolioForSell(userId, stockId, quantity, currentPrice) {
     if (remainingQuantity <= 0) break;
 
     if (info.quantity <= remainingQuantity) {
+      totalInvestmentDeducted += info.quantity * info.buyPrice;
       totalSellAmount += parseFloat((info.quantity * currentPrice).toFixed(2));
       remainingQuantity -= info.quantity;
       info.quantity = 0;
     } else {
+      totalInvestmentDeducted += remainingQuantity * info.buyPrice;
       totalSellAmount += parseFloat(
         (remainingQuantity * currentPrice).toFixed(2)
       );
@@ -146,25 +128,21 @@ async function updatePortfolioForSell(userId, stockId, quantity, currentPrice) {
 
   userStock.stockInfo = userStock.stockInfo.filter((info) => info.quantity > 0);
   userPortfolio.totalInvested = parseFloat(
-    (
-      userPortfolio.totalInvested -
-      (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
-        quantity
-    ).toFixed(2)
+    (userPortfolio.totalInvested - totalInvestmentDeducted).toFixed(2)
   );
+
   userStock.totalQuantityPerStock -= quantity;
   userStock.investmentPerStock = parseFloat(
-    (
-      userStock.investmentPerStock -
-      (userStock.investmentPerStock / userStock.totalQuantityPerStock) *
-        quantity
-    ).toFixed(2)
+    (userStock.investmentPerStock - totalInvestmentDeducted).toFixed(2)
   );
 
   if (userStock.totalQuantityPerStock <= 0) {
+    userPortfolio.totalGain -= userStock.gainPerStock;
+    userPortfolio.totalProfitLossPercentage = parseFloat(
+      ((userPortfolio.totalGain / userPortfolio.totalInvested) * 100).toFixed(2)
+    );
     userPortfolio.stocks.splice(stockIndex, 1);
   }
-
   userPortfolio.totalQuantity -= quantity;
   await userPortfolio.save();
   return { totalSellAmount, userPortfolio };
@@ -172,26 +150,63 @@ async function updatePortfolioForSell(userId, stockId, quantity, currentPrice) {
 
 async function updateStockPriceAndSave(
   stock,
+  action,
+  marketSensitivity,
   tradingVolume,
-  volatility,
-  quantity
+  volatility
 ) {
-  if (stock.totalSoldPercentage >= 20 && stock.uniqueBuyers.size >= 5) {
-    const newPrice = calculateNewPrice(
-      stock.listPrice,
-      stock.quantity,
-      stock.sold,
-      stock.unsold,
-      0.5,
-      tradingVolume,
-      volatility
-    );
+  const { basePrice, userBoughtQuantity, userSoldQuantity, currentPrice } =
+    stock;
 
-    stock.currentPrice += newPrice;
-    stock.currentPrice = parseFloat(stock.currentPrice.toFixed(2));
+  const totalTradedQuantity = userBoughtQuantity + userSoldQuantity;
+  const buyRate = (userBoughtQuantity / totalTradedQuantity || 0).toFixed(3);
+  const sellRate = (userSoldQuantity / totalTradedQuantity || 0).toFixed(3);
+
+  let priceImpact = 0;
+
+  const intensityFactor = (
+    (marketSensitivity *
+      (0.1 + volatility * 0.9) *
+      Math.log(1 + tradingVolume)) /
+    10
+  ).toFixed(3);
+
+  if (action === "buy") {
+    priceImpact = (intensityFactor * (1 + Number(buyRate))).toFixed(3);
+  } else if (action === "sell") {
+    priceImpact = (-intensityFactor * (1 + Number(sellRate))).toFixed(3);
   }
 
-  await stock.save();
+  let newPrice = (Number(currentPrice) + Number(priceImpact)).toFixed(3);
+
+  if (action === "sell") {
+    newPrice = Math.max((basePrice * 0.25).toFixed(3), newPrice).toFixed(3);
+  } else if (action === "buy") {
+    newPrice = Math.min((basePrice * 2.5).toFixed(3), newPrice).toFixed(3);
+  }
+
+  if (action === "buy") {
+    stock.userBoughtQuantity += tradingVolume;
+    stock.stocksAllocated += tradingVolume;
+    stock.stocksUnallocated -= tradingVolume;
+  } else if (action === "sell") {
+    stock.userSoldQuantity += tradingVolume;
+    stock.stocksAllocated -= tradingVolume;
+    stock.stocksUnallocated += tradingVolume;
+  }
+
+  const updatedTotalTradedQuantity =
+    stock.userBoughtQuantity + stock.userSoldQuantity;
+  stock.buyRate = (
+    stock.userBoughtQuantity / updatedTotalTradedQuantity || 0
+  ).toFixed(3);
+  stock.sellRate = (
+    stock.userSoldQuantity / updatedTotalTradedQuantity || 0
+  ).toFixed(3);
+
+  stock.currentPrice = newPrice;
+
+  return stock.save();
 }
 
 async function updateCreatorEarningsAndUserFunds(
@@ -218,6 +233,7 @@ async function updateAffectedPortfolios(stockId, userId, stock) {
 
     let totalGain = 0;
     const portfolioStock = portfolio.stocks[portfolioStockIndex];
+
     portfolioStock.stockInfo.forEach((info) => {
       const gain = parseFloat(
         ((stock.currentPrice - info.buyPrice) * info.quantity).toFixed(2)
@@ -230,6 +246,23 @@ async function updateAffectedPortfolios(stockId, userId, stock) {
       (totalGain - portfolioStock.gainPerStock).toFixed(2)
     );
     portfolioStock.gainPerStock = totalGain;
+
+    if (portfolioStock.totalQuantityPerStock === 0) {
+      portfolio.totalGain -= portfolioStock.gainPerStock;
+      portfolioStock.gainPerStock = 0;
+    }
+
+    if (portfolio.totalInvested > 0) {
+      portfolio.totalProfitLossPercentage = parseFloat(
+        ((portfolio.totalGain / portfolio.totalInvested) * 100).toFixed(2)
+      );
+    } else {
+      portfolio.totalProfitLossPercentage = 0;
+    }
+
+    if (portfolioStock.totalQuantityPerStock === 0) {
+      portfolio.stocks.splice(portfolioStockIndex, 1);
+    }
     await portfolio.save();
   }
 }
@@ -268,22 +301,22 @@ module.exports.buyStock = async (req, res, next) => {
       investment
     );
 
-    stock.sold += quantity;
-    stock.unsold -= quantity;
-
     // Track unique buyers
     if (!stock.uniqueBuyers.includes(userId.toString())) {
       stock.uniqueBuyers.push(userId.toString());
     }
 
-    // Calculate total sold percentage
-    stock.totalSoldPercentage = (stock.sold / stock.quantity) * 100;
-
     if (stock.totalSoldPercentage >= 20 && stock.uniqueBuyers.length >= 5) {
-      await updateStockPriceAndSave(stock, quantity, 0.2, quantity);
+      await updateStockPriceAndSave(stock, "buy", 0.8, quantity, 0.3);
     }
 
+    // await updateStockPriceAndSave(stock, "buy", 0.8, quantity, 0.3);
+
+    // Calculate total sold percentage
+    stock.totalSoldPercentage = (stock.stocksAllocated / stock.quantity) * 100;
+
     await stock.save();
+
     await updateAffectedPortfolios(stockId, userId, stock);
 
     return res
@@ -320,9 +353,7 @@ module.exports.sellStock = async (req, res, next) => {
 
     await User.findByIdAndUpdate(userId, { $inc: { funds: totalSellAmount } });
 
-    stock.sold -= quantity;
-    stock.unsold += quantity;
-    await updateStockPriceAndSave(stock, quantity, 0.2, quantity);
+    await updateStockPriceAndSave(stock, "sell", 0.8, quantity, 0.3);
 
     await updateAffectedPortfolios(stockId, userId, stock);
 

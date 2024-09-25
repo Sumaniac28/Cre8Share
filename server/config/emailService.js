@@ -6,7 +6,7 @@ const transporter = nodeMailer.createTransport({
   port: 465,
   auth: {
     user: "",
-    pass: ""
+    pass: "",
   },
 });
 
@@ -20,7 +20,7 @@ transporter.verify((error, success) => {
 
 const sendmail = async (to, subject, html) => {
   const mailOptions = {
-    from:"",
+    from: "",
     to,
     subject,
     html,

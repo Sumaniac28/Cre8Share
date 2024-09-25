@@ -1,49 +1,68 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const stockSchema = new mongoose.Schema({
+const stockSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     currentPrice: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
-    listPrice: {
-        type: Number,
-        required: true
+    basePrice: {
+      type: Number,
+      required: true,
     },
     quantity: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
-    sold: {
-        type: Number,
-        default: 0,
-        required: true
+    stocksAllocated: {
+      type: Number,
+      default: 0,
+      required: true,
     },
-    unsold: {
-        type: Number,
-        default: function () {
-            return this.quantity-this.sold; 
-        },
-        required: true
+    stocksUnallocated: {
+      type: Number,
+      default: function () {
+        return this.quantity - this.stocksAllocated;
+      },
+      required: true,
     },
-    creator:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Creator"
+    userBoughtQuantity: {
+      type: Number,
+      default: 0,
     },
-    uniqueBuyers:{
-        type:[String],
-        default: []
+    userSoldQuantity: {
+      type: Number,
+      default: 0,
     },
-    totalSoldPercentage:{
-        type:Number,
-        default:0
-    }
-},{
-    timestamps:true
-});
+    buyRate: {
+      type: Number,
+      default: 0,
+    },
+    sellRate: {
+      type: Number,
+      default: 0,
+    },
+    creator: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Creator",
+    },
+    uniqueBuyers: {
+      type: [String],
+      default: [],
+    },
+    totalSoldPercentage: {
+      type: Number,
+      default: 0,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // creating a model
 const Stock = mongoose.model("Stock", stockSchema);

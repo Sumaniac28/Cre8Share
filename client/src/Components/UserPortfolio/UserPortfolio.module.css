@@ -107,11 +107,11 @@
   font-size: 1.2rem;
 }
 
-#profitPercentage {
+#profitPercentage, .profitValue {
   color: #00ff00;
 }
 
-#lossPercentage {
+#lossPercentage, .lossValue {
   color: #fc1919;
 }
 

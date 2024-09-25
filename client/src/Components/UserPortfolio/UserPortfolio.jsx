@@ -41,7 +41,7 @@ function UserPortfolio({
       <div id={styles.portfolioUpperNumbers}>
         {upperPortfolioItems.map((item, index) => {
           return (
-            <div className={styles.statsCard}>
+            <div className={styles.statsCard} key={index}>
               <div className={styles.cardTitle}>
                 <p>{item.name}</p>
                 <div className={styles.point} id={item.id}></div>
@@ -59,9 +59,18 @@ function UserPortfolio({
             <p>Profit/Loss</p>
             <div className={styles.point} id={styles.profitLossPoint}></div>
           </div>
-          <div id={styles.profitLossValue}>
+          <div
+            id={styles.profitLossValue}
+            className={totalGain < 0 ? styles.lossValue : styles.profitValue}
+          >
             <p>{totalGain}</p>
-            <span id={styles.profitPercentage}>
+            <span
+              id={
+                totalProfitLossPercentage < 0
+                  ? styles.lossPercentage
+                  : styles.profitPercentage
+              }
+            >
               ({totalProfitLossPercentage}%)
             </span>
           </div>

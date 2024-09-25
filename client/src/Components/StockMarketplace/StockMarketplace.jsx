@@ -55,13 +55,13 @@ function StockMarketplace() {
                   Current Price :- <span>{stock.currentPrice}</span>
                 </li>
                 <li>
-                  List Price :- <span>{stock.listPrice}</span>
+                  List Price :- <span>{stock.basePrice}</span>
                 </li>
                 <li>
-                  P&L :- <span>{stock.currentPrice - stock.listPrice}</span>
+                  P&L :- <span>{(stock.currentPrice - stock.basePrice).toFixed(3)}</span>
                 </li>
                 <li>
-                  Units Available :- <span>{stock.unsold}</span>
+                  Units Available :- <span>{stock.stocksUnallocated}</span>
                 </li>
               </ul>
               <button onClick={() => handleBuyClick(stock)}>Buy</button>

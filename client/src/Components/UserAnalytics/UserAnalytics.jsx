@@ -13,7 +13,7 @@ const UserAnalytics = () => {
   const userStocksStatus = useSelector((state) => state.UserStocks.status);
   const userStocksError = useSelector((state) => state.UserStocks.error);
 
-  const funds = userData.funds || 0;
+  const funds = userData.funds|| 0;
 
   const isLoading =
     userDataStatus === "loading" && userStocksStatus === "loading";

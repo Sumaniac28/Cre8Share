@@ -27,9 +27,6 @@ function SellStockModal({ stock, onClose }) {
         `http://localhost:8000/users/sell/${stock.stock._id}`,
         { quantity },
         {
-          // headers: {
-          //   Authorization: `Bearer ${token}`,
-          // },
           withCredentials: true,
         }
       );
@@ -46,7 +43,7 @@ function SellStockModal({ stock, onClose }) {
     <div id={styles.sellStockModalContainer}>
       <div id={styles.stockInfo}>
         <p>You are selling {stock.stock.name}</p>
-        <p>Price - {stock.stock.currentPrice.toFixed(3)}</p>
+        <p>Price - {stock.stock.currentPrice}</p>
         <p>Quantity Available - {stock.totalQuantityPerStock}</p>
       </div>
       <form id={styles.sellStockForm} onSubmit={handleBuy}>
