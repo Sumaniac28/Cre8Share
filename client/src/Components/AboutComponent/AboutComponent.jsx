@@ -80,7 +80,7 @@ function AboutComponent() {
           <div className={styles.imageContainer}>
             <img src={HomePage} alt="About Cre8share" />
           </div>
-          <p>
+          <p className={styles.info}>
             “CRE8SHARE” is a transparent and engaging platform, where we empower
             both creators and audiences to actively participate in the success
             of content creation. Creators gain a new source of revenue and
@@ -92,9 +92,9 @@ function AboutComponent() {
             Together, we can empower creators, engage audiences, and build a
             vibrant community around the shared success of content creation.
           </p>
-          <p id={styles.lol}>
+          <p id={styles.lol} className={styles.info}>
             In today's digital age, content creators on platforms like YouTube
-            are not just entertainers—they're entrepreneurs building brands and
+            are not just entertainers, they're entrepreneurs building brands and
             communities. However, traditional revenue streams such as ad
             monetization can be unpredictable and limiting.
             <br />

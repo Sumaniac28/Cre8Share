@@ -12,10 +12,10 @@ import { fetchCreatorData } from "../../redux/reducers/creatorReducer";
 import { fetchCreatorAnalytics } from "../../redux/reducers/creatorAnalyticsReducer";
 import { fetchCreatorStocks } from "../../redux/reducers/creatorStocksReducer";
 import Loader from "../../Pages/Loader/Loader";
-import ServerError from "../ErrorPages/ServerError/ServerError";
 import socket from "../../socket";
 import CreatorLogout from "../../Components/CreatorLogout/CreatorLogout";
 import { Drawer, useMediaQuery } from "@mui/material";
+import ErrorPage from "../ErrorPages/ErrorPage/ErrorPage";
 
 function CreatorDashboard() {
   const [open, setOpen] = useState(false);
@@ -49,12 +49,12 @@ function CreatorDashboard() {
   const creatorData = useSelector((state) => state.Creator.data);
   const creatorDataStatus = useSelector((state) => state.Creator.status);
   const creatorDataError = useSelector((state) => state.Creator.error);
+  const errorCode = useSelector((state) => state.Creator.errorCode);
 
   const isLoading = creatorDataStatus === "loading";
-  const hasError = creatorDataError;
 
-  if (hasError) {
-    return <ServerError />;
+  if (creatorDataError) {
+    return <ErrorPage errorCode={errorCode} errorMsg={creatorDataError} />;
   }
 
   if (isLoading) {

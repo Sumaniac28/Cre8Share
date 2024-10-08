@@ -18,9 +18,7 @@ module.exports.signIN = async function (req, res, next) {
     const creator = await Creator.findOne({ email: req.user.email });
 
     if (!creator || creator.password !== req.user.password) {
-      const erroMsg = new Error("Invalid email or password");
-      erroMsg.statusCode = 401;
-      return next(erroMsg);
+      return next(createError(401, "Invalid email or password"));
     }
 
     const token = jwt.sign(creator.toJSON(), "cre8share", { expiresIn: "1d" });
@@ -34,9 +32,7 @@ module.exports.signIN = async function (req, res, next) {
 
     res.redirect(`http://localhost:3000/Creator`);
   } catch (err) {
-    const erroMsg = new Error("Internal server error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(500, "Internal server error"));
   }
 };
 
@@ -52,16 +48,14 @@ module.exports.logOut = async function (req, res, next) {
     if (req.session) {
       req.session.destroy((err) => {
         if (err) {
-          return next(new Error("Failed to destroy session"));
+          return next(createError(500, "Failed to destroy session"));
         }
       });
     }
 
     res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
-    const erroMsg = new Error("Internal server error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(500, "Internal server error"));
   }
 };
 
@@ -78,9 +72,7 @@ module.exports.sendOTP = async function (req, res, next) {
     sendMail(creatorMail.email, "OTP to add stock", stockOTPTemplate);
     res.status(200).json({ message: "Otp mail sent successfully" });
   } catch (err) {
-    const erroMsg = new Error("Internal server error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(500, "Internal server error"));
   }
 };
 
@@ -119,9 +111,7 @@ async function refresh(creatorID, next) {
     const creator = await Creator.findById(creatorID).populate("stocks");
 
     if (!creator) {
-      const erroMsg = new Error("Creator not found");
-      erroMsg.statusCode = 404;
-      return next(erroMsg);
+      return next(createError(404, "Creator not found"));
     } else {
       const analyticsData = await Analytics.find({ creator: creatorID });
       const accesstoken = creator.accessToken;
@@ -209,10 +199,7 @@ async function refresh(creatorID, next) {
       await analyticsData[0].updateOne({ stats: stats });
     }
   } catch (err) {
-    console.log(err);
-    const erroMsg = new Error("Internal server error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(500, "Internal server error"));
   }
 }
 
@@ -230,9 +217,6 @@ module.exports.refreshAnalyticsForAllCreators = async function (
 
     res.status(200).json({ message: "Analytics refreshed for all creators" });
   } catch (err) {
-    console.log(err);
-    const erroMsg = new Error("Internal server error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(500, "Internal server error"));
   }
 };

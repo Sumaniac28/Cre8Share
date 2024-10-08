@@ -11,7 +11,7 @@ function BuyStockModal({ stock, onClose }) {
   const handleBuy = async (e) => {
     e.preventDefault();
 
-    if (stock.unsold < quantity) {
+    if (stock.stocksUnallocated < quantity) {
       alert("Not enough quantity available");
       return;
     }
@@ -22,16 +22,10 @@ function BuyStockModal({ stock, onClose }) {
     }
 
     try {
-      // const token = localStorage.getItem("token");
       await axios.post(
         `http://localhost:8000/users/buy/${stock._id}`,
         { quantity },
         {withCredentials: true}
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //   },
-        // }
       );
       socket.emit("buyStock", stock._id);
       onClose();
@@ -47,7 +41,7 @@ function BuyStockModal({ stock, onClose }) {
       <div id={styles.stockInfo}>
         <p>You are buying {stock.name}</p>
         <p>Price - {stock.currentPrice.toFixed(3)}</p>
-        <p>Quantity Available - {stock.unsold}</p>
+        <p>Quantity Available - {stock.stocksUnallocated}</p>
       </div>
       <form id={styles.buyStockForm} onSubmit={handleBuy}>
         <input

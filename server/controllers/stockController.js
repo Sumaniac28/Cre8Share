@@ -8,17 +8,13 @@ module.exports.addStock = async function (req, res, next) {
   try {
     const creator = await Creator.findById(req.user.id);
     if (!creator) {
-      const erroMsg = new Error("Creator not found");
-      erroMsg.statusCode = 400;
-      return next(erroMsg);
+      return next(createError(404, "Creator not found"));
     }
 
     const { name, quantity } = req.body;
     const analyticsData = await Analytics.findOne({ creator: req.user._id });
     if (!analyticsData || analyticsData.stats.length === 0) {
-      const erroMsg = new Error("Analytics data not found");
-      erroMsg.statusCode = 404;
-      return next(erroMsg);
+      return next(createError(404, "Analytics data not found"));
     }
 
     const currData = analyticsData.stats[0];
@@ -46,9 +42,7 @@ module.exports.addStock = async function (req, res, next) {
       .status(200)
       .json({ message: "Stock added successfully", stock: newStock });
   } catch (err) {
-    const erroMsg = new Error("Internal Server Error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    return next(createError(500, "Internal server error"));
   }
 };
 
@@ -185,16 +179,6 @@ async function updateStockPriceAndSave(
     newPrice = Math.min((basePrice * 2.5).toFixed(3), newPrice).toFixed(3);
   }
 
-  if (action === "buy") {
-    stock.userBoughtQuantity += tradingVolume;
-    stock.stocksAllocated += tradingVolume;
-    stock.stocksUnallocated -= tradingVolume;
-  } else if (action === "sell") {
-    stock.userSoldQuantity += tradingVolume;
-    stock.stocksAllocated -= tradingVolume;
-    stock.stocksUnallocated += tradingVolume;
-  }
-
   const updatedTotalTradedQuantity =
     stock.userBoughtQuantity + stock.userSoldQuantity;
   stock.buyRate = (
@@ -276,9 +260,7 @@ module.exports.buyStock = async (req, res, next) => {
 
     const stock = await Stock.findById(stockId).populate("creator");
     if (!stock) {
-      const erroMsg = new Error("Stock not found");
-      erroMsg.statusCode = 404;
-      return next(erroMsg);
+      return next(createError(404, "Stock not found"));
     }
 
     const user = await User.findById(userId);
@@ -291,9 +273,7 @@ module.exports.buyStock = async (req, res, next) => {
     );
 
     if (user.funds < investment) {
-      const erroMsg = new Error("Insufficient funds");
-      erroMsg.statusCode = 400;
-      return next(erroMsg);
+      return next(createError(400, "Insufficent funds"));
     }
     await updateCreatorEarningsAndUserFunds(
       stock.creator._id,
@@ -310,12 +290,16 @@ module.exports.buyStock = async (req, res, next) => {
       await updateStockPriceAndSave(stock, "buy", 0.8, quantity, 0.3);
     }
 
-    // await updateStockPriceAndSave(stock, "buy", 0.8, quantity, 0.3);
+    stock.userBoughtQuantity += quantity;
+    stock.stocksAllocated += quantity;
+    stock.stocksUnallocated -= quantity;
 
     // Calculate total sold percentage
     stock.totalSoldPercentage = (stock.stocksAllocated / stock.quantity) * 100;
 
     await stock.save();
+
+    // await updateStockPriceAndSave(stock, "buy", 0.8, quantity, 0.3);
 
     await updateAffectedPortfolios(stockId, userId, stock);
 
@@ -323,10 +307,7 @@ module.exports.buyStock = async (req, res, next) => {
       .status(200)
       .json({ message: "Stock bought successfully", data: userPortfolio });
   } catch (err) {
-    console.error(err);
-    const erroMsg = new Error("Internal server error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(500, "Internal server error"));
   }
 };
 
@@ -339,9 +320,7 @@ module.exports.sellStock = async (req, res, next) => {
 
     const stock = await Stock.findById(stockId).populate("creator");
     if (!stock) {
-      const erroMsg = new Error("Stock not found");
-      erroMsg.statusCode = 404;
-      return next(erroMsg);
+      return next(createError(404, "Stock not found"));
     }
 
     const { totalSellAmount, userPortfolio } = await updatePortfolioForSell(
@@ -353,6 +332,15 @@ module.exports.sellStock = async (req, res, next) => {
 
     await User.findByIdAndUpdate(userId, { $inc: { funds: totalSellAmount } });
 
+    stock.userSoldQuantity += quantity;
+    stock.stocksAllocated -= quantity;
+    stock.stocksUnallocated += quantity;
+
+    // Calculate total sold percentage
+    stock.totalSoldPercentage = (stock.stocksAllocated / stock.quantity) * 100;
+
+    await stock.save();
+
     await updateStockPriceAndSave(stock, "sell", 0.8, quantity, 0.3);
 
     await updateAffectedPortfolios(stockId, userId, stock);
@@ -361,9 +349,6 @@ module.exports.sellStock = async (req, res, next) => {
       .status(200)
       .json({ message: "Stock sold successfully", data: userPortfolio });
   } catch (err) {
-    console.error(err);
-    const erroMsg = new Error("Internal server error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(401, "Internal server error"));
   }
 };

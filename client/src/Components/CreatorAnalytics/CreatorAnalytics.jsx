@@ -7,11 +7,12 @@ import EarningsCard from "../EarningsCard/EarningsCard";
 import Top3Stocks from "../Top3Stocks/Top3Stocks";
 import { useSelector } from "react-redux";
 import Loader from "../../Pages/Loader/Loader";
-import ServerError from "../../Pages/ErrorPages/ServerError/ServerError";
+import ErrorPage from "../../Pages/ErrorPages/ErrorPage/ErrorPage";
 function CreatorAnalytics() {
   const creatorData = useSelector((state) => state.Creator.data);
   const creatorDataStatus = useSelector((state) => state.Creator.status);
   const creatorDataError = useSelector((state) => state.Creator.error);
+  const creatorDataErrorCode = useSelector((state) => state.Creator.errorCode);
 
   const creatorAnalytics = useSelector((state) => state.CreatorAnalytics.data);
   const creatorAnalyticsStatus = useSelector(
@@ -20,15 +21,21 @@ function CreatorAnalytics() {
   const creatorAnalyticsError = useSelector(
     (state) => state.CreatorAnalytics.error
   );
+  const creatorAnalyticsErrorCode = useSelector(
+    (state) => state.CreatorAnalytics.errorCode
+  );
 
   const creatorStocks = useSelector((state) => state.CreatorStocks.data);
   const creatorStocksStatus = useSelector(
     (state) => state.CreatorStocks.status
   );
   const creatorStocksError = useSelector((state) => state.CreatorStocks.error);
+  const creatorStocksErrorCode = useSelector((state) => state.CreatorStocks.errorCode);
 
   const hasError =
     creatorDataError || creatorStocksError || creatorAnalyticsError;
+
+  const errorCode = creatorDataErrorCode || creatorAnalyticsErrorCode || creatorStocksErrorCode;
 
   const isLoading =
     creatorDataStatus === "loading" &&
@@ -36,15 +43,7 @@ function CreatorAnalytics() {
     creatorStocksStatus === "loading";
 
   if (hasError) {
-    const errorCode =
-      creatorDataError?.code ||
-      creatorAnalyticsError?.code ||
-      creatorStocksError?.code;
-    const errorMessage =
-      creatorDataError?.message ||
-      creatorAnalyticsError?.message ||
-      creatorStocksError?.message;
-    return <ServerError />;
+    return <ErrorPage errorCode={errorCode} errorMsg={hasError}/>;
   }
 
   if (isLoading) {

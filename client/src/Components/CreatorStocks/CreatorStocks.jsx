@@ -15,7 +15,7 @@ function CreatorStocks({ creatorStocks }) {
       </div>
       <div id={styles.stockList}>
         {creatorStocks.map((stock) => {
-          const gainLoss = stock.currentPrice - stock.basePrice;
+          const gainLoss = (stock.currentPrice - stock.basePrice).toFixed(3);
           return (
             <ul key={stock.name}>
               <li>{stock.name}</li>

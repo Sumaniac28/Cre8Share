@@ -3,18 +3,19 @@ import styles from "./UserHoldings.module.css";
 import UserStocks from "../UserStocks/UserStocks";
 import { useSelector } from "react-redux";
 import Loader from "../../Pages/Loader/Loader";
-import ServerError from "../../Pages/ErrorPages/ServerError/ServerError";
+import ErrorPage from "../../Pages/ErrorPages/ErrorPage/ErrorPage";
 function UserHoldings() {
   const userStocksData = useSelector((state) => state.UserStocks.data);
   const userStocksStatus = useSelector((state) => state.UserStocks.status);
   const userStocksError = useSelector((state) => state.UserStocks.error);
+  const errorCode = useSelector((state) => state.UserStocks.errorCode)
 
-  if (userStocksStatus === "loading") {
-    return <Loader />;
-  }
+  // if (userStocksStatus === "loading") {
+  //   return <Loader />;
+  // }
 
   if (userStocksError) {
-    return <ServerError />;
+    return <ErrorPage errorCode={errorCode} errorMsg={userStocksError}/>;
   }
 
   const stocks = userStocksData.stocks || [];

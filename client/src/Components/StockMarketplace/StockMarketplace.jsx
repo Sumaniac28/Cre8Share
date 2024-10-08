@@ -3,7 +3,7 @@ import styles from "./StockMarketplace.module.css";
 import BuyStockModal from "../BuyStockModal/BuyStockModal";
 import { useSelector } from "react-redux";
 import Loader from "../../Pages/Loader/Loader";
-import ServerError from "../../Pages/ErrorPages/ServerError/ServerError";
+import ErrorPage from "../../Pages/ErrorPages/ErrorPage/ErrorPage";
 
 function StockMarketplace() {
   const [selectedStock, setSelectedStock] = useState(null);
@@ -21,14 +21,15 @@ function StockMarketplace() {
     (state) => state.StocksMarketPlace.status
   );
   const allStocksError = useSelector((state) => state.StocksMarketPlace.error);
+  const erroCode = useSelector((state) => state.StocksMarketPlace.errorCode);
 
   if (allStocksError) {
-    return <ServerError />;
+    return <ErrorPage errorMsg={allStocksError} errorCode={erroCode} />;
   }
 
-  if (allStocksStatus === "loading") {
-    return <Loader />;
-  }
+  // if (allStocksStatus === "loading") {
+  //   return <Loader />;
+  // }
 
   const allStocks = allStocksData.data || [];
 
@@ -58,7 +59,10 @@ function StockMarketplace() {
                   List Price :- <span>{stock.basePrice}</span>
                 </li>
                 <li>
-                  P&L :- <span>{(stock.currentPrice - stock.basePrice).toFixed(3)}</span>
+                  P&L :-{" "}
+                  <span>
+                    {(stock.currentPrice - stock.basePrice).toFixed(3)}
+                  </span>
                 </li>
                 <li>
                   Units Available :- <span>{stock.stocksUnallocated}</span>

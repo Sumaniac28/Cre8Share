@@ -56,6 +56,7 @@
   font-family: "Orbitron", sans-serif;
   background-color: inherit;
   border: none;
+  cursor: pointer;
 }
 
 .NavLinks li button:hover {
@@ -66,26 +67,15 @@
   color: #007bff !important;
 }
 
-.getStarted {
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  text-decoration: none;
+#signature {
+  width: 200px;
+  cursor: pointer;
 }
 
-.getStarted button {
-  border-radius: 5px;
-  font-weight: bold;
-  background-color: inherit;
-  font-family: "Orbitron", sans-serif;
-  font-size: 1.2rem;
-  border: none;
-  text-decoration: none;
-  color: rgb(0, 0, 0);
-  transition: all 0.3s ease;
-}
-
-.getStarted button:hover {
-  color: #007bff;
+@media (max-width: 1100px) {
+  #signature {
+    width: 130px;
+  }
 }
 
 /* Small screens (side drawer behavior) */
@@ -116,7 +106,7 @@
     display: block;
   }
 
-  .getStarted {
+  .signature {
     display: none;
   }
 }

@@ -98,7 +98,7 @@ function AddStockForm() {
     };
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:8000/stocks/addStock",
         data,
         { withCredentials: true }

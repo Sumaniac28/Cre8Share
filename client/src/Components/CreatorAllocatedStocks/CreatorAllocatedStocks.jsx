@@ -2,22 +2,23 @@ import React from "react";
 import CreatorStocks from "../CreatorStocks/CreatorStocks";
 import styles from "./CreatorAllocatedStocks.module.css";
 import Loader from "../../Pages/Loader/Loader";
-import ServerError from "../../Pages/ErrorPages/ServerError/ServerError";
 import { useSelector } from "react-redux";
+import ErrorPage from "../../Pages/ErrorPages/ErrorPage/ErrorPage";
 function CreatorAllocatedStocks() {
   const creatorStocks = useSelector((state) => state.CreatorStocks.data);
   const creatorStocksStatus = useSelector(
     (state) => state.CreatorStocks.status
   );
   const creatorStocksError = useSelector((state) => state.CreatorStocks.error);
+  const errorCode = useSelector((state) => state.CreatorStocks.errorCode);
 
   if (creatorStocksError) {
-    return <ServerError />;
+    return <ErrorPage errorCode={errorCode} errorMsg={creatorStocksError} />;
   }
 
-  if (creatorStocksStatus === "loading") {
-    return <Loader />;
-  }
+  // if (creatorStocksStatus === "loading") {
+  //   return <Loader />;
+  // }
 
   return (
     <div>

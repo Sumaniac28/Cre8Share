@@ -11,11 +11,11 @@ import { fetchUserStocks } from "../../redux/reducers/userStocksReducer";
 import { fetchAllStocks } from "../../redux/reducers/stocksMarketPlaceReducer";
 import StockMarketplace from "../../Components/StockMarketplace/StockMarketplace";
 import UserHoldings from "../../Components/UserHoldings/UserHoldings";
-import ServerError from "../ErrorPages/ServerError/ServerError";
 import Loader from "../Loader/Loader";
 import socket from "../../socket";
 import UserLogout from "../../Components/UserLogout/UserLogout";
 import { Drawer, useMediaQuery } from "@mui/material";
+import ErrorPage from "../ErrorPages/ErrorPage/ErrorPage";
 
 function UserDashboard() {
   const [open, setOpen] = useState(false);
@@ -48,6 +48,7 @@ function UserDashboard() {
   const userData = useSelector((state) => state.user.data);
   const userDataStatus = useSelector((state) => state.user.status);
   const userDataError = useSelector((state) => state.user.error);
+  const errorCode = useSelector((state)=> state.user.errorCode);
 
   const userStocksStatus = useSelector((state) => state.UserStocks.status);
 
@@ -63,7 +64,7 @@ function UserDashboard() {
   const hasError = userDataError;
 
   if (hasError) {
-    return <ServerError />;
+    return <ErrorPage errorCode = {errorCode} errorMsg={userDataError} />
   }
 
   if (isLoading) {

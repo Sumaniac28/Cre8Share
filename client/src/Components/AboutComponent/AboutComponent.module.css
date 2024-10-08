@@ -19,6 +19,11 @@
   margin-top: 20px;
 }
 
+.info{
+  text-align: left;
+  font-size: 1.1rem;
+}
+
 .imageContainer {
   display: flex;
   justify-content: center;
@@ -33,7 +38,7 @@
 
 #lol {
   grid-column: 1 / -1;
-  text-align: justify;
+  text-align: left;
 }
 
 .flashMessage {
@@ -107,7 +112,6 @@
 }
 
 #marqueeGroup {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-around;

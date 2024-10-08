@@ -4,10 +4,7 @@ const transporter = nodeMailer.createTransport({
   service: "Gmail",
   secure: true,
   port: 465,
-  auth: {
-    user: "",
-    pass: "",
-  },
+  auth: {},
 });
 
 transporter.verify((error, success) => {

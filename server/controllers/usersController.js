@@ -1,5 +1,6 @@
 const User = require("../models/userSchema");
 const jwt = require("jsonwebtoken");
+const createError = require("http-errors");
 const UserPortfolio = require("../models/userPortfolioSchema");
 const sendMail = require("../config/emailService");
 const fs = require("fs");
@@ -14,9 +15,7 @@ let welcomeMailTemplate = fs.readFileSync(welcomeMailPath, "utf8");
 
 module.exports.signUP = async (req, res, next) => {
   if (req.body.password !== req.body.confirm_password) {
-    const erroMsg = new Error("Unauthorized");
-    erroMsg.statusCode = 401;
-    return next(erroMsg);
+    return next(createError(401, "Password and confirm password do not match"));
   }
 
   try {
@@ -29,17 +28,13 @@ module.exports.signUP = async (req, res, next) => {
         "{{username}}",
         req.body.name
       );
-      sendMail(req.body.email, "Welcome to Cre8Share", welcomeMailTemplate);
+      // sendMail(req.body.email, "Welcome to Cre8Share", welcomeMailTemplate);
       return res.status(200).json({ message: "User created successfully" });
     } else {
-      const erroMsg = new Error("User already exists");
-      erroMsg.statusCode = 409;
-      return next(erroMsg);
+      return next(createError(409, "User already exists"));
     }
   } catch (err) {
-    const erroMsg = new Error("Internal Server Error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(500, "Internal Server Error"));
   }
 };
 
@@ -48,9 +43,7 @@ module.exports.signIN = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user || user.password !== req.body.password) {
-      const erroMsg = new Error("Invalid username or password");
-      erroMsg.statusCode = 422;
-      return next(erroMsg);
+      return next(createError(422, "Invalid username or password"));
     }
 
     const token = jwt.sign(user.toJSON(), "cre8share", { expiresIn: "1d" });
@@ -67,10 +60,7 @@ module.exports.signIN = async (req, res, next) => {
       .status(200)
       .json({ message: "Token generated successfully", token });
   } catch (err) {
-    console.log(err);
-    const erroMsg = new Error("Internal server error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(500, "Internal server error"));
   }
 };
 
@@ -86,15 +76,13 @@ module.exports.logOut = async (req, res, next) => {
     if (req.session) {
       req.session.destroy((err) => {
         if (err) {
-          return next(new Error("Failed to destroy session"));
+          return next(createError(500, "Failed to destroy session"));
         }
       });
     }
 
     res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
-    const erroMsg = new Error("Internal server error");
-    erroMsg.statusCode = 500;
-    next(erroMsg);
+    next(createError(500, "Internal server error"));
   }
 };
