@@ -28,7 +28,7 @@ module.exports.signUP = async (req, res, next) => {
         "{{username}}",
         req.body.name
       );
-      // sendMail(req.body.email, "Welcome to Cre8Share", welcomeMailTemplate);
+      sendMail(req.body.email, "Welcome to Cre8Share", welcomeMailTemplate);
       return res.status(200).json({ message: "User created successfully" });
     } else {
       return next(createError(409, "User already exists"));

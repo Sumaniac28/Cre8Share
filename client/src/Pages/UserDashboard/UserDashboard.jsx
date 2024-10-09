@@ -48,7 +48,7 @@ function UserDashboard() {
   const userData = useSelector((state) => state.user.data);
   const userDataStatus = useSelector((state) => state.user.status);
   const userDataError = useSelector((state) => state.user.error);
-  const errorCode = useSelector((state)=> state.user.errorCode);
+  const errorCode = useSelector((state) => state.user.errorCode);
 
   const userStocksStatus = useSelector((state) => state.UserStocks.status);
 
@@ -64,7 +64,7 @@ function UserDashboard() {
   const hasError = userDataError;
 
   if (hasError) {
-    return <ErrorPage errorCode = {errorCode} errorMsg={userDataError} />
+    return <ErrorPage errorCode={errorCode} errorMsg={userDataError} />;
   }
 
   if (isLoading) {

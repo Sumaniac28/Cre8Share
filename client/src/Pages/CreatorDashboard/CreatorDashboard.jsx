@@ -80,7 +80,10 @@ function CreatorDashboard() {
       <div id={styles.AnalyticsContainer}>
         {isSmallScreen ? (
           <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-            <CreatorSideBar toggleDrawer={toggleDrawer} />
+            <div className={styles.drawerSahab}>
+              <h2 id={styles.drawerTitle}>MENU</h2>
+              <CreatorSideBar toggleDrawer={toggleDrawer} />
+            </div>
           </Drawer>
         ) : (
           <CreatorSideBar toggleDrawer={toggleDrawer} />

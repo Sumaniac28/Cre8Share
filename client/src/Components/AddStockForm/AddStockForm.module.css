@@ -3,11 +3,25 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+#recentStockInfo {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   p {
     font-size: 1.3rem;
     color: white;
-    width: 50%;
+  }
+}
+
+#recentStock {
+  color: white;
+
+  li {
+    margin-bottom: 10px;
   }
 }
 
@@ -103,10 +117,19 @@
     text-align: center;
   }
 
-  #allocateStocksContainer p {
+  #recentStockInfo {
+    width: 80%;
+    align-items: center;
+  }
+
+  #recentStockInfo p {
     font-size: 1.1rem;
     width: 80%;
     margin: 20px 0;
+  }
+
+  #recentStock {
+    text-align: left;
   }
 
   .formContainer {
@@ -125,9 +148,17 @@
     padding: 10px;
   }
 
-  #allocateStocksContainer p {
+  #recentStockInfo {
+    width: 90%;
+  }
+
+  #recentStockInfo p {
     font-size: 1rem;
     width: 100%;
+  }
+
+  #recentStock {
+    text-align: left;
   }
 
   .formContainer {

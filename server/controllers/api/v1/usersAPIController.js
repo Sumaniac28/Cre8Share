@@ -1,6 +1,6 @@
 const User = require("../../../models/userSchema");
 const Portfolio = require("../../../models/userPortfolioSchema");
-const createError = require('http-errors')
+const createError = require("http-errors");
 
 exports.getUserData = async (req, res, next) => {
   try {
@@ -16,9 +16,10 @@ exports.getUserData = async (req, res, next) => {
 
 exports.getPortfolio = async (req, res, next) => {
   try {
-    const portfolio = await Portfolio.findOne({ user: req.user.id }).populate(
-      "stocks.stock"
-    );
+    const portfolio = await Portfolio.findOne({ user: req.user.id })
+      .populate("user")
+      .populate("stocks.stock");
+
     if (!portfolio) {
       return next(createError(404, "Portfolio not found"));
     }

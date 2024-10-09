@@ -54,13 +54,12 @@ li {
   }
 
   #StockStatsCardContainer {
-    /* flex-direction: column;  */
     justify-content: flex-start;
     align-items: flex-start;
-  }
 
-  ul {
-    margin-right: 20px;
+    ul {
+      margin-right: 20px;
+    }
   }
 }
 

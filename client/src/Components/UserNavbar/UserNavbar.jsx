@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./UserNavbar.module.css";
 import appLogo from "../../assets/images/anotherLogo.png";
-import investorProfile from "../../assets/images/developer2.jpg";
 function UserNavbar({ name }) {
   return (
     <div className={styles.Container}>
@@ -14,7 +13,10 @@ function UserNavbar({ name }) {
         <i class="fa-solid fa-search"></i>
       </div>
       <div className={styles.AboutUser}>
-        <img src={investorProfile} alt="Profile Pic" />
+        <img
+          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          alt="Profile Pic"
+        />
         <p>
           {name}
           <br />

@@ -4,6 +4,17 @@ const crypto = require("crypto");
 const google = require("googleapis").google;
 const Creator = require("../models/creatorSchema");
 const Analytics = require("../models/analyticsSchema");
+const sendMail = require("../config/emailService");
+const fs = require("fs");
+const path = require("path");
+
+const welcomeMailPath = path.join(
+  __dirname,
+  "../EmailTemplates",
+  "welcomeTemplate.html"
+);
+
+let welcomeMailTemplate = fs.readFileSync(welcomeMailPath, "utf8");
 
 passport.use(
   new googleAuthStrategy({}, async function (
@@ -109,6 +120,16 @@ passport.use(
         });
 
         await analytics.save();
+
+        welcomeMailTemplate = welcomeMailTemplate.replace(
+          "{{username}}",
+          profile.displayName
+        );
+        sendMail(
+          profile.emails[0].value,
+          "Welcome to Cre8Share",
+          welcomeMailTemplate
+        );
 
         return done(null, creator);
       }

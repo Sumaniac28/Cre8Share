@@ -3,6 +3,8 @@ import styles from "./AddStockForm.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import socket from "../../socket";
+import ErrorPage from "../../Pages/ErrorPages/ErrorPage/ErrorPage";
+import { useSelector } from "react-redux";
 
 function AddStockForm() {
   const navigate = useNavigate();
@@ -42,6 +44,13 @@ function AddStockForm() {
   };
 
   const handleSendOtp = async (e) => {
+    if (!isSubmitEnabled) {
+      window.alert(
+        "You can only allocate new stocks when your previous stocks are 50% sold out and has more than or equal to 5 unique buyers."
+      );
+      return;
+    }
+
     e.preventDefault();
     if (!isRequestOTPEnabled || remainingTime > 0) return;
 
@@ -98,11 +107,9 @@ function AddStockForm() {
     };
 
     try {
-      await axios.post(
-        "http://localhost:8000/stocks/addStock",
-        data,
-        { withCredentials: true }
-      );
+      await axios.post("http://localhost:8000/stocks/addStock", data, {
+        withCredentials: true,
+      });
       socket.emit("addCreatorStocks");
       navigate("/creator");
     } catch (error) {
@@ -110,6 +117,26 @@ function AddStockForm() {
       console.error("Failed to add stock:", error);
     }
   };
+
+  const creatorStocks = useSelector((state) => state.CreatorStocks.data);
+  const creatorStocksStatus = useSelector(
+    (state) => state.CreatorStocks.status
+  );
+  const creatorStocksError = useSelector((state) => state.CreatorStocks.error);
+  const errorCode = useSelector((state) => state.CreatorStocks.errorCode);
+
+  if (creatorStocksError) {
+    return <ErrorPage errorCode={errorCode} errorMsg={creatorStocksError} />;
+  }
+
+  // if (creatorStocksStatus === "loading") {
+  //   return <Loader />;
+  // }
+
+  let isSubmitEnabled =
+    creatorStocks.length > 0 &&
+    creatorStocks[0].totalSoldPercentage >= 50 &&
+    creatorStocks[0].uniqueBuyers.length >= 5;
 
   return (
     <div id={styles.allocateStocksContainer}>
@@ -160,16 +187,39 @@ function AddStockForm() {
           >
             {otpSent ? `Send OTP Again (${remainingTime}s)` : "Request OTP"}
           </div>
-          <button type="submit">Add Stock</button>
+          <button type="submit" disabled={!isSubmitEnabled}>
+            Add Stock
+          </button>
         </form>
       </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
-        accusantium recusandae delectus debitis rerum perspiciatis voluptatem
-        velit fugiat veniam fugit esse eveniet possimus, facilis ipsum illum
-        dolorem quisquam beatae saepe impedit. Aut dolorum, vitae harum earum
-        delectus dolore incidunt nisi.
-      </p>
+      <div id={styles.recentStockInfo}>
+        <p>
+          <span style={{ color: "wheat" }}>A special note to the creator:</span>
+          <br />
+          <br />
+          You can only allocate new stocks when your previous stocks are 50%
+          sold out and has more than or equal to 5 unique buyers.
+        </p>
+        {creatorStocks.length > 0 ? (
+          <ul id={styles.recentStock}>
+            <h2>Your recent stock data:-</h2>
+            <li>
+              <span>Name: </span>
+              {creatorStocks[0].name}
+            </li>
+            <li>
+              <span>Unique Buyers: </span>
+              {creatorStocks[0].uniqueBuyers.length}
+            </li>
+            <li>
+              <span>Sold Percentage: </span>
+              {creatorStocks[0].totalSoldPercentage + "%"}
+            </li>
+          </ul>
+        ) : (
+          <p>No recent stock data found</p>
+        )}
+      </div>
     </div>
   );
 }

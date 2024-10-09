@@ -5,27 +5,20 @@ import { useSelector } from "react-redux";
 import Loader from "../../Pages/Loader/Loader";
 import ErrorPage from "../../Pages/ErrorPages/ErrorPage/ErrorPage";
 const UserAnalytics = () => {
-  const userData = useSelector((state) => state.user.data);
-  const userDataStatus = useSelector((state) => state.user.status);
-  const userDataError = useSelector((state) => state.user.error);
-  const userErrorCode = useSelector((state) => state.user.errorCode);
-
   const userStocksData = useSelector((state) => state.UserStocks.data);
   const userStocksStatus = useSelector((state) => state.UserStocks.status);
   const userStocksError = useSelector((state) => state.UserStocks.error);
   const stocksErrorCode = useSelector((state) => state.UserStocks.errorCode);
 
-  let funds = userData.funds || 0;
+  let funds = userStocksData.user?.funds || 0;
   funds = funds.toFixed(3);
 
-  const errorCode = userErrorCode || stocksErrorCode;
+  const errorCode = stocksErrorCode;
 
-  const isLoading =
-    userDataStatus === "loading" && userStocksStatus === "loading";
-  const hasError = userDataError || userStocksError;
+  const isLoading = userStocksStatus === "loading";
 
-  if (hasError) {
-    return <ErrorPage errorCode={errorCode} errorMsg={hasError} />;
+  if (userStocksError) {
+    return <ErrorPage errorCode={errorCode} errorMsg={userStocksError} />;
   }
 
   // if (isLoading) {
