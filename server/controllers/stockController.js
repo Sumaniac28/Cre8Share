@@ -342,7 +342,9 @@ module.exports.sellStock = async (req, res, next) => {
 
     await stock.save();
 
-    await updateStockPriceAndSave(stock, "sell", 0.8, quantity, 0.3);
+    if (stock.totalSoldPercentage >= 20 && stock.uniqueBuyers.length >= 5) {
+      await updateStockPriceAndSave(stock, "sell", 0.8, quantity, 0.3);
+    }
 
     await updateAffectedPortfolios(stockId, userId, stock);
 
