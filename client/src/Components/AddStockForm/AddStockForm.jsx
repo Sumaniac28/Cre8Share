@@ -134,9 +134,10 @@ function AddStockForm() {
   // }
 
   let isSubmitEnabled =
-    creatorStocks.length > 0 &&
-    creatorStocks[0].totalSoldPercentage >= 50 &&
-    creatorStocks[0].uniqueBuyers.length >= 5;
+    (creatorStocks.length > 0 &&
+      creatorStocks[0].totalSoldPercentage >= 50 &&
+      creatorStocks[0].uniqueBuyers.length >= 5) ||
+    creatorStocks.length === 0;
 
   return (
     <div id={styles.allocateStocksContainer}>
@@ -187,7 +188,7 @@ function AddStockForm() {
           >
             {otpSent ? `Send OTP Again (${remainingTime}s)` : "Request OTP"}
           </div>
-          <button type="submit" disabled={!isSubmitEnabled}>
+          <button type="submit">
             Add Stock
           </button>
         </form>

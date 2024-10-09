@@ -3,6 +3,7 @@ const Creator = require("../models/creatorSchema");
 const Analytics = require("../models/analyticsSchema");
 const User = require("../models/userSchema");
 const UserPortfolio = require("../models/userPortfolioSchema");
+const createError = require("http-errors");
 
 module.exports.addStock = async function (req, res, next) {
   try {
@@ -286,16 +287,16 @@ module.exports.buyStock = async (req, res, next) => {
       stock.uniqueBuyers.push(userId.toString());
     }
 
-    if (stock.totalSoldPercentage >= 20 && stock.uniqueBuyers.length >= 5) {
-      await updateStockPriceAndSave(stock, "buy", 0.8, quantity, 0.3);
-    }
-
     stock.userBoughtQuantity += quantity;
     stock.stocksAllocated += quantity;
     stock.stocksUnallocated -= quantity;
 
     // Calculate total sold percentage
     stock.totalSoldPercentage = (stock.stocksAllocated / stock.quantity) * 100;
+
+    if (stock.totalSoldPercentage >= 20 && stock.uniqueBuyers.length >= 5) {
+      await updateStockPriceAndSave(stock, "buy", 0.8, quantity, 0.3);
+    }
 
     await stock.save();
 
@@ -339,9 +340,11 @@ module.exports.sellStock = async (req, res, next) => {
     // Calculate total sold percentage
     stock.totalSoldPercentage = (stock.stocksAllocated / stock.quantity) * 100;
 
-    await stock.save();
+    if (stock.totalSoldPercentage >= 20 && stock.uniqueBuyers.length >= 5) {
+      await updateStockPriceAndSave(stock, "sell", 0.8, quantity, 0.3);
+    }
 
-    await updateStockPriceAndSave(stock, "sell", 0.8, quantity, 0.3);
+    await stock.save();
 
     await updateAffectedPortfolios(stockId, userId, stock);
 

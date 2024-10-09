@@ -17,7 +17,6 @@ function LogInForm({ onClose, onOpenSignUp }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     try {
       const response = await axios.post(
         "http://localhost:8000/users/signIn",
@@ -26,8 +25,8 @@ function LogInForm({ onClose, onOpenSignUp }) {
           withCredentials: true,
         }
       );
-      const token = response.data.token;
-      localStorage.setItem("token", token);
+      // const token = response.data.token;
+      // localStorage.setItem("token", token);
       navigate("/user");
     } catch (error) {
       if (error.response && error.response.status === 422) {

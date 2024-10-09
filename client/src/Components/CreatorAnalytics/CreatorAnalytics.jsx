@@ -9,11 +9,6 @@ import { useSelector } from "react-redux";
 import Loader from "../../Pages/Loader/Loader";
 import ErrorPage from "../../Pages/ErrorPages/ErrorPage/ErrorPage";
 function CreatorAnalytics() {
-  const creatorData = useSelector((state) => state.Creator.data);
-  const creatorDataStatus = useSelector((state) => state.Creator.status);
-  const creatorDataError = useSelector((state) => state.Creator.error);
-  const creatorDataErrorCode = useSelector((state) => state.Creator.errorCode);
-
   const creatorAnalytics = useSelector((state) => state.CreatorAnalytics.data);
   const creatorAnalyticsStatus = useSelector(
     (state) => state.CreatorAnalytics.status
@@ -30,20 +25,19 @@ function CreatorAnalytics() {
     (state) => state.CreatorStocks.status
   );
   const creatorStocksError = useSelector((state) => state.CreatorStocks.error);
-  const creatorStocksErrorCode = useSelector((state) => state.CreatorStocks.errorCode);
+  const creatorStocksErrorCode = useSelector(
+    (state) => state.CreatorStocks.errorCode
+  );
 
-  const hasError =
-    creatorDataError || creatorStocksError || creatorAnalyticsError;
+  const hasError = creatorStocksError || creatorAnalyticsError;
 
-  const errorCode = creatorDataErrorCode || creatorAnalyticsErrorCode || creatorStocksErrorCode;
+  const errorCode = creatorAnalyticsErrorCode || creatorStocksErrorCode;
 
   const isLoading =
-    creatorDataStatus === "loading" &&
-    creatorAnalyticsStatus === "loading" &&
-    creatorStocksStatus === "loading";
+    creatorAnalyticsStatus === "loading" && creatorStocksStatus === "loading";
 
   if (hasError) {
-    return <ErrorPage errorCode={errorCode} errorMsg={hasError}/>;
+    return <ErrorPage errorCode={errorCode} errorMsg={hasError} />;
   }
 
   if (isLoading) {
@@ -52,7 +46,7 @@ function CreatorAnalytics() {
 
   const stats = creatorAnalytics.stats ? creatorAnalytics.stats[0] : {};
   const statsArray = creatorAnalytics.stats ? creatorAnalytics.stats : [];
-  const earnings = creatorData.earnings || 0;
+  const earnings = creatorStocks[0]?.creator.earnings || 0;
 
   const calculateStockTotals = (stocks) => {
     return stocks.reduce(

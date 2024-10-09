@@ -29,7 +29,6 @@ function SignUpForm({ onClose, onOpenLogin }) {
         "http://localhost:8000/users/signUp",
         formdata
       );
-      console.log("User signed up successfully:", response.data);
       onOpenLogin();
     } catch (err) {
       if (err.response && err.response.status === 409) {

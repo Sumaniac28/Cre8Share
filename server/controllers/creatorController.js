@@ -5,6 +5,7 @@ const google = require("googleapis").google;
 const sendMail = require("../config/emailService");
 const fs = require("fs");
 const path = require("path");
+const createError = require("http-errors");
 
 const otpMailPath = path.join(
   __dirname,
