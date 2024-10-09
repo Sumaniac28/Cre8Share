@@ -7,6 +7,7 @@ import HelpSection from "../HelpSection/HelpSection";
 function HeroPage() {
   const [showSignup, setShowSignup] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const openSignupModal = () => {
     setShowSignup(true);
@@ -64,7 +65,7 @@ function HeroPage() {
               in on the action now!
             </p>
             <button>
-             <a href="http://localhost:8000/creators/auth/youtube"> Sign In with YouTube <i class="fa-brands fa-youtube"></i></a>
+             <a href={`${apiUrl}/creators/auth/youtube`}> Sign In with YouTube <i class="fa-brands fa-youtube"></i></a>
             </button>
           </div>
           <div className={styles.stats}>

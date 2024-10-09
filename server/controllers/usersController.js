@@ -46,7 +46,7 @@ module.exports.signIN = async (req, res, next) => {
       return next(createError(422, "Invalid username or password"));
     }
 
-    const token = jwt.sign(user.toJSON(), "cre8share", { expiresIn: "1d" });
+    const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET, { expiresIn: "1d" });
 
     res.cookie("token", token, {
       expires: new Date(Date.now() + 86400000),

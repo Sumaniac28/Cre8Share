@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 function LogInForm({ onClose, onOpenSignUp }) {
   let navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const [formData, setFormData] = useState({
     email: "",
@@ -20,7 +21,7 @@ function LogInForm({ onClose, onOpenSignUp }) {
     console.log(formData);
     try {
       const response = await axios.post(
-        "http://localhost:8000/users/signIn",
+        `${apiUrl}/users/signIn`,
         formData,
         {
           withCredentials: true,

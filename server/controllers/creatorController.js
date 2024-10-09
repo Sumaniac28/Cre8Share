@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const Analytics = require("../models/analyticsSchema");
 const google = require("googleapis").google;
 const sendMail = require("../config/emailService");
+const createError = require("http-errors");
 const fs = require("fs");
 const path = require("path");
 
@@ -21,7 +22,7 @@ module.exports.signIN = async function (req, res, next) {
       return next(createError(401, "Invalid email or password"));
     }
 
-    const token = jwt.sign(creator.toJSON(), "cre8share", { expiresIn: "1d" });
+    const token = jwt.sign(creator.toJSON(), process.env.JWT_SECRET , { expiresIn: "1d" });
 
     res.cookie("token", token, {
       expires: new Date(Date.now() + 86400000),

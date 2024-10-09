@@ -7,7 +7,7 @@ import socket from "../../socket";
 function SellStockModal({ stock, onClose }) {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(0);
-  console.log(stock.stock._id);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleBuy = async (e) => {
     e.preventDefault();
@@ -24,7 +24,7 @@ function SellStockModal({ stock, onClose }) {
 
     try {
       await axios.post(
-        `http://localhost:8000/users/sell/${stock.stock._id}`,
+        `${apiUrl}/users/sell/${stock.stock._id}`,
         { quantity },
         {
           withCredentials: true,

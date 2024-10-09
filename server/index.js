@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const passport = require("passport");
@@ -30,7 +31,7 @@ app.use(
 );
 app.use(
   expressSession({
-    secret: "cre8share",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {

@@ -4,9 +4,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 function UserLogout() {
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const handleLogout = async () => {
     try {
-      await axios.get("http://localhost:8000/users/logout", {
+      await axios.get(`${apiUrl}/users/logout`, {
         withCredentials: true,
       });
       navigate("/");

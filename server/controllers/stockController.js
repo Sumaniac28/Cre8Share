@@ -2,6 +2,7 @@ const Stock = require("../models/stockSchema");
 const Creator = require("../models/creatorSchema");
 const Analytics = require("../models/analyticsSchema");
 const User = require("../models/userSchema");
+const createError = require("http-errors");
 const UserPortfolio = require("../models/userPortfolioSchema");
 
 module.exports.addStock = async function (req, res, next) {

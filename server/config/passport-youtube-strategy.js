@@ -7,6 +7,7 @@ const Analytics = require("../models/analyticsSchema");
 const sendMail = require("../config/emailService");
 const fs = require("fs");
 const path = require("path");
+require('dotenv').config();
 
 const welcomeMailPath = path.join(
   __dirname,
@@ -17,7 +18,11 @@ const welcomeMailPath = path.join(
 let welcomeMailTemplate = fs.readFileSync(welcomeMailPath, "utf8");
 
 passport.use(
-  new googleAuthStrategy({}, async function (
+  new googleAuthStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CLIENT_CALLBACK_URL,
+  }, async function (
     accessToken,
     refreshToken,
     profile,

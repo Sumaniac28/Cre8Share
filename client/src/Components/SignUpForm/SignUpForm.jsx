@@ -9,6 +9,7 @@ function SignUpForm({ onClose, onOpenLogin }) {
     password: "",
     confirm_password: "",
   });
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -26,7 +27,7 @@ function SignUpForm({ onClose, onOpenLogin }) {
         return;
       }
       const response = await axios.post(
-        "http://localhost:8000/users/signUp",
+        `${apiUrl}/users/signUp`,
         formdata
       );
       console.log("User signed up successfully:", response.data);

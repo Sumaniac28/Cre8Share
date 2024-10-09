@@ -16,6 +16,21 @@ function AddStockForm() {
   const [otpExpiry, setOtpExpiry] = useState(null);
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [remainingTime, setRemainingTime] = useState(0);
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const creatorStocks = useSelector((state) => state.CreatorStocks.data);
+  const creatorStocksStatus = useSelector(
+    (state) => state.CreatorStocks.status
+  );
+  const creatorStocksError = useSelector((state) => state.CreatorStocks.error);
+  const errorCode = useSelector((state) => state.CreatorStocks.errorCode);
+
+  // Check if submit is enabled
+  let isSubmitEnabled =
+    (creatorStocks.length > 0 &&
+      creatorStocks[0].totalSoldPercentage >= 50 &&
+      creatorStocks[0].uniqueBuyers.length >= 5) ||
+    creatorStocks.length === 0;
 
   const isRequestOTPEnabled =
     stockName.trim() !== "" && stockQuantity.trim() !== "";
@@ -32,7 +47,7 @@ function AddStockForm() {
   const sendOtp = async (otp) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/creators/sendOTP",
+        `${apiUrl}/creators/sendOTP`,
         { otp },
         { withCredentials: true }
       );
@@ -46,7 +61,7 @@ function AddStockForm() {
   const handleSendOtp = async (e) => {
     if (!isSubmitEnabled) {
       window.alert(
-        "You can only allocate new stocks when your previous stocks are 50% sold out and has more than or equal to 5 unique buyers."
+        "You can only allocate new stocks when your previous stocks are 50% sold out and have more than or equal to 5 unique buyers."
       );
       return;
     }
@@ -107,7 +122,7 @@ function AddStockForm() {
     };
 
     try {
-      await axios.post("http://localhost:8000/stocks/addStock", data, {
+      await axios.post(`${apiUrl}/stocks/addStock`, data, {
         withCredentials: true,
       });
       socket.emit("addCreatorStocks");
@@ -118,13 +133,6 @@ function AddStockForm() {
     }
   };
 
-  const creatorStocks = useSelector((state) => state.CreatorStocks.data);
-  const creatorStocksStatus = useSelector(
-    (state) => state.CreatorStocks.status
-  );
-  const creatorStocksError = useSelector((state) => state.CreatorStocks.error);
-  const errorCode = useSelector((state) => state.CreatorStocks.errorCode);
-
   if (creatorStocksError) {
     return <ErrorPage errorCode={errorCode} errorMsg={creatorStocksError} />;
   }
@@ -132,11 +140,6 @@ function AddStockForm() {
   // if (creatorStocksStatus === "loading") {
   //   return <Loader />;
   // }
-
-  let isSubmitEnabled =
-    creatorStocks.length > 0 &&
-    creatorStocks[0].totalSoldPercentage >= 50 &&
-    creatorStocks[0].uniqueBuyers.length >= 5;
 
   return (
     <div id={styles.allocateStocksContainer}>
@@ -187,9 +190,7 @@ function AddStockForm() {
           >
             {otpSent ? `Send OTP Again (${remainingTime}s)` : "Request OTP"}
           </div>
-          <button type="submit" disabled={!isSubmitEnabled}>
-            Add Stock
-          </button>
+          <button type="submit">Add Stock</button>
         </form>
       </div>
       <div id={styles.recentStockInfo}>

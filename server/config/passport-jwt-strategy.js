@@ -1,4 +1,5 @@
 const passport = require("passport");
+require('dotenv').config();
 
 const JWTStrategy = require("passport-jwt").Strategy;
 
@@ -13,7 +14,7 @@ const { ExtractJwt } = require("passport-jwt");
 
 let opts = {
   jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-  secretOrKey: "cre8share",
+  secretOrKey: process.env.JWT_SECRET,
 };
 
 passport.use(

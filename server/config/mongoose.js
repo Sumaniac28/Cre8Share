@@ -1,10 +1,12 @@
 // Setting up our database
-
+require('dotenv').config();
 // requiring mongoose
 const mongoose = require("mongoose");
 
+const mongoUri = process.env.MONGO_DB_URI;
+
 // connecting to our database
-mongoose.connect("mongodb://0.0.0.0:27017/cre8sare");
+mongoose.connect(mongoUri);
 
 // checking for connection
 const db = mongoose.connection;
