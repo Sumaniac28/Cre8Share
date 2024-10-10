@@ -6,6 +6,7 @@ const sendMail = require("../config/emailService");
 const fs = require("fs");
 const path = require("path");
 const createError = require("http-errors");
+require("dotenv").config();
 
 const otpMailPath = path.join(
   __dirname,
@@ -22,13 +23,13 @@ module.exports.signIN = async function (req, res, next) {
       return next(createError(401, "Invalid email or password"));
     }
 
-    const token = jwt.sign(creator.toJSON(), "cre8share", { expiresIn: "1d" });
+    const token = jwt.sign(creator.toJSON(), process.env.JWT_SECRET , { expiresIn: "1d" });
 
     res.cookie("token", token, {
       expires: new Date(Date.now() + 86400000),
       httpOnly: true,
-      sameSite: "strict",
-      secure: false,
+      sameSite: "none",
+      secure: true,
     });
 
     res.redirect(`http://localhost:3000/Creator`);
@@ -41,8 +42,8 @@ module.exports.logOut = async function (req, res, next) {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "strict",
-      secure: false,
+      sameSite: "none",
+      secure:  true,
       path: "/",
     });
 

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const passport = require("passport");
@@ -24,19 +25,19 @@ const server = http.createServer(app);
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     credentials: true,
   })
 );
 app.use(
   expressSession({
-    secret: "cre8share",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // Set to true for HTTPS in production
+      secure: true, // Set to true for HTTPS in production
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "none",
     },
   })
 );

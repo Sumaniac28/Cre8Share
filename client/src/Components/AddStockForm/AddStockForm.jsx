@@ -16,6 +16,7 @@ function AddStockForm() {
   const [otpExpiry, setOtpExpiry] = useState(null);
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [remainingTime, setRemainingTime] = useState(0);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const isRequestOTPEnabled =
     stockName.trim() !== "" && stockQuantity.trim() !== "";
@@ -32,7 +33,7 @@ function AddStockForm() {
   const sendOtp = async (otp) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/creators/sendOTP",
+        `${apiUrl}/creators/sendOTP`,
         { otp },
         { withCredentials: true }
       );
@@ -107,7 +108,7 @@ function AddStockForm() {
     };
 
     try {
-      await axios.post("http://localhost:8000/stocks/addStock", data, {
+      await axios.post(`${apiUrl}/stocks/addStock`, data, {
         withCredentials: true,
       });
       socket.emit("addCreatorStocks");
@@ -188,9 +189,7 @@ function AddStockForm() {
           >
             {otpSent ? `Send OTP Again (${remainingTime}s)` : "Request OTP"}
           </div>
-          <button type="submit">
-            Add Stock
-          </button>
+          <button type="submit">Add Stock</button>
         </form>
       </div>
       <div id={styles.recentStockInfo}>

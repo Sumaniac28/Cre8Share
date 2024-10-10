@@ -8,6 +8,8 @@ const cors = require("cors"); // Import cors package
 
 const creatorController = require("../controllers/creatorController");
 
+require("../config/passport-jwt-strategy");
+
 // youtube authentication route
 router.get(
   "/auth/youtube",
@@ -22,7 +24,7 @@ router.get(
 
 router.get(
   "/auth/youtube/callback",
-  passport.authenticate("google", { failureRedirect: "http://localhost:3000" }),
+  passport.authenticate("google", { failureRedirect: (process.env.CLIENT_URL || "http://localhost:3000") }),
   creatorController.signIN
 );
 

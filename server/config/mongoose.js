@@ -2,9 +2,13 @@
 
 // requiring mongoose
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 // connecting to our database
-mongoose.connect("mongodb://0.0.0.0:27017/cre8sare");
+mongoose.connect(process.env.MONGO_DB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // checking for connection
 const db = mongoose.connection;

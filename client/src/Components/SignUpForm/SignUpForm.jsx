@@ -9,6 +9,7 @@ function SignUpForm({ onClose, onOpenLogin }) {
     password: "",
     confirm_password: "",
   });
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -25,15 +26,12 @@ function SignUpForm({ onClose, onOpenLogin }) {
         alert("Passwords do not match");
         return;
       }
-      const response = await axios.post(
-        "http://localhost:8000/users/signUp",
-        formdata
-      );
+      const response = await axios.post(`${apiUrl}/users/signUp`, formdata);
       onOpenLogin();
     } catch (err) {
       if (err.response && err.response.status === 409) {
         alert("User already exists, please login instead");
-        return
+        return;
       } else {
         console.error(err);
       }
@@ -41,64 +39,64 @@ function SignUpForm({ onClose, onOpenLogin }) {
   }
 
   return (
-      <div className={styles.formContainer}>
-        <button className={styles.closeBtn} onClick={onClose}>
-          X
-        </button>
-        <div>
-          <h2>Sign Up</h2>
-          <p>
-            Welcome to Cre8Share.... <br /> Register as a user and start your
-            experience
-          </p>
-        </div>
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <label for="Name">Name</label>
-          <input
-            type="text"
-            placeholder="Name"
-            name="name"
-            value={formdata.Name}
-            onChange={handleChange}
-            required
-          />
-          <label for="Email">Email</label>
-          <input
-            type="text"
-            placeholder="Email"
-            name="email"
-            value={formdata.Email}
-            onChange={handleChange}
-            required
-          />
-          <label for="Password">Password</label>
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={formdata.Password}
-            onChange={handleChange}
-            required
-          />
-          <label for="ConfirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            name="confirm_password"
-            value={formdata.ConfirmPassword}
-            onChange={handleChange}
-            required
-          />
-          <div id={styles.checkboxInput}>
-            <input type="checkbox" name="terms" required />
-            <label for="terms">I agree to the terms and conditions</label>
-          </div>
-          <button>Create Account</button>
-          <div id={styles.loginLink}>
-            Already have an account? <span onClick={onOpenLogin} >Login</span>
-          </div>
-        </form>
+    <div className={styles.formContainer}>
+      <button className={styles.closeBtn} onClick={onClose}>
+        X
+      </button>
+      <div>
+        <h2>Sign Up</h2>
+        <p>
+          Welcome to Cre8Share.... <br /> Register as a user and start your
+          experience
+        </p>
       </div>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <label for="Name">Name</label>
+        <input
+          type="text"
+          placeholder="Name"
+          name="name"
+          value={formdata.Name}
+          onChange={handleChange}
+          required
+        />
+        <label for="Email">Email</label>
+        <input
+          type="text"
+          placeholder="Email"
+          name="email"
+          value={formdata.Email}
+          onChange={handleChange}
+          required
+        />
+        <label for="Password">Password</label>
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          value={formdata.Password}
+          onChange={handleChange}
+          required
+        />
+        <label for="ConfirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          name="confirm_password"
+          value={formdata.ConfirmPassword}
+          onChange={handleChange}
+          required
+        />
+        <div id={styles.checkboxInput}>
+          <input type="checkbox" name="terms" required />
+          <label for="terms">I agree to the terms and conditions</label>
+        </div>
+        <button>Create Account</button>
+        <div id={styles.loginLink}>
+          Already have an account? <span onClick={onOpenLogin}>Login</span>
+        </div>
+      </form>
+    </div>
   );
 }
 

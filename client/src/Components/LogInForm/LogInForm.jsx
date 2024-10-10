@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import styles from "./LoginForm.module.css";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function LogInForm({ onClose, onOpenSignUp }) {
   let navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const [formData, setFormData] = useState({
     email: "",
@@ -18,13 +19,9 @@ function LogInForm({ onClose, onOpenSignUp }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8000/users/signIn",
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`${apiUrl}/users/signIn`, formData, {
+        withCredentials: true,
+      });
       // const token = response.data.token;
       // localStorage.setItem("token", token);
       navigate("/user");

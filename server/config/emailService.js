@@ -1,10 +1,14 @@
 const nodeMailer = require("nodemailer");
+require("dotenv").config();
 
 const transporter = nodeMailer.createTransport({
   service: "Gmail",
   secure: true,
   port: 465,
-  auth: {},
+  auth: {
+    user: process.env.NODE_MAILER_USERNAME,
+    pass: process.env.NODE_MAILER_PASSWORD,
+  },
 });
 
 transporter.verify((error, success) => {
@@ -17,7 +21,7 @@ transporter.verify((error, success) => {
 
 const sendmail = async (to, subject, html) => {
   const mailOptions = {
-    from: "",
+    from: process.env.NODE_MAILER_USERNAME,
     to,
     subject,
     html,

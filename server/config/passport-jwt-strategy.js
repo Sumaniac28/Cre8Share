@@ -10,10 +10,11 @@ const Creator = require("../models/creatorSchema");
 
 const cookieExtractor = require("./cookieExtractor");
 const { ExtractJwt } = require("passport-jwt");
+require("dotenv").config();
 
 let opts = {
   jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-  secretOrKey: "cre8share",
+  secretOrKey: process.env.JWT_SECRET,
 };
 
 passport.use(

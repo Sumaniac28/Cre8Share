@@ -7,6 +7,7 @@ import HelpSection from "../HelpSection/HelpSection";
 function HeroPage() {
   const [showSignup, setShowSignup] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const apiURL = process.env.REACT_APP_API_URL;
 
   const openSignupModal = () => {
     setShowSignup(true);
@@ -27,7 +28,7 @@ function HeroPage() {
   };
   return (
     <>
-    <IntroVideo showSignup={showSignup} showLogin={showLogin}/>
+      <IntroVideo showSignup={showSignup} showLogin={showLogin} />
       <section className={`${showSignup || showLogin ? styles.blur : ""}`}>
         <div className={styles.Motocontainer}>
           <div className={styles.moto}>
@@ -64,7 +65,10 @@ function HeroPage() {
               in on the action now!
             </p>
             <button>
-             <a href="http://localhost:8000/creators/auth/youtube"> Sign In with YouTube <i class="fa-brands fa-youtube"></i></a>
+              <a href={`${apiURL}/creators/auth/youtube`}>
+                {" "}
+                Sign In with YouTube <i class="fa-brands fa-youtube"></i>
+              </a>
             </button>
           </div>
           <div className={styles.stats}>
@@ -81,11 +85,15 @@ function HeroPage() {
             </div>
           </div>
         </div>
-        <HelpSection/>
+        <HelpSection />
       </section>
 
-      {showSignup && <SignUpForm onClose={closeSignupModal} onOpenLogin={openLoginModal} />}
-      {showLogin && <LogInForm onClose={closeLoginModal} onOpenSignUp={openSignupModal} />}
+      {showSignup && (
+        <SignUpForm onClose={closeSignupModal} onOpenLogin={openLoginModal} />
+      )}
+      {showLogin && (
+        <LogInForm onClose={closeLoginModal} onOpenSignUp={openSignupModal} />
+      )}
     </>
   );
 }
