@@ -33,7 +33,7 @@ module.exports.signIN = async function (req, res, next) {
       path: "/",
     });
 
-    res.redirect(`http://localhost:3000/Creator`);
+    res.redirect(`${process.env.CLIENT_URL}/creator`|| "http://localhost:3000/creator");
   } catch (err) {
     next(createError(500, "Internal server error"));
   }
