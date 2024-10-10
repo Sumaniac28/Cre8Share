@@ -17,6 +17,7 @@ const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/errorHandler");
 
 const axios = require("axios");
+const path = require("path");
 
 const port = process.env.PORT || 8000;
 const app = express();
@@ -37,7 +38,8 @@ app.use(
     cookie: {
       secure: true, // Set to true for HTTPS in production
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
+      path: "/",
     },
   })
 );
@@ -64,6 +66,7 @@ const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL || "http://localhost:3000",
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 

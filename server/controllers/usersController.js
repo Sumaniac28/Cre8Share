@@ -53,8 +53,8 @@ module.exports.signIN = async (req, res, next) => {
       expires: new Date(Date.now() + 86400000),
       httpOnly: true,
       secure: true,
-      sameSite: "none",
-      crossSite: true,
+      sameSite: "None",
+      path: "/",
     });
 
     return res
@@ -69,7 +69,7 @@ module.exports.logOut = async (req, res, next) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
       path: "/",
     });

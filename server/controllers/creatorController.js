@@ -28,8 +28,9 @@ module.exports.signIN = async function (req, res, next) {
     res.cookie("token", token, {
       expires: new Date(Date.now() + 86400000),
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
+      path: "/",
     });
 
     res.redirect(`http://localhost:3000/Creator`);
@@ -42,7 +43,7 @@ module.exports.logOut = async function (req, res, next) {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure:  true,
       path: "/",
     });
