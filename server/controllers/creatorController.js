@@ -23,7 +23,9 @@ module.exports.signIN = async function (req, res, next) {
       return next(createError(401, "Invalid email or password"));
     }
 
-    const token = jwt.sign(creator.toJSON(), process.env.JWT_SECRET , { expiresIn: "1d" });
+    const token = jwt.sign(creator.toJSON(), process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.cookie("token", token, {
       expires: new Date(Date.now() + 86400000),
@@ -33,7 +35,9 @@ module.exports.signIN = async function (req, res, next) {
       path: "/",
     });
 
-    res.redirect(`${process.env.CLIENT_URL}/creator`|| "http://localhost:3000/creator");
+    res.redirect(
+      `${process.env.CLIENT_URL}/creator` || "http://localhost:3000/creator"
+    );
   } catch (err) {
     next(createError(500, "Internal server error"));
   }
@@ -44,7 +48,7 @@ module.exports.logOut = async function (req, res, next) {
     res.clearCookie("token", {
       httpOnly: true,
       sameSite: "None",
-      secure:  true,
+      secure: true,
       path: "/",
     });
 
@@ -109,12 +113,12 @@ const calculateTotalChange = (stats) => {
   return totalChange;
 };
 
-async function refresh(creatorID, next) {
+async function refresh(creatorID) {
   try {
     const creator = await Creator.findById(creatorID).populate("stocks");
 
     if (!creator) {
-      return next(createError(404, "Creator not found"));
+      throw createError(404, "Creator not found");
     } else {
       const analyticsData = await Analytics.find({ creator: creatorID });
       const accesstoken = creator.accessToken;
@@ -202,7 +206,7 @@ async function refresh(creatorID, next) {
       await analyticsData[0].updateOne({ stats: stats });
     }
   } catch (err) {
-    next(createError(500, "Internal server error"));
+    throw err;
   }
 }
 
@@ -215,7 +219,7 @@ module.exports.refreshAnalyticsForAllCreators = async function (
     const creators = await Creator.find({});
 
     for (let creator of creators) {
-      await refresh(creator._id, next);
+      await refresh(creator._id);
     }
 
     res.status(200).json({ message: "Analytics refreshed for all creators" });
